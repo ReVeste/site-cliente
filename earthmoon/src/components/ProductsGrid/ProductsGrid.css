@@ -1,0 +1,33 @@
+/* src/components/ProductsGrid.css */
+
+.products-grid {
+  background-color: black;
+  color: rgb(255, 255, 255);
+  padding: 20px;
+  text-align: center;
+}
+
+.products-grid h2 {
+  font-size: 1.5rem;
+  margin-bottom: 5px;
+  font-weight: 400; /* Remover negrito do título "Disponíveis" */
+}
+
+.products-grid button {
+  background-color: transparent;
+  color: white;
+  border: none;
+  margin-bottom: 20px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: color 0.3s;
+}
+
+.products-grid button:hover {
+  color: #a21919; /* Muda a cor ao passar o mouse */
+}
+
+.grid-container {
+  display: flex;
+  justify-content: space-around;
+}

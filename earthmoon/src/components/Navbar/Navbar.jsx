@@ -1,8 +1,9 @@
 import React from 'react';
-import '../styles/Navbar.css';
+import './Navbar.css';
 
-import userIcon from '../assets/userIcon.png'; 
-import cartIcon from '../assets/sacolaIcon.png';
+import userIcon from '../../assets/userIcon.png';
+import cartIcon from '../../assets/sacolaIcon.png';
+
 
 const Navbar = () => {
   return (

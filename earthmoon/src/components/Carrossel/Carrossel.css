@@ -1,0 +1,89 @@
+/* src/components/Carrossel.css */
+
+.carrossel {
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  
+  .carrossel-inner {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+    max-width: 900px;
+    overflow: hidden;
+  }
+  
+  .review-container {
+    color: rgb(255, 255, 255);
+    width: 300px;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid #ccc;
+    flex-shrink: 0;
+    margin-bottom: 20px;  
+}
+  
+  .review-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .stars {
+    margin: 5px 0;
+  }
+  
+  .star {
+    color: red;
+  }
+  
+  .review-info h3 {
+    margin: 0;
+    font-size: 1.2rem;
+  }
+  
+  .review-text {
+    margin-top: 10px;
+  }
+  
+  .carrossel-controls {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 900px;
+  }
+  
+  .carrossel-control-left,
+  .carrossel-control-right {
+    background-color: transparent;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    border: none;
+    z-index: 1; /* Garante que as setas fiquem acima do conteúdo */
+  }
+  
+  .carrossel-control-left:hover,
+  .carrossel-control-right:hover {
+    color: #ccc;
+  }
+  
+  .carrossel-control-left {
+    position: absolute;
+    left: 0;
+  }
+  
+  .carrossel-control-right {
+    position: absolute;
+    right: 0;
+  }
+  
