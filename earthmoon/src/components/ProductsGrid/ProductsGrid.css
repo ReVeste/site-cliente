@@ -10,7 +10,7 @@
 .products-grid h2 {
   font-size: 1.5rem;
   margin-bottom: 5px;
-  font-weight: 400; /* Remover negrito do título "Disponíveis" */
+  font-weight: 400;
 }
 
 .products-grid button {
@@ -24,7 +24,7 @@
 }
 
 .products-grid button:hover {
-  color: #a21919; /* Muda a cor ao passar o mouse */
+  color: #a21919;
 }
 
 .grid-container {

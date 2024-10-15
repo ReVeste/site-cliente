@@ -51,7 +51,6 @@ const Carrossel = () => {
 
   return (
     <div className="carrossel">
-      {/* Setas de navegação */}
       <button className="carrossel-control-left" onClick={prevReview}>
         ◄
       </button>

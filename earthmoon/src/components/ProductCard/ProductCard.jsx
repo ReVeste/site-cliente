@@ -1,12 +1,12 @@
 import React from 'react';
 import './ProductCard.css';
-import testeImage from '../../assets/teste.jpg'; // Caminho corrigido
+import testeImage from '../../assets/teste.jpg';
 
 const ProductCard = ({ name, price, installment }) => {
   return (
     <div className="product-card">
       <div className="product-image">
-        <img src={testeImage} alt="Produto" /> {/* Exibe a imagem no card */}
+        <img src={testeImage} alt="Produto" /> 
       </div>
       <div className="product-info">
         <h3>{name}</h3>
