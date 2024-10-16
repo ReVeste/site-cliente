@@ -1,6 +1,6 @@
 // src/routes.js
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';g
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Accessories from './pages/Accessories/Accessories';
 import Products from './pages/Products/Products';
 import Home from './pages/Home/Home';
