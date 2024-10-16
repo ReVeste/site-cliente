@@ -1,4 +1,3 @@
-// src/components/Carrossel.jsx
 import React, { useState } from 'react';
 import './Carrossel.css';
 
@@ -33,6 +32,11 @@ const reviews = [
     stars: 2,
     text: 'Produto deixou a desejar, não atende às necessidades.',
   },
+  {
+    name: 'Ketelyn Medina',
+    stars: 5,
+    text: 'Ótimo atendimento e peças bem cuidadas!',
+  },
 ];
 
 const Carrossel = () => {
@@ -40,13 +44,24 @@ const Carrossel = () => {
   const reviewsPerSlide = 3;
 
   const nextReview = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + reviewsPerSlide) % reviews.length);
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % reviews.length);
   };
 
   const prevReview = () => {
     setCurrentIndex(
-      (prevIndex) => (prevIndex - reviewsPerSlide + reviews.length) % reviews.length
+      (prevIndex) => (prevIndex - 1 + reviews.length) % reviews.length
     );
+  };
+
+  const getVisibleReviews = () => {
+    const visibleReviews = [];
+
+    for (let i = 0; i < reviewsPerSlide; i++) {
+      const index = (currentIndex + i) % reviews.length;
+      visibleReviews.push(reviews[index]);
+    }
+
+    return visibleReviews;
   };
 
   return (
@@ -56,27 +71,25 @@ const Carrossel = () => {
       </button>
 
       <div className="carrossel-inner">
-        {reviews
-          .slice(currentIndex, currentIndex + reviewsPerSlide)
-          .map((review, index) => (
-            <div key={index} className="review-container">
-              <div className="review-header">
-                <div className="stars">
-                  {[...Array(review.stars)].map((_, i) => (
-                    <span key={i} className="star">
-                      ★
-                    </span>
-                  ))}
-                </div>
-                <div className="review-info">
-                  <h3>{review.name}</h3>
-                </div>
+        {getVisibleReviews().map((review, index) => (
+          <div key={index} className="review-container">
+            <div className="review-header">
+              <div className="stars">
+                {[...Array(review.stars)].map((_, i) => (
+                  <span key={i} className="star">
+                    ★
+                  </span>
+                ))}
               </div>
-              <div className="review-text">
-                <p>{review.text}</p>
+              <div className="review-info">
+                <h3>{review.name}</h3>
               </div>
             </div>
-          ))}
+            <div className="review-text">
+              <p>{review.text}</p>
+            </div>
+          </div>
+        ))}
       </div>
 
       <button className="carrossel-control-right" onClick={nextReview}>

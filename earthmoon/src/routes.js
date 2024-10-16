@@ -1,19 +1,20 @@
+// src/routes.js
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
-// import Login from './pages/Login/Login';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';g
+import Accessories from './pages/Accessories/Accessories';
+import Products from './pages/Products/Products';
 import Home from './pages/Home/Home';
 
-const Rotas = () => {
+const RoutesComponent = () => {
   return (
-    <BrowserRouter>
+    <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-    
-        {/* <Route path="/login" element={<Login />} /> */}
+        <Route path="/accessories" element={<Accessories />} />
+        <Route path="/products" element={<Products />} />
       </Routes>
-    </BrowserRouter>
+    </Router>
   );
 };
 
-export default Rotas;
+export default RoutesComponent;
