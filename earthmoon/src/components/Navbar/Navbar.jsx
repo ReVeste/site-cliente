@@ -30,11 +30,14 @@ const Navbar = () => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if ((isLoginPanelOpen || isBagPanelOpen) && !event.target.closest('.side-panel')) {
+      if (isLoginPanelOpen && !event.target.closest('.side-panel')) {
         setIsLoginPanelOpen(false);
+      }
+      if (isBagPanelOpen && !event.target.closest('.side-panel-bag')) {
         setIsBagPanelOpen(false);
       }
     };
+    
 
     if (isLoginPanelOpen || isBagPanelOpen) {
       document.body.classList.add('no-scroll');
