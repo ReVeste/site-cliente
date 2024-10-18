@@ -6,6 +6,7 @@
   padding: 20px;
   padding-top: 120px;
   text-align: center;
+  overflow-x: hidden;
 }
 
 .products-grid h2 {
@@ -33,3 +34,10 @@
   justify-content: space-between;
   padding: 0 30px;
 }
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Limita a quantidade de colunas para 5 */
+
+}
+

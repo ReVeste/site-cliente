@@ -1,22 +1,68 @@
+/* eslint-disable react-hooks/rules-of-hooks */
+import { useState } from 'react';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
 import './SidePanel.css';
 
 const SidePanelLogin = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
+  const navigate = useNavigate();
+
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+
+    axios.post('http://localhost:8080/usuarios/login', {
+      email: email,
+      senha: senha
+    })
+    .then(response => {
+      console.log('Login bem-sucedido:', response.data);
+      localStorage.setItem('token', response.data.token);
+      navigate('/Configuracao')
+    })
+    .catch(error => {
+      console.error('Erro no login:', error.response.data);
+      setErrorMessage('Credenciais inválidas. Tente novamente.');
+    });
+  };
+
   return (
     <div className="side-panel">
       <button className="close-button" onClick={onClose}>✖</button>
       <h2 className="title">Fazer login</h2>
-      <input type="email" placeholder="E-mail" className="input-field" />
-      <input type="password" placeholder="Senha" className="input-field" />
-      <div className="forgot-password-container">
-        <Link to="/forgot-password" className="forgot-password" onClick={onClose}>
-          Esqueceu a senha?
-        </Link>
-      </div>
-      <button className="login-button">Fazer login</button>
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
+      <form onSubmit={handleLogin}>
+        <input 
+          type="email" 
+          name='email' 
+          placeholder="E-mail" 
+          className="input-field" 
+          value={email} 
+          onChange={(e) => setEmail(e.target.value)} 
+          required
+        />
+        <input 
+          type="password" 
+          name='senha' 
+          placeholder="Senha" 
+          className="input-field" 
+          value={senha} 
+          onChange={(e) => setSenha(e.target.value)} 
+          required
+        />
+        <div className="forgot-password-container">
+          <Link to="/forgot-password" className="forgot-password" onClick={onClose}>
+            Esqueceu a senha?
+          </Link>
+        </div>
+        <button className="login-button" type="submit">Fazer login</button>
+      </form>
       <div className="create-account">
         <span>Não tem uma conta? </span>
         <Link to="/register" className="create-account-link" onClick={onClose}>
