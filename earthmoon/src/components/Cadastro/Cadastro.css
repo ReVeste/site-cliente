@@ -1,0 +1,155 @@
+/* Cadastro.css */
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+}
+
+.register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding-top: 70px;
+    flex-direction: column;
+}
+
+.form-wrapper {
+    padding: 30px;
+    border-radius: 10px;
+    width: 400px;
+}
+
+.form-toggle {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.form-toggle h2 {
+    font-size: 18px;
+    color: #ffffff;
+    cursor: pointer;
+    padding-bottom: 5px;
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    width: 50%;
+    text-align: center; 
+}
+
+.toggle-option.active {
+    color: #ffffff;
+    border-bottom: 2px solid #ffffff;
+    transition: all 0.3s ease;
+}
+
+.underline {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50%;
+    height: 2px;
+    background-color: #ffffff;
+    transition: all 0.3s ease;
+}
+
+.underline.login {
+    left: 0;
+}
+
+.underline.cadastro {
+    left: 55%;
+}
+
+.register-form h3 {
+    font-size: 22px;
+    color: #ffffff;
+    margin-bottom: 20px;
+}
+
+.register-form input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #333333;
+    border-radius: 5px;
+    background-color: #ffffff;
+}
+
+.register-form input::placeholder {
+    color: #3E4141;
+}
+
+.password-container {
+    position: relative;
+    width: 100%;
+}
+
+.password-container .eye-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.register-form p {
+    font-size: 14px;
+    color: #cccccc;
+    margin-bottom: 10px;
+    margin-top: 0;
+}
+
+.forgot-password {
+    font-size: 12px;
+    color: #cccccc;
+    cursor: pointer;
+    margin: 0px;
+    padding: 5px;
+    text-align: right;
+}
+
+.subscribe-label {
+    font-size: 12px;
+    color: #cccccc;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.subscribe-label input {
+    margin-left: 0px;
+}
+
+.submit-button {
+    width: 105%;
+    padding: 10px;
+    background-color: #330505;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.terms {
+    font-size: 10px;
+    color: #cccccc;
+    text-align: center;
+    padding: 20px;
+}
+
+.terms a {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+.active {
+    color: #ffffff;
+    border-bottom: 2px solid #ffffff;
+}
