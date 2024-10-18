@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Accessories from './pages/Accessories/Accessories';
 import Products from './pages/Products/Products';
 import Home from './pages/Home/Home';
+import ConfiguracaoCliente from './pages/ConfiguracaoCliente/ConfiguracaoCliente';
 
 const RoutesComponent = () => {
   return (
@@ -12,6 +13,7 @@ const RoutesComponent = () => {
         <Route path="/" element={<Home />} />
         <Route path="/accessories" element={<Accessories />} />
         <Route path="/products" element={<Products />} />
+        <Route path="/configuracao-cliente" element={<ConfiguracaoCliente />} />
       </Routes>
     </Router>
   );
