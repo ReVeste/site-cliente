@@ -5,7 +5,7 @@ import Products from './pages/Products/Products';
 import Home from './pages/Home/Home';
 import Cadastro from './pages/Cadastro/Cadastro'; 
 import SidePanelLogin from './components/SidePanel/SidePanel';
-
+import CadastroProduto from './pages/CadastroProduto/CadastroProduto';  // Importando a nova página de cadastro de produto
 
 const RoutesComponent = () => {
   return (
@@ -16,6 +16,7 @@ const RoutesComponent = () => {
         <Route path="/produtos" element={<Products />} />
         <Route path="/register" element={<Cadastro />} />
         <Route path="/login" element={<SidePanelLogin isOpen={true} onClose={() => {}} />} /> 
+        <Route path="/cadastro-produto" element={<CadastroProduto />} />  {/* Nova rota */}
       </Routes>
     </Router>
   );
