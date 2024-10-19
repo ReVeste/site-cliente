@@ -1,28 +1,49 @@
 // src/components/ProductsGrid.jsx
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ProductCard from '../ProductCard/ProductCard';
+import api from '../../Api';
 import './ProductsGrid.css';
 
-const products = [
-  { name: 'Ropa', price: 199.90 },
-  { name: 'Ropa', price: 199.90 },
-  { name: 'Ropa', price: 199.90 },
-  { name: 'Ropa', price: 199.90 },
-];
-
 const ProductsGrid = () => {
+
+  const [produtos, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+
+  useEffect(() => {
+    api.get(`http://localhost:8080/produtos`)
+      .then(response => {
+        console.log(response.data);
+        setProducts(response.data);
+        setLoading(false);
+      })
+      .catch(err => {
+        setError('Erro ao carregar os produtos');
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return <p>Carregando produtos...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
+
   return (
     <div className="products-grid">
       <h2>Disponíveis</h2>
       <button>Ver mais</button>
       <div className="grid-container">
-        {products.map((product, index) => (
+        {produtos.map((produto) => (
+          <div key={produto.id}>
           <ProductCard 
-            key={index} 
-            name={product.name} 
-            price={product.price} 
-            installment={3} 
-          />
+            nome={produto.nome} 
+            preco={produto.preco} 
+            parcelas={3}/>
+          </div>
         ))}
       </div>
     </div>

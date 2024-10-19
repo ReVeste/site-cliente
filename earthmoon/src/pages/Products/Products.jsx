@@ -6,8 +6,7 @@ const Products = () => {
   return (
     <div>
       <Navbar />
-      <ProductsGrid />
-      <ProductsGrid />
+      <ProductsGrid/>
     </div>
   );
 };

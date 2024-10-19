@@ -1,20 +1,79 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './SidePanelBag.css';
 import CartItem from './CartItem';
 
 const SidePanelBag = ({ isOpen, onClose }) => {
-  const [items, setItems] = useState([
-    { name: 'Item 1', price: 29.99, color: '#ff0000', onRemove: (index) => removeItem(index) },
-    { name: 'Item 2', price: 49.99, color: '#00ff00', onRemove: (index) => removeItem(index) },
-    { name: 'Item 3', price: 19.99, color: '#0000ff', onRemove: (index) => removeItem(index) },
-    { name: 'Item 4', price: 35.50, color: '#f4a261', onRemove: (index) => removeItem(index) },
-    { name: 'Item 5', price: 22.90, color: '#2a9d8f', onRemove: (index) => removeItem(index) },
-    { name: 'Item 6', price: 75.00, color: '#264653', onRemove: (index) => removeItem(index) },
-    { name: 'Item 7', price: 10.00, color: '#e76f51', onRemove: (index) => removeItem(index) },
-  ]);
+  const [items, setItems] = useState([]);
 
-  const removeItem = (index) => {
-    setItems(prevItems => prevItems.filter((_, i) => i !== index));
+  const fetchItems = async () => {
+    const token = localStorage.getItem('token');
+    try {
+      console.log(localStorage.getItem('token'));
+      const response = await axios.get('http://localhost:8080/pedidos/1/produtos', {
+        headers: {  
+          'Authorization': `Bearer ${token}`,
+        }
+      });
+      setItems(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error('Erro ao buscar itens:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      fetchItems();
+    }
+  }, [isOpen]);
+
+  const removeItem = async (id) => {
+    const token = localStorage.getItem('token');
+    try {
+      await axios.delete(`http://localhost:8080/pedidos/1/${id}`, {
+        headers: {  
+          'Authorization': `Bearer ${token}`,
+        }
+      }); 
+  
+      setItems(prevItems => prevItems.filter((_, i) => i !== id));
+    } catch (error) {
+      console.error('Erro ao remover o item:', error);
+    }
+  };
+
+  const removerTodosItens = async (idPedido) => {
+    const token = localStorage.getItem('token');
+    
+    try {
+      await axios.delete(`http://localhost:8080/pedidos/1`, {
+        headers: {  
+          'Authorization': `Bearer ${token}`,
+        }
+      }); 
+  
+      setItems([]);
+    } catch (error) {
+      console.error('Erro ao remover o item:', error);
+    }
+  }
+
+  const handleCheckout = async () => {
+    const payload = {
+      items: items.map(item => ({
+        name: item.nome,
+        price: item.preco,
+      })),
+      subtotal: items.reduce((acc, item) => acc + item.preco, 0),
+    };
+
+    try {
+      const response = await axios.post('URL_DA_SUA_API/checkout', payload);
+      console.log('Checkout successful:', response.data);
+    } catch (error) {
+      console.error('Erro ao realizar checkout:', error);
+    }
   };
 
   if (!isOpen) return null;
@@ -25,11 +84,11 @@ const SidePanelBag = ({ isOpen, onClose }) => {
       <h2 className="title">Sacolinha</h2>
       <div className="bag-content">
         {items.length > 0 ? (
-          items.map((item, index) => (
+          items.map((item) => (
             <CartItem 
-              key={index} 
+              key={item.id} 
               item={item} 
-              onRemove={() => removeItem(index)}
+              onRemove={() => removeItem(item.id)}
             />
           ))
         ) : (
@@ -39,10 +98,10 @@ const SidePanelBag = ({ isOpen, onClose }) => {
       <div className="bag-footer">
         <div className="subtotal">
           <span>Subtotal</span>
-          <span>R$ {items.reduce((acc, item) => acc + item.price, 0).toFixed(2)}</span>
+          <span>R$ {items.reduce((acc, item) => acc + item.preco, 0).toFixed(2)}</span>
         </div>
-        <button className="clear-button" onClick={onClose}>Excluir Tudo</button>
-        <button className="checkout-button">Checkout</button>
+        <button className="clear-button" onClick={removerTodosItens}>Excluir Tudo</button>
+        <button className="checkout-button" onClick={handleCheckout}>Checkout</button>
       </div>
     </div>
   );
