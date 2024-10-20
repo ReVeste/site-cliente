@@ -1,0 +1,219 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Inter', sans-serif;
+    overflow: auto; /* Adiciona scroll na página se necessário */
+}
+
+.product-register-container {
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: flex-start; /* Alinha ao topo */
+    padding: 40px;
+    height: auto; /* Permite que o container cresça com o conteúdo */
+    padding: 100px;
+    padding-top: 150px; /* Adiciona uma margem para baixo da navbar */
+}
+
+/* ____________________ INÍCIO - ESTILOS DE IMAGENS ____________________ */
+.image-upload-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-right: 40px;
+}
+
+.image-upload-section h3 {
+    margin-bottom: 20px;
+}
+
+/* Painel de imagem principal */
+.main-image-box {
+    width: 300px;
+    height: 300px;
+    border: 2px solid #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.main-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.upload-label {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.upload-icon {
+    font-size: 48px;
+    color: white;
+}
+
+/* Botão de remover */
+.remove-image {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 12px;
+    border-radius: 5px;
+}
+
+/* Painel de imagens adicionais */
+.additional-images-container {
+    display: flex; /* Garante o alinhamento horizontal */
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap; /* Permite que as imagens quebrem para a linha de baixo se necessário */
+}
+
+.additional-image-box {
+    width: 100px;
+    height: 100px;
+    border: 2px solid #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.additional-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.additional-upload {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 100px;
+    border: 2px solid #fff;
+    margin-right: 10px;
+}
+
+/* Botão de trocar imagens */
+.swap-image {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background-color: #444;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 12px;
+}
+/* ____________________ FIM - ESTILOS DE IMAGENS ____________________ */
+
+.product-form {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+}
+
+.product-form label {
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    color: #ffffff;
+    text-transform: uppercase;
+}
+
+.product-form input, 
+.product-form textarea, 
+.product-form select {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #333;
+    border-radius: 5px;
+    background-color: #000; /* Fundo preto */
+    color: #fff; /* Texto branco */
+}
+
+.product-form input::placeholder,
+.product-form textarea::placeholder {
+    color: #bbb; /* Placeholder cinza claro para contraste */
+}
+
+.product-form textarea {
+    resize: vertical;
+    height: 80px;
+}
+
+.brand-input {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.brand-input input[type="text"] {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.brand-input label {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #fff;
+}
+
+.brand-input input[type="checkbox"] {
+    width: 20px; /* Aumenta o tamanho da checkbox */
+    height: 20px;
+    margin-right: 10px;
+    background-color: #000; /* Fundo preto */
+    border: 2px solid #fff; /* Borda branca */
+    appearance: none; /* Remove o estilo padrão do navegador */
+    cursor: pointer;
+}
+
+.brand-input input[type="checkbox"]:checked {
+    background-color: #000; /* Fundo preto */
+    position: relative;
+}
+
+.brand-input input[type="checkbox"]:checked::after {
+    content: '\2713'; /* Símbolo de check */
+    font-size: 16px;
+    color: #fff; /* Sinal branco */
+}
+
+.submit-button {
+    padding: 10px;
+    background-color: #D9D9D9;
+    color: #000000;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+hr {
+    margin: 20px 0;
+    border: 0.5px solid #ccc;
+}
