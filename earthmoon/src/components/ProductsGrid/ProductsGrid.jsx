@@ -1,15 +1,13 @@
-// src/components/ProductsGrid.jsx
 import React, { useEffect, useState } from 'react';
 import ProductCard from '../ProductCard/ProductCard';
 import api from '../../Api';
 import './ProductsGrid.css';
 
 const ProductsGrid = () => {
-
   const [produtos, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     api.get(`http://localhost:8080/produtos`)
@@ -32,20 +30,24 @@ const ProductsGrid = () => {
     return <p>{error}</p>;
   }
 
+  const produtosExibidos = showAll ? produtos : produtos.slice(0, 4);
+
   return (
     <div className="products-grid">
       <h2>Disponíveis</h2>
-      <button>Ver mais</button>
+      {!showAll && (
+        <button onClick={() => setShowAll(true)}>Ver mais</button>
+      )}
       <div className="grid-container">
-        {produtos.map((produto) => (
+        {produtosExibidos.map((produto) => (
           <div key={produto.id}>
-          <ProductCard 
-            nome={produto.nome} 
-            preco={produto.preco} 
-            parcelas={3}/>
+            <ProductCard 
+              nome={produto.nome} 
+              preco={produto.preco} 
+              parcelas={3} />
           </div>
         ))}
-      </div>
+      </div>    
     </div>
   );
 };
