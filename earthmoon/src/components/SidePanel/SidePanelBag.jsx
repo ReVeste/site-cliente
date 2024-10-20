@@ -2,21 +2,15 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './SidePanelBag.css';
 import CartItem from './CartItem';
+import api from '../../Api';
 
 const SidePanelBag = ({ isOpen, onClose }) => {
   const [items, setItems] = useState([]);
 
   const fetchItems = async () => {
-    const token = localStorage.getItem('token');
     try {
-      console.log(localStorage.getItem('token'));
-      const response = await axios.get('http://localhost:8080/pedidos/1/produtos', {
-        headers: {  
-          'Authorization': `Bearer ${token}`,
-        }
-      });
+      const response = await api.get('/pedidos/2/produtos');
       setItems(response.data);
-      console.log(response.data);
     } catch (error) {
       console.error('Erro ao buscar itens:', error);
     }
@@ -28,31 +22,19 @@ const SidePanelBag = ({ isOpen, onClose }) => {
     }
   }, [isOpen]);
 
-  const removeItem = async (id) => {
-    const token = localStorage.getItem('token');
+  const removeItem = async (idPedido, idProduto) => {
     try {
-      await axios.delete(`http://localhost:8080/pedidos/1/${id}`, {
-        headers: {  
-          'Authorization': `Bearer ${token}`,
-        }
-      }); 
-  
-      setItems(prevItems => prevItems.filter((_, i) => i !== id));
+      idPedido = 2;
+      await api.delete(`pedidos/${idPedido}/produto/${idProduto}`); 
+      setItems(prevItems => prevItems.filter(item => item.id !== idProduto));
     } catch (error) {
       console.error('Erro ao remover o item:', error);
     }
   };
 
   const removerTodosItens = async (idPedido) => {
-    const token = localStorage.getItem('token');
-    
     try {
-      await axios.delete(`http://localhost:8080/pedidos/1`, {
-        headers: {  
-          'Authorization': `Bearer ${token}`,
-        }
-      }); 
-  
+      await api.delete(`pedidos/1`); 
       setItems([]);
     } catch (error) {
       console.error('Erro ao remover o item:', error);
@@ -86,9 +68,9 @@ const SidePanelBag = ({ isOpen, onClose }) => {
         {items.length > 0 ? (
           items.map((item) => (
             <CartItem 
-              key={item.id} 
+              key={item.id}
               item={item} 
-              onRemove={() => removeItem(item.id)}
+              onRemove={() => removeItem(null, item.id)}
             />
           ))
         ) : (

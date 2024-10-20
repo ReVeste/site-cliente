@@ -7,7 +7,6 @@ const Accessories = () => {
     <div>
       <Navbar />
       <ProductsAccessories />
-      <ProductsAccessories />
     </div>
   );
 };
