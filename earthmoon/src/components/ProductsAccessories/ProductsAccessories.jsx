@@ -4,10 +4,10 @@ import ProductCard from '../ProductCard/ProductCard';
 import './ProductsAccessories.css';
 
 const products = [
-  { name: 'Ropa 1', price: 199.90 },
-  { name: 'Ropa 2', price: 199.90 },
-  { name: 'Ropa 3', price: 199.90 },
-  { name: 'Ropa 4', price: 199.90 },
+  { nome: 'Ropa 1', preco: 199.90 },
+  { nome: 'Ropa 2', preco: 199.90 },
+  { nome: 'Ropa 3', preco: 199.90 },
+  { nome: 'Ropa 4', preco: 199.90 },
 ];
 
 const ProductsGrid = () => {
@@ -17,8 +17,8 @@ const ProductsGrid = () => {
         {products.map((product, index) => (
           <ProductCard 
             key={index} 
-            name={product.name} 
-            price={product.price} 
+            nome={product.nome} 
+            preco={product.preco} 
             installment={3} 
           />
         ))}

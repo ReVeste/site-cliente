@@ -24,7 +24,7 @@ const SidePanelLogin = ({ isOpen, onClose }) => {
     .then(response => {
       console.log('Login bem-sucedido:', response.data);
       localStorage.setItem('token', response.data.token);
-      navigate('/Configuracao')
+      navigate('/configuracao-cliente')
     })
     .catch(error => {
       console.error('Erro no login:', error.response.data);
