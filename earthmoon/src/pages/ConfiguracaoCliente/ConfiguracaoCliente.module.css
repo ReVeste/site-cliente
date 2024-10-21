@@ -1,13 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600&display=swap');
 
-body,
-html {
+body, html {
     margin: 0;
     padding: 0;
     height: 100%;
     background-color: #000;
     color: #fff;
     font-family: 'Plus Jakarta Sans', sans-serif;
+    overflow-x: hidden;
 }
 
 .configContainer {
@@ -21,6 +21,19 @@ html {
     align-items: center;
 }
 
+.detalhesEndereco {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.detalhesEndereco, .detalhesGeral, .detalhesCompras {
+    -webkit-user-drag: none;
+    user-drag: none;
+    user-select: none;
+}
+
 .opcaoConfig {
     position: fixed;
     left: 0;
@@ -29,12 +42,6 @@ html {
     display: flex;
     flex-direction: column;
     gap: 20px;
-
-    /* width: fit-content;
-    display: flex;
-    gap: 20px;
-    flex-direction: column;
-    justify-content: space-around; */
 }
 
 .opcaoConfig h1,
@@ -120,8 +127,6 @@ h2 {
     margin-bottom: 15px;
 }
 
-/* ... */
-
 .detalhesGeral h1,
 h2,
 .detalhesEndereco h1,
@@ -157,7 +162,6 @@ h2 {
     display: flex;
     gap: 20px;
     flex-wrap: wrap;
-    /* Permite quebrar linha quando o espaço acabar */
 }
 
 .enderecoInfo {
@@ -170,7 +174,6 @@ h2 {
 .comprasInfo {
     display: flex;
     width: fit-content;
-    /* gap: 100px; */
     flex-wrap: wrap;
     flex-direction: column;
 }
@@ -181,22 +184,21 @@ h2 {
 }
 
 .comprasInfo {
-    position: relative; /* Para posicionar o ícone em relação ao contêiner */
+    position: relative;
 }
 
 .iconeAvaliacao {
     cursor: pointer;
     position: absolute;
-    /* right: 1px; */
-    bottom: 325px;
-    left: 540px;
+    bottom: 220px;
+    left: 530px;
     width: 20%;
     height: 4vh;
 }
 
 .iconeSair {
     cursor: pointer;
-    margin-right: 95%;
+    margin-right: 90%;
     margin-bottom: 1%;
 }
 
@@ -204,7 +206,9 @@ h2 {
     position: fixed;
     bottom: 25px;
     right: 38px;
-    width: 30%;
+    width: auto;
+    padding: 0 10px;
+    z-index: 9999;
 }
 
 .popupContent {
@@ -214,36 +218,61 @@ h2 {
     justify-content: space-between;
     background-color: #fff;
     color: #000;
-    padding: 20px;
-    border-radius: 1px;
-    width: 420px;
-    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); */
-    height: 70vh;
+    padding: 10px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 300px;
 }
 
-.tituloAvaliacao{
-    margin-bottom: 0px;
-    /* color: aquamarine; */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.tituloAvaliacao h2 {
-    margin: 1px;
-}
-
-.tituloAvaliacao h3 {
-    margin: 0px;
+.tituloAvaliacao {
+    margin-bottom: 10px;
     text-align: center;
-    font-size: 17px;
+    width: 100%;
+    font-size: 10px;
+    color: #330505;
+}
+
+.tituloAvaliacao h2,
+.tituloAvaliacao h3 {
+    margin: 0;
+    padding: 0;
+    word-wrap: break-word;
+    text-align: center;
+}
+
+.popupContent p {
+    font-size: 13px;
+    line-height: 1.5;
 }
 
 .imgTeste {
-    width: 30%;
+    width: 50%;
+}
+
+.iconeSair {
+    cursor: pointer;
+    align-self: flex-end;
+    margin-bottom: 10px;
 }
 
 .popupContent textarea {
-    width: 100%; /* Largura total do campo de texto */
-    margin-bottom: 10px; /* Espaço abaixo do campo */
+    width: 90%;
+    margin-bottom: 10px;
+    resize: none;
+}
+
+.botaoEnviar {
+    background-color: #330505;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+.botaoEnviar:hover {
+    background-color: #662323;
 }

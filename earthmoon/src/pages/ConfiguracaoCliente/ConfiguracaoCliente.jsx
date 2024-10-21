@@ -2,7 +2,6 @@ import React from 'react';
 import Navbar from '../../components/Navbar/Navbar';
 import styles from './ConfiguracaoCliente.module.css';
 import home from '../../assets/Home.png';
-import seta from '../../assets/seta.png';
 import avaliacao from '../../assets/avaliacao.png';
 import sair from '../../assets/Close.png';
 import teste from '../../assets/teste.jpg';
@@ -58,7 +57,6 @@ const ConfiguracaoCliente = () => {
                 return (
                     <div className={styles["detalhesEndereco"]}>
                         <h2>Meus Endereços</h2>
-                        {/* Renderizando múltiplos endereços lado a lado */}
                         <div className={styles["enderecosContainer"]}>
                             {enderecos.map((endereco) => (
                                 <div key={endereco.id} className={styles["enderecoInfo"]}>
@@ -109,10 +107,10 @@ const ConfiguracaoCliente = () => {
 
                                     <p><strong>Pedido Vestido</strong><br />Data: 10/10/2024<br />Total: 100,00</p>
 
-                                    {/* <p>Deixe sua avaliação:</p> */}
-                                    <textarea rows="1" placeholder="Avaliar ..."></textarea>
-                                    <button onClick={togglePopup}>Enviar</button>
-                                    {/* <button onClick={togglePopup}>Fechar</button> */}
+                                    <textarea rows="1" placeholder="Avaliar:"></textarea>
+                                    <button className={styles["botaoEnviar"]} onClick={togglePopup}>
+                                        Enviar
+                                    </button>
                                 </div>
                             </div>
                         )}
@@ -163,12 +161,6 @@ const ConfiguracaoCliente = () => {
                             </li>
                         ))}
                     </ul>
-
-                    <a href="/" className={styles["opcaoVoltaConta"]}>
-                        <img src={seta} alt="seta" className={styles["seta"]} />
-                        Voltar para minha conta
-                    </a>
-
                 </div>
 
                 {renderContent()}
