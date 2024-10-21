@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import './SidePanelBag.css';
 import CartItem from './CartItem';
 import api from '../../Api';
@@ -51,7 +50,7 @@ const SidePanelBag = ({ isOpen, onClose }) => {
     };
 
     try {
-      const response = await axios.post('URL_DA_SUA_API/checkout', payload);
+      const response = await api.post('URL_DA_SUA_API/checkout', payload);
       console.log('Checkout successful:', response.data);
     } catch (error) {
       console.error('Erro ao realizar checkout:', error);

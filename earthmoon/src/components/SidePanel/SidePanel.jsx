@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useState } from 'react';
 import React from 'react';
-import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import './SidePanel.css';
+import api from '../../Api';
 
 const SidePanelLogin = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
@@ -17,7 +17,7 @@ const SidePanelLogin = ({ isOpen, onClose }) => {
   const handleLogin = (e) => {
     e.preventDefault();
 
-    axios.post('http://localhost:8080/usuarios/login', {
+    api.post('/usuarios/login', {
       email: email,
       senha: senha
     })
@@ -65,7 +65,7 @@ const SidePanelLogin = ({ isOpen, onClose }) => {
       </form>
       <div className="create-account">
         <span>Não tem uma conta? </span>
-        <Link to="/register" className="create-account-link" onClick={onClose}>
+        <Link to="/cadastro" className="create-account-link" onClick={onClose}>
           Criar conta
         </Link>
       </div>

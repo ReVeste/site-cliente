@@ -62,11 +62,11 @@ const Navbar = () => {
         </div>
         <ul className="nav-links">
           <li className="nav-item">
-            <Link to="/accessories" className="nav-link">Acessórios</Link>
+            <Link to="/acessorios" className="nav-link">Acessórios</Link>
             <span className="dropdown-icon">▼</span>
           </li>
           <li className="nav-item">
-            <Link to="/products" className="nav-link">Roupas</Link>
+            <Link to="/produtos" className="nav-link">Roupas</Link>
           </li>
         </ul>
         <div className="nav-icons">

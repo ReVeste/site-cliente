@@ -2,26 +2,46 @@ import React, { useEffect, useState } from 'react';
 import ProductCard from '../ProductCard/ProductCard';
 import api from '../../Api';
 import './ProductsGrid.css';
+import { useLocation } from 'react-router-dom';
 
 const ProductsGrid = () => {
   const [produtos, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showAll, setShowAll] = useState(false);
+  
+  const location = useLocation();
 
-  useEffect(() => {
-    api.get(`http://localhost:8080/produtos`)
+  const fetchProducts = (categoria = '') => {
+    const endpoint = categoria ? `/produtos/categoria?categoria=${categoria}` : '/produtos';
+    
+    api.get(endpoint)
       .then(response => {
         console.log(response.data);
         setProducts(response.data);
-        setLoading(false);
       })
-      .catch(err => {
+      .catch(() => {
         setError('Erro ao carregar os produtos');
+      })
+      .finally(() => {
         setLoading(false);
       });
-  }, []);
+  };
 
+  useEffect(() => {
+    switch (location.pathname) {
+      case '/acessorios':
+        fetchProducts('Acessórios');
+        break;
+      case '/produtos':
+        fetchProducts('Roupas');
+        break;
+      default:
+        fetchProducts(); // Sem categoria para a home page
+        break;
+    }
+  }, [location.pathname]);
+    
   if (loading) {
     return <p>Carregando produtos...</p>;
   }
