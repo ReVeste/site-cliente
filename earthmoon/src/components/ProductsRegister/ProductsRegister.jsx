@@ -7,13 +7,12 @@ const ProductsRegister = () => {
     brand: '',
     noBrand: false,
     description: '',
-    specification: '',
     features: '',
     category: '',
     images: []
   });
 
-  let dragIndex = null; // Variável global para armazenar o índice da imagem arrastada
+  let dragIndex = null;
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -25,16 +24,24 @@ const ProductsRegister = () => {
 
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
+    const newImages = [...formData.images, ...files];
+
+    // Verifique se o número total de imagens excede 6
+    if (newImages.length > 6) {
+      alert("Você pode adicionar no máximo 6 imagens.");
+      return;
+    }
+
     setFormData((prevData) => ({
       ...prevData,
-      images: [...prevData.images, ...files], // Adiciona as novas imagens ao estado
+      images: newImages,
     }));
   };
 
   const removeImage = (index) => {
     setFormData((prevData) => {
       const newImages = [...prevData.images];
-      newImages.splice(index, 1); // Remove a imagem do índice especificado
+      newImages.splice(index, 1);
       return { ...prevData, images: newImages };
     });
   };
@@ -42,8 +49,8 @@ const ProductsRegister = () => {
   const swapImages = (dragIndex, hoverIndex) => {
     setFormData((prevData) => {
       const newImages = [...prevData.images];
-      const [draggedImage] = newImages.splice(dragIndex, 1); // Remove a imagem arrastada
-      newImages.splice(hoverIndex, 0, draggedImage); // Insere a imagem arrastada na nova posição
+      const [draggedImage] = newImages.splice(dragIndex, 1);
+      newImages.splice(hoverIndex, 0, draggedImage);
       return { ...prevData, images: newImages };
     });
   };
@@ -54,24 +61,21 @@ const ProductsRegister = () => {
   };
 
   const handleDragStart = (e, index) => {
-    dragIndex = index; // Armazena o índice da imagem arrastada
+    dragIndex = index;
   };
 
   const handleDrop = (e, index) => {
-    e.preventDefault(); // Previne o comportamento padrão
-    if (dragIndex !== index) { // Evita swap se soltar na mesma posição
-      swapImages(dragIndex, index); // Troca as imagens
+    e.preventDefault();
+    if (dragIndex !== index) {
+      swapImages(dragIndex, index);
     }
   };
 
   return (
     <div className="product-register-container">
-
-      {/* ____________________ INÍCIO - SEÇÃO DE IMAGENS ____________________ */}
       <div className="image-upload-section">
         <h3>Imagens do Produto</h3>
 
-        {/* Painel da imagem principal */}
         <div className="main-image-box">
           <input 
             type="file" 
@@ -83,7 +87,7 @@ const ProductsRegister = () => {
           <label htmlFor="mainImageUpload" className="upload-label">
             {formData.images.length === 0 ? (
               <>
-                <span className="upload-icon">📷</span>
+                <span className="upload-icon"></span>
                 <span>Clique para adicionar a imagem principal</span>
               </>
             ) : (
@@ -99,29 +103,29 @@ const ProductsRegister = () => {
           )}
         </div>
 
-        {/* Container de imagens adicionais */}
         <div className="additional-images-container">
           {formData.images.slice(1).map((image, index) => (
             <div
               className="additional-image-box"
-              key={index + 1} // Corrigido para manter a indexação correta
+              key={index + 1}
               draggable
-              onDragStart={(e) => handleDragStart(e, index + 1)} // Passa o índice correto
-              onDragOver={(e) => e.preventDefault()} // Permite que o elemento seja soltado aqui
-              onDrop={(e) => handleDrop(e, index + 1)} // Passa o índice correto
+              onDragStart={(e) => handleDragStart(e, index + 1)}
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={(e) => handleDrop(e, index + 1)}
             >
               <img 
                 src={URL.createObjectURL(image)} 
-                alt={`Imagem Adicional ${index + 1}`} // Corrigido para refletir o índice correto
+                alt={`Imagem Adicional ${index + 1}`}
                 className="additional-image" 
               />
               <button className="remove-image" onClick={() => removeImage(index + 1)}>Remover</button>
             </div>
           ))}
-          {/* Botão para adicionar novas imagens adicionais */}
-          <div className="additional-upload" onClick={() => document.getElementById('additionalImageUpload').click()}>
-            <span className="upload-icon">+</span>
-          </div>
+          {formData.images.length < 6 && (
+            <div className="additional-upload" onClick={() => document.getElementById('additionalImageUpload').click()}>
+              <span className="upload-icon">+</span>
+            </div>
+          )}
           <input 
             type="file" 
             accept="image/*" 
@@ -132,7 +136,6 @@ const ProductsRegister = () => {
           />
         </div>
       </div>
-      {/* ____________________ FIM - SEÇÃO DE IMAGENS ____________________ */}
 
       <form className="product-form" onSubmit={handleSubmit}>
         <label htmlFor="title">TÍTULO DO PRODUTO</label>
@@ -152,7 +155,7 @@ const ProductsRegister = () => {
             type="text"
             name="brand"
             id="brand"
-            placeholder="Digite a marca"
+            placeholder={formData.noBrand ? "Sem marca" : "Digite a marca"}
             value={formData.noBrand ? '' : formData.brand}
             onChange={handleChange}
             disabled={formData.noBrand}
@@ -180,15 +183,6 @@ const ProductsRegister = () => {
 
         <hr />
 
-        <label htmlFor="specification">ESPECIFICAÇÕES</label>
-        <textarea
-          name="specification"
-          id="specification"
-          placeholder="Digite as especificações"
-          value={formData.specification}
-          onChange={handleChange}
-        />
-
         <label htmlFor="features">CARACTERÍSTICAS</label>
         <textarea
           name="features"
@@ -207,10 +201,8 @@ const ProductsRegister = () => {
           required
         >
           <option value="" disabled>Selecione a Categoria</option>
-          <option value="electronics">Eletrônicos</option>
-          <option value="furniture">Móveis</option>
-          <option value="clothing">Roupas</option>
-          {/* Adicione outras opções de categoria aqui */}
+          <option value="roupas">Roupas</option>
+          <option value="acessorios">Acessórios</option>
         </select>
 
         <button type="submit" className="submit-button">Salvar</button>
