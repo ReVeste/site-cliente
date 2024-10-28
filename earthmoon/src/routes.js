@@ -7,7 +7,6 @@ import ConfiguracaoCliente from './pages/ConfiguracaoCliente/ConfiguracaoCliente
 import Cadastro from './pages/Cadastro/Cadastro'; 
 import SidePanelLogin from './components/SidePanel/SidePanel';
 import CadastroProduto from './pages/CadastroProduto/CadastroProduto';
-import ProductView from './pages/VerProduto/VerProduto';
 import DetalheProdutoPage from './pages/DetalheProdutos/DetalheProdutos';
 
 const RoutesComponent = () => {
@@ -21,7 +20,6 @@ const RoutesComponent = () => {
         <Route path="/cadastro" element={<Cadastro />} />
         <Route path="/login" element={<SidePanelLogin isOpen={true} onClose={() => {}} />} /> 
         <Route path="/cadastro-produto" element={<CadastroProduto />} />
-        <Route path="/produto" element={<ProductView />} />
         <Route path="/detalhe-produto" element={<DetalheProdutoPage />} />
       </Routes>
     </Router>

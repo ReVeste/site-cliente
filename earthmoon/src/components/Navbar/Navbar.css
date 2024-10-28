@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600&display=swap');
 
 .navbar {
-    background-color: #3b0c0c;
+    background-color: #000000;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -25,7 +25,7 @@
 
 .nav-link:hover {
     text-decoration: none;
-    color: red;
+    color: rgb(103, 103, 103);
 }
 
 .logo {

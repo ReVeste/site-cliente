@@ -1,12 +1,14 @@
 import React from 'react';
 import Navbar from '../../components/Navbar/Navbar';
 import ProductsRegister from '../../components/ProductsRegister/ProductsRegister';
+import Footer from '../../Footer/Footer';
 
 const CadastroProduto = () => {
   return (
     <div>
       <Navbar />
       <ProductsRegister />
+      <Footer />
     </div>
   );
 };

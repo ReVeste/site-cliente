@@ -31,7 +31,7 @@ html, body {
 
 .form-toggle h2 {
     font-size: 18px;
-    color: #ffffff;
+    color: #000000;
     cursor: pointer;
     padding-bottom: 5px;
     margin: 0;
@@ -42,8 +42,8 @@ html, body {
 }
 
 .toggle-option.active {
-    color: #ffffff;
-    border-bottom: 2px solid #ffffff;
+    color: #000000;
+    border-bottom: 2px solid #2f2f2f;
     transition: all 0.3s ease;
 }
 
@@ -53,7 +53,7 @@ html, body {
     left: 0;
     width: 50%;
     height: 2px;
-    background-color: #ffffff;
+    background-color: #000000;
     transition: all 0.3s ease;
 }
 
@@ -67,7 +67,7 @@ html, body {
 
 .register-form h3 {
     font-size: 22px;
-    color: #ffffff;
+    color: #000000;
     margin-bottom: 20px;
 }
 
@@ -77,11 +77,11 @@ html, body {
     margin: 10px 0;
     border: 1px solid #333333;
     border-radius: 5px;
-    background-color: #ffffff;
+    background-color: #000000;
 }
 
 .register-form input::placeholder {
-    color: #3E4141;
+    color: #ffffff;
 }
 
 .password-container {

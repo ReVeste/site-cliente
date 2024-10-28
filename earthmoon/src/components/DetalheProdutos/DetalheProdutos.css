@@ -3,9 +3,22 @@ html, body {
   padding: 0;
   min-height: 100vh;
   font-family: Arial, sans-serif;
-  color: white;
   overflow-y: auto;
 }
+
+/* Adicione isto ao seu DetalheProdutos.css */
+.titulo-produto,
+.preco,
+.parcelamento,
+.detalhe-tamanho-cor,
+.meios-pagamento span,
+.detalhe-caracteristicas p,
+.detalhe-especificacoes,
+.toggle-option { /* Adicionando toggle-option aqui */
+  color: #000; /* Altera a cor do texto para preto */
+}
+
+/* Outras regras de estilo que você já tem... */
 
 .detalhe-produto {
   max-width: 1000px;
@@ -56,7 +69,6 @@ html, body {
 
 .titulo-produto {
   font-size: 1.5em;
-  color: #e0e0e0;
 }
 
 .preco-parcelamento {
@@ -69,17 +81,14 @@ html, body {
 .preco {
   font-weight: bold;
   font-size: 1.2em;
-  color: #fff;
 }
 
 .parcelamento {
-  color: #b3b3b3;
   font-size: 0.9em;
 }
 
 .detalhe-tamanho-cor {
   margin-top: 5px;
-  color: #b3b3b3;
 }
 
 .botao-comprar {
@@ -87,16 +96,16 @@ html, body {
   margin-top: 15px;
   padding: 10px 20px;
   font-size: 1em;
+  color: #000000;
   cursor: pointer;
-  background-color: #7a0c0c;
-  color: white;
+  background-color: #000000;
   border: none;
   border-radius: 5px;
   text-align: center;
 }
 
 .botao-comprar:hover {
-  background-color: #b51717;
+  background-color: #1a1a1a;
 }
 
 .meios-pagamento {
@@ -104,7 +113,6 @@ html, body {
   align-items: center;
   justify-content: center;
   margin-top: 15px;
-  color: #ccc;
   font-size: 0.9em;
 }
 
@@ -120,15 +128,9 @@ html, body {
 
 .detalhe-especificacoes,
 .detalhe-caracteristicas {
-  background-color: #333;
-  color: #ccc;
   padding: 20px;
   margin-bottom: 20px;
   border-radius: 5px;
-}
-
-h3 {
-  color: #fff;
 }
 
 .detalhe-toggle {
@@ -140,7 +142,6 @@ h3 {
 
 .toggle-option {
   font-size: 18px;
-  color: #ffffff;
   cursor: pointer;
   padding-bottom: 5px;
   margin: 0;
@@ -150,10 +151,11 @@ h3 {
 }
 
 .toggle-option.active {
-  color: #ffffff;
-  border-bottom: 2px solid #ffffff;
+  border-bottom: 2px solid #000000;
   transition: all 0.3s ease;
+  color: #202020; /* Cor cinza quando ativo */
 }
+
 
 .underline {
   position: absolute;
@@ -161,7 +163,7 @@ h3 {
   left: 0;
   width: 50%;
   height: 2px;
-  background-color: #ffffff;
+  background-color: #000000;
   transition: all 0.3s ease;
 }
 
@@ -175,8 +177,6 @@ h3 {
 
 .detalhe-especificacoes,
 .detalhe-caracteristicas {
-  background-color: #333;
-  color: #ccc;
   padding: 20px;
   margin-bottom: 20px;
   border-radius: 5px;

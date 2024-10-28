@@ -1,6 +1,5 @@
 body {
   margin: 0;
-  background-color: black;
   transition: overflow 0.3s ease, padding-right 0.3s ease; 
 }
 

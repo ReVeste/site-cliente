@@ -54,7 +54,7 @@
 }
 
 .login-button {
-    background-color: #330505;
+    background-color: #000000;
     color: white;
     padding: 15px;
     border: none;
@@ -65,7 +65,7 @@
 }
 
 .login-button:hover {
-    background-color: #7a1c1c;
+    background-color: #201f1f;
 }
 
 .create-account {
@@ -73,17 +73,17 @@
 }
 
 .create-account-link {
-    color: #871717;
+    color: #000000;
     text-decoration: none;
 }
 
 .terms {
     margin-top: 0px;
     font-size: 12px;
-    color: #3c3c3c;
+    color: #1a1a1a;
     text-align: center;
 }
 
 .create-account span {
-    color: #989898;
+    color: #404040;
 }

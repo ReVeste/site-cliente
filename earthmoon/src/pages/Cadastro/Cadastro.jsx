@@ -1,6 +1,7 @@
 import React from 'react';
 import Navbar from '../../components/Navbar/Navbar';
 import RegisterPage from '../../components/Cadastro/Cadastro';
+import Footer from '../../Footer/Footer';
 
 
 const Cadastro = () => {
@@ -8,6 +9,7 @@ const Cadastro = () => {
     <div>
       <Navbar />
       <RegisterPage />
+      <Footer />
     </div>
   );
 };

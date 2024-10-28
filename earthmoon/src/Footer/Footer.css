@@ -1,0 +1,64 @@
+.footer {
+    background-color: #000;
+    color: #fff;
+    padding: 30px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: left;
+}
+
+.footerLogo {
+    margin-right: 20px;
+}
+
+.footerLogo img {
+    width: 80px;
+    margin-bottom: 10px;
+}
+
+.footerContent {
+    display: flex;
+    justify-content: flex-start; 
+    gap: 50px;
+    width: 100%;
+    max-width: 600px;
+}
+
+.footerSection h4 {
+    font-size: 10px;
+    margin-bottom: 10px;
+}
+
+.footerSection ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footerSection li {
+    font-size: 9px;
+    margin-bottom: 5px;
+}
+
+.footerSection a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.footerPayments {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-left: auto;
+}
+
+.footerPayments img {
+    width: 20px;
+    height: 15px;
+    margin-right: 10px;
+}
+
+.footerPayments img:last-child {
+    margin-right: 0;
+}

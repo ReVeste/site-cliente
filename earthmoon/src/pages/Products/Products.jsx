@@ -1,13 +1,14 @@
 import React from 'react';
 import Navbar from '../../components/Navbar/Navbar'; 
-import Carrossel from '../../components/Carrossel/Carrossel';
 import ProductsGrid from '../../components/ProductsGrid/ProductsGrid';
+import Footer from '../../Footer/Footer';
 
 const Products = () => {
   return (
     <div>
       <Navbar />
       <ProductsGrid/>
+      <Footer />
     </div>
   );
 };

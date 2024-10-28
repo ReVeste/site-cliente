@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom'; // Importa o Link
 import './DetalheProdutos.css';
-import IconePagamento from '../../assets/userIcon.png';
+import IconePagamento from '../../assets/pagamento.png';
 import ImagemEspecificacoes from '../../assets/tabelaMedida.jpg';
 
 const DetalheProdutos = () => {
@@ -33,7 +34,9 @@ const DetalheProdutos = () => {
           <button className="botao-comprar">Comprar</button>
           <div className="meios-pagamento">
             <img src={IconePagamento} alt="Ícone de pagamento" className="icone-pagamento" />
-            <span>Meios de pagamento</span>
+            <Link to="/meios-de-pagamento" style={{ color: '#000', textDecoration: 'none' }}>
+              <span>Meios de pagamento</span>
+            </Link>
           </div>
         </div>
       </div>

@@ -4,8 +4,7 @@ body, html {
     margin: 0;
     padding: 0;
     height: 100%;
-    background-color: #000;
-    color: #fff;
+    color: #000000;
     font-family: 'Plus Jakarta Sans', sans-serif;
     overflow-x: hidden;
 }
@@ -68,12 +67,12 @@ h2 {
     margin: 12px 0;
     padding: 15px;
     cursor: pointer;
-    color: #ccc;
+    color: #000000;
     transition: background-color 0.3s ease;
 }
 
 .settingsMenu li:hover {
-    background-color: #1B1B1B;
+    background-color: #4f4f4f;
 }
 
 .breadcrumbs {
@@ -86,26 +85,15 @@ h2 {
 
 .breadcrumbs li a {
     text-decoration: none;
-    color: #ccc;
+    color: #000000;
     cursor: pointer;
     font-size: 12px;
 }
 
 .active {
-    background-color: #333;
+    background-color: #656565;
     border-radius: 5px;
-    color: #fff;
-}
-
-.opcaoVoltaConta {
-    display: flex;
-    margin-top: 20px;
-    text-decoration: none;
-    color: #bbb;
-    font-size: 16px;
-    gap: 10px;
-    justify-content: flex-start;
-    align-items: center;
+    color: #ffffff;
 }
 
 .detalhesGeral {
@@ -145,17 +133,17 @@ h2 {
 .deletarBtn {
     margin-right: 10px;
     padding: 8px 16px;
-    background-color: #000;
+    background-color: #1d1d1d;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    color: #fff;
+    color: #ffffff;
     transition: background-color 0.3s ease;
 }
 
 .editarBtn:hover,
 .deletarBtn:hover {
-    background-color: #2e2d2d;
+    background-color: #7e7e7e;
 }
 
 .enderecosContainer {
@@ -165,10 +153,11 @@ h2 {
 }
 
 .enderecoInfo {
-    background-color: #222;
+    background-color: #2f2f2f;
     padding: 20px;
     border-radius: 5px;
     width: 265px;
+    color: #FFF;
 }
 
 .comprasInfo {
@@ -216,8 +205,8 @@ h2 {
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    background-color: #fff;
-    color: #000;
+    background-color: #000000;
+    color: #ffffff;
     padding: 10px;
     border-radius: 8px;
     width: 90%;
@@ -229,7 +218,7 @@ h2 {
     text-align: center;
     width: 100%;
     font-size: 10px;
-    color: #330505;
+    color: #000000;
 }
 
 .tituloAvaliacao h2,
@@ -262,8 +251,8 @@ h2 {
 }
 
 .botaoEnviar {
-    background-color: #330505;
-    color: #fff;
+    background-color: #ffffff;
+    color: #000000;
     border: none;
     border-radius: 5px;
     padding: 8px 20px;

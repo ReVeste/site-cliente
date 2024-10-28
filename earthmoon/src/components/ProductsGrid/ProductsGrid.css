@@ -1,6 +1,5 @@
 .products-grid {
-  background-color: black;
-  color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
   padding: 20px;
   padding-top: 120px;
   text-align: center;
@@ -15,7 +14,7 @@
 
 .products-grid button {
   background-color: transparent;
-  color: white;
+  color: rgb(32, 32, 32);
   border: none;
   margin-bottom: 20px;
   cursor: pointer;
@@ -24,7 +23,7 @@
 }
 
 .products-grid button:hover {
-  color: #a21919;
+  color: #000000;
 }
 
 .grid-container {

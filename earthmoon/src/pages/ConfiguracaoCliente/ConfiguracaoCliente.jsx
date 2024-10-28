@@ -6,6 +6,7 @@ import avaliacao from '../../assets/avaliacao.png';
 import sair from '../../assets/Close.png';
 import teste from '../../assets/teste.jpg';
 import { useState } from 'react';
+import Footer from '../../Footer/Footer';
 
 
 const ConfiguracaoCliente = () => {
@@ -164,6 +165,8 @@ const ConfiguracaoCliente = () => {
                 </div>
 
                 {renderContent()}
+                <Footer />
+
 
             </div>
         </>

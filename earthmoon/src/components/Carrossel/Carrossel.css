@@ -1,5 +1,5 @@
 .carrossel {
-  color: white;
+  color: rgb(0, 0, 0);
   padding: 20px;
   display: flex;
   justify-content: center;
@@ -17,11 +17,11 @@
 }
 
 .review-container {
-  color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
   width: 300px;
   padding: 20px;
   text-align: center;
-  border: 1px solid #ccc;
+  border: 1px solid #000000;
   flex-shrink: 0;
   margin: 0 10px;
 }
@@ -38,7 +38,7 @@
 }
 
 .star {
-  color: red;
+  color: rgb(175, 161, 33);
 }
 
 .review-info h3 {
@@ -53,7 +53,7 @@
 .carrossel-control-left,
 .carrossel-control-right {
   background-color: transparent;
-  color: white;
+  color: rgb(0, 0, 0);
   font-size: 24px;
   cursor: pointer;
   border: none;
@@ -63,7 +63,7 @@
 
 .carrossel-control-left:hover,
 .carrossel-control-right:hover {
-  color: #ccc;
+  color: #000000;
 }
 
 .carrossel-control-left {
