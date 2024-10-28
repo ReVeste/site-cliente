@@ -63,7 +63,6 @@ const Navbar = () => {
         <ul className="nav-links">
           <li className="nav-item">
             <Link to="/acessorios" className="nav-link">Acessórios</Link>
-            <span className="dropdown-icon">▼</span>
           </li>
           <li className="nav-item">
             <Link to="/produtos" className="nav-link">Roupas</Link>

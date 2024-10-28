@@ -26,9 +26,9 @@ const ProductsRegister = () => {
     const files = Array.from(e.target.files);
     const newImages = [...formData.images, ...files];
 
-    // Verifique se o número total de imagens excede 6
-    if (newImages.length > 6) {
-      alert("Você pode adicionar no máximo 6 imagens.");
+    // Verifique se o número total de imagens excede 4
+    if (newImages.length > 4) {
+      alert("Você pode adicionar no máximo 4 imagens.");
       return;
     }
 
@@ -121,7 +121,7 @@ const ProductsRegister = () => {
               <button className="remove-image" onClick={() => removeImage(index + 1)}>Remover</button>
             </div>
           ))}
-          {formData.images.length < 6 && (
+          {formData.images.length < 4 && (
             <div className="additional-upload" onClick={() => document.getElementById('additionalImageUpload').click()}>
               <span className="upload-icon">+</span>
             </div>
