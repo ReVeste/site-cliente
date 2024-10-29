@@ -27,6 +27,7 @@ const SidePanelLogin = ({ isOpen, onClose }) => {
       
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('userId', response.data.id);
 
       onClose();
       navigate('/configuracao-cliente');

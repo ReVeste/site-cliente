@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom'; // Importa o Link
 import './DetalheProdutos.css';
 import IconePagamento from '../../assets/pagamento.png';
 import ImagemEspecificacoes from '../../assets/tabelaMedida.jpg';
+import api from '../../Api';
 
 const DetalheProdutos = () => {
   const [isEspecificacoes, setIsEspecificacoes] = useState(true);
@@ -11,29 +13,59 @@ const DetalheProdutos = () => {
     setIsEspecificacoes(detalhe === 'especificacoes');
   };
 
+  const { id } = useParams();
+  const [produto, setProduto] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Função para buscar o produto pelo ID
+    const fetchProduto = async () => {
+      try {
+        const response = await api.get(`/produtos/${id}`);
+        console.log(response.data);
+        setProduto(response.data);
+      } catch (error) {
+        console.error("Erro ao buscar produto:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProduto();
+  }, [id]);
+
+  if (loading) return <p>Carregando...</p>;
+  if (!produto) return <p>Produto não encontrado.</p>;
+
   return (
     <div className="detalhe-produto">
       <div className="topo">
         <div className="galeria">
           <div className="imagem-principal">
-            <img src="imagem1.jpg" alt="Imagem Principal" />
+            <img src={produto.imagens[0]} alt="Imagem Principal" />
           </div>
           <div className="coluna-imagens">
-            <img src="imagem2.jpg" alt="Imagem Secundária 1" />
-            <img src="imagem3.jpg" alt="Imagem Secundária 2" />
-            <img src="imagem4.jpg" alt="Imagem Secundária 3" />
+          {produto.imagens && produto.imagens.length > 1 && (
+            <img src={produto.imagens[1]} alt="Imagem Secundária 1" />
+          )}
+          {produto.imagens && produto.imagens.length > 2 && (
+            <img src={produto.imagens[2]} alt="Imagem Secundária 2" />
+          )}
+          {produto.imagens && produto.imagens.length > 3 && (
+            <img src={produto.imagens[3]} alt="Imagem Secundária 3" />
+          )}
           </div>
         </div>
         <div className="detalhe-info">
-          <h2 className="titulo-produto">Manga Longa Oversized Empalador</h2>
+          <h2 className="titulo-produto">{produto.nome}</h2>
           <div className="preco-parcelamento">
-            <p className="preco">R$219,90</p>
-            <p className="parcelamento">3x de R$73,30 sem juros</p>
+            <p className="preco">R$ {produto.preco.toFixed(2)}</p>
+            <p className="parcelamento">3x de R${produto.preco.toFixed(2)} sem juros</p>
           </div>
-          <p className="detalhe-tamanho-cor">Tamanho G, Cor: Preta</p>
+          <p className="detalhe-tamanho-cor">Tamanho {produto.tamanho}</p>
           <button className="botao-comprar">Comprar</button>
           <div className="meios-pagamento">
-            <img src={IconePagamento} alt="Ícone de pagamento" className="icone-pagamento" />
+            <img src={IconePagamento} alt="Ícone de pagamento" className="icone-pagamento"/>
             <Link to="/meios-de-pagamento" style={{ color: '#000', textDecoration: 'none' }}>
               <span>Meios de pagamento</span>
             </Link>
@@ -64,7 +96,7 @@ const DetalheProdutos = () => {
           </div>
         ) : (
           <div className="detalhe-caracteristicas">
-            <p>Descrição das características do produto.</p>
+            <p>{produto.descricao}</p>
           </div>
         )}
       </div>

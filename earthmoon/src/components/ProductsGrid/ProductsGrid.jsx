@@ -37,7 +37,7 @@ const ProductsGrid = () => {
         fetchProducts('Roupas');
         break;
       default:
-        fetchProducts(); // Sem categoria para a home page
+        fetchProducts();
         break;
     }
   }, [location.pathname]);
@@ -59,14 +59,13 @@ const ProductsGrid = () => {
         <button onClick={() => setShowAll(true)}>Ver mais</button>
       )}
       <div className="grid-container">
-        {produtosExibidos.map((produto) => (
-          <div key={produto.id}>
-            <ProductCard 
-              nome={produto.nome} 
-              preco={produto.preco} 
-              parcelas={3} />
-          </div>
-        ))}
+      {Array.isArray(produtosExibidos) && produtosExibidos.map((produto) => (
+  <div key={produto.id}>
+    <ProductCard 
+      produto={produto} 
+    />
+  </div>
+))}
       </div>    
     </div>
   );

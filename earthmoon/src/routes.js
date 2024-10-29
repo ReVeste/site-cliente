@@ -17,10 +17,10 @@ const RoutesComponent = () => {
       <Route path="/cadastro" element={<Cadastro />} />
       <Route path="/login" element={<SidePanelLogin isOpen={true} onClose={() => {}} />} />
       <Route path="/cadastro-produto" element={<CadastroProduto />} />
-      <Route path="/detalhe-produto" element={<DetalheProdutoPage />} />
+      <Route path="/produto/:id" element={<DetalheProdutoPage />} />
       <Route 
         path="/configuracao-cliente" 
-        element={isLoggedIn ? <ConfiguracaoCliente /> : <Navigate to="/cadastro" />} // Updated this
+        element={isLoggedIn ? <ConfiguracaoCliente /> : <Navigate to="/cadastro" />}
       />
       <Route path="/acessorios" element={<Products />} />
       <Route path="/produtos" element={<Products />} />

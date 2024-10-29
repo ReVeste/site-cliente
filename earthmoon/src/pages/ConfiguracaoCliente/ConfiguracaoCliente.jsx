@@ -11,6 +11,8 @@ const ConfiguracaoCliente = () => {
     const navigate = useNavigate();
     const [itemSelecionado, setItemSelecionado] = useState('Geral');
     const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const [Enderecos, setEnderecos] = useState([]);
+    // const []
 
     const itemClicado = (item) => {
         setItemSelecionado(item);

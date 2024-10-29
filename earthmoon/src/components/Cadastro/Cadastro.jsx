@@ -119,11 +119,12 @@ const RegisterPage = () => {
       console.log('Login bem-sucedido:', response.data);
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('userId', response.data.id);
       setPopupVisible(true);
       setTimeout(() => {
         setPopupVisible(false);
         navigate('/configuracao-cliente');
-      }, 5000);
+      }, 2000);
     })
     .catch(error => {
       console.error('Erro no login:', error.response.data);

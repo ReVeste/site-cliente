@@ -1,17 +1,25 @@
 import React from 'react';
 import './ProductCard.css';
 import testeImage from '../../assets/teste.jpg';
+import { useNavigate } from 'react-router-dom';
 
-const ProductCard = ({ nome, preco, parcelas, image }) => {
+const ProductCard = ({ produto }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/produto/${produto.id}`);
+  };
+
+
   return (
     <div className="product-card">
       <div className="product-image">
-        <img src={testeImage} alt="Produto" /> 
+        <img src={produto.imagens[0]} alt="Produto" style={{cursor: 'pointer'}} onClick={handleClick} /> 
       </div>
       <div className="product-info">
-        <h3>{nome}</h3>
-        <p>{`R$${preco.toFixed(2)}`}</p>
-        <p>{`${parcelas}x de R$${(preco / 3).toFixed(2)} sem juros`}</p>
+        <h3>{produto.nome}</h3>
+        <p>{`R$${produto.preco.toFixed(2)}`}</p>
+        <p>{`${produto.parcelas}x de R$${(produto.preco / 3).toFixed(2)} sem juros`}</p>
       </div>
     </div>
   );
