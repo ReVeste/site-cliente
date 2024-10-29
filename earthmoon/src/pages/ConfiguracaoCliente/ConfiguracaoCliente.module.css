@@ -1,15 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600&display=swap');
 
-body, html {
+body{
     margin: 0;
     padding: 0;
-    height: 100%;
     color: #000000;
     font-family: 'Plus Jakarta Sans', sans-serif;
-    overflow-x: hidden;
 }
 
 .configContainer {
+    padding-top: 30px;
     margin-left: 15%;
     width: 100%;
     display: flex;
@@ -264,4 +263,19 @@ h2 {
 
 .botaoEnviar:hover {
     background-color: #662323;
+}
+
+.logoutBtn {
+    padding: 10px 20px;
+    background-color: #1d1d1d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+}
+
+.logoutBtn:hover {
+    background-color: #7e7e7e;
 }

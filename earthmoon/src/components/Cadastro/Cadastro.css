@@ -1,5 +1,3 @@
-/* Cadastro.css */
-
 html, body {
     margin: 0;
     padding: 0;
@@ -74,6 +72,7 @@ html, body {
 .register-form input {
     width: 100%;
     padding: 10px;
+    color:#ffffff;
     margin: 10px 0;
     border: 1px solid #333333;
     border-radius: 5px;
@@ -152,3 +151,69 @@ html, body {
     color: #ffffff;
     border-bottom: 2px solid #ffffff;
 }
+
+.popup-message {
+    background-color: #000000;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 10px;
+    text-align: center;
+}
+  
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000; 
+}
+
+.popup-message {
+    position: fixed;
+    top: 20px; 
+    right: 20px;
+    background-color: #005800;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1001; 
+}
+
+.error-message {
+    color: rgb(116, 0, 0);
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+    text-align: center;
+}
+
+.password-strength-container {
+    padding-left: 15px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .password-strength-meter {
+    height: 5px;
+    transition: width 0.5s;
+  }
+  .password-strength {
+    color: black;
+}
+
+.password-strength.Forte {
+    color: green;
+}
+
+.password-strength.Moderada {
+    color: yellow;
+}
+
+.password-strength.Fraca {
+    color: red; 
+}
+  

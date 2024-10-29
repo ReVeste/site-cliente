@@ -1,26 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '../../components/Navbar/Navbar';
 import styles from './ConfiguracaoCliente.module.css';
 import home from '../../assets/Home.png';
 import avaliacao from '../../assets/avaliacao.png';
 import sair from '../../assets/Close.png';
 import teste from '../../assets/teste.jpg';
-import { useState } from 'react';
-import Footer from '../../Footer/Footer';
-
+import { useNavigate } from 'react-router-dom';
 
 const ConfiguracaoCliente = () => {
-
+    const navigate = useNavigate();
     const [itemSelecionado, setItemSelecionado] = useState('Geral');
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
 
     const itemClicado = (item) => {
         setItemSelecionado(item);
     };
 
-    const [popupVisible, setPopupVisible] = useState(false);
-
     const togglePopup = () => {
-        setPopupVisible(!popupVisible);
+        setIsPopupOpen(prev => !prev);
+    };
+
+    useEffect(() => {
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        console.log("Is Logged In:", isLoggedIn);
+        if (!isLoggedIn) {
+            navigate('/cadastro');
+        }
+    }, [navigate]);
+
+    const handleLogout = () => {
+        localStorage.removeItem('isLoggedIn');
+        navigate('/');
     };
 
     const enderecos = [
@@ -36,13 +46,10 @@ const ConfiguracaoCliente = () => {
             local: 'Av. Brasil, 1500, Sala 20',
             cidade: 'Rio de Janeiro - RJ'
         },
-
     ];
 
     const renderContent = () => {
-
         switch (itemSelecionado) {
-
             case 'Geral':
                 return (
                     <div className={styles["detalhesGeral"]}>
@@ -89,7 +96,7 @@ const ConfiguracaoCliente = () => {
                             />
                         </div>
 
-                        {popupVisible && (
+                        {isPopupOpen && (
                             <div className={styles["popupContainer"]}>
                                 <div className={styles["popupContent"]}>
                                     <img
@@ -98,16 +105,12 @@ const ConfiguracaoCliente = () => {
                                         className={styles["iconeSair"]}
                                         onClick={togglePopup}
                                     />
-
                                     <div className={styles["tituloAvaliacao"]}>
                                         <h2>Avalie sua compra conosco!</h2>
                                         <h3>é rapidinho, e nos ajuda a melhorar a plataforma!</h3>
                                     </div>
-
                                     <img src={teste} alt="Produto Comprado Imagem" className={styles["imgTeste"]} />
-
                                     <p><strong>Pedido Vestido</strong><br />Data: 10/10/2024<br />Total: 100,00</p>
-
                                     <textarea rows="1" placeholder="Avaliar:"></textarea>
                                     <button className={styles["botaoEnviar"]} onClick={togglePopup}>
                                         Enviar
@@ -115,25 +118,19 @@ const ConfiguracaoCliente = () => {
                                 </div>
                             </div>
                         )}
-
                     </div>
                 );
 
-
             default:
                 return null;
-
         }
     };
 
     return (
         <>
             <Navbar />
-
             <div className={styles["configContainer"]}>
-
                 <div className={styles["opcaoConfig"]}>
-
                     <div className={styles["tituloPagina"]}>
                         <ul className={styles["breadcrumbs"]}>
                             <li>
@@ -147,10 +144,8 @@ const ConfiguracaoCliente = () => {
                                 </a>
                             </li>
                         </ul>
-
                         <h1>Minhas configurações</h1>
                     </div>
-
                     <ul className={styles["settingsMenu"]}>
                         {['Geral', 'Meus Endereços', 'Minhas Compras'].map((item) => (
                             <li
@@ -162,15 +157,15 @@ const ConfiguracaoCliente = () => {
                             </li>
                         ))}
                     </ul>
+                    <button onClick={handleLogout} className={styles["logoutBtn"]}>
+                        Sair da conta
+                    </button>
                 </div>
-
                 {renderContent()}
-                <Footer />
-
-
             </div>
         </>
     );
+    
 }
 
 export default ConfiguracaoCliente;

@@ -7,9 +7,10 @@ const ProductsRegister = () => {
     brand: '',
     noBrand: false,
     description: '',
-    features: '',
     category: '',
-    images: []
+    images: [],
+    price: '',
+    stock: ''
   });
 
   let dragIndex = null;
@@ -22,11 +23,24 @@ const ProductsRegister = () => {
     });
   };
 
+  const formatPrice = (value) => {
+    value = value.replace(/\D/g, ''); // Remove caracteres não numéricos
+    const formattedValue = parseFloat(value / 100)
+      .toFixed(2) // Define duas casas decimais
+      .replace(/\B(?=(\d{3})+(?!\d))/g, '.') // Adiciona pontos como separadores de milhar
+      .replace('.', ','); // Substitui o ponto por vírgula para o decimal
+    return formattedValue;
+  };
+
+  const handlePriceChange = (e) => {
+    const formattedPrice = formatPrice(e.target.value);
+    setFormData({ ...formData, price: formattedPrice });
+  };
+
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
     const newImages = [...formData.images, ...files];
 
-    // Verifique se o número total de imagens excede 4
     if (newImages.length > 4) {
       alert("Você pode adicionar no máximo 4 imagens.");
       return;
@@ -181,15 +195,15 @@ const ProductsRegister = () => {
           required
         />
 
-        <hr />
-
-        <label htmlFor="features">CARACTERÍSTICAS</label>
-        <textarea
-          name="features"
-          id="features"
-          placeholder="Digite as características"
-          value={formData.features}
-          onChange={handleChange}
+        <label htmlFor="price">PREÇO</label>
+        <input
+          type="text"
+          name="price"
+          id="price"
+          placeholder="Digite o preço do produto"
+          value={formData.price}
+          onChange={handlePriceChange}
+          required
         />
 
         <label htmlFor="category">CATEGORIA</label>
@@ -204,6 +218,21 @@ const ProductsRegister = () => {
           <option value="roupas">Roupas</option>
           <option value="acessorios">Acessórios</option>
         </select>
+
+        {formData.category === 'acessorios' && (
+          <>
+            <label htmlFor="stock">ESTOQUE</label>
+            <input
+              type="number"
+              name="stock"
+              id="stock"
+              placeholder="Quantidade no estoque"
+              value={formData.stock}
+              onChange={handleChange}
+              required
+            />
+          </>
+        )}
 
         <button type="submit" className="submit-button">Salvar</button>
       </form>

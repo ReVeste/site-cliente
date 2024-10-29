@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css';
-
 import SidePanelLogin from '../SidePanel/SidePanel'; 
 import SidePanelBag from '../SidePanel/SidePanelBag';
 import userIcon from '../../assets/userIcon.png';
 import cartIcon from '../../assets/sacolaIcon.png';
 import logo from '../../assets/icon.png';
+import api from '../../Api';
 
 const Navbar = () => {
   const [isLoginPanelOpen, setIsLoginPanelOpen] = useState(false);
   const [isBagPanelOpen, setIsBagPanelOpen] = useState(false);
-  const [cartItems, setCartItems] = useState([
-    { name: "Ropa Verde Neon", price: 13, color: "#8BC34A", onRemove: (index) => handleRemoveItem(index) },
-  ]);
+  const [cartItems, setCartItems] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => localStorage.getItem('isLoggedIn') === 'true');
+  const navigate = useNavigate();
 
   const toggleLoginPanel = () => {
     setIsLoginPanelOpen(!isLoginPanelOpen);
@@ -28,6 +28,24 @@ const Navbar = () => {
     setCartItems(newItems);
   };
 
+  const handleLogin = async (email, senha) => {
+    try {
+      const response = await api.post('/usuarios/login', {
+        email: email,
+        senha: senha,
+      });
+      console.log('Login bem-sucedido:', response.data);
+      localStorage.setItem('token', response.data.token);
+      setIsLoggedIn(true);
+      localStorage.setItem('isLoggedIn', 'true'); // Atualiza o localStorage para o login
+      setIsLoginPanelOpen(false);
+      navigate('/configuracao-cliente'); // Redireciona para a página de configuração do cliente
+    } catch (error) {
+      console.error('Erro no login:', error.response.data);
+      // Aqui você pode querer exibir uma mensagem de erro ou lidar com o erro de outra forma
+    }
+  };
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (isLoginPanelOpen && !event.target.closest('.side-panel')) {
@@ -37,7 +55,6 @@ const Navbar = () => {
         setIsBagPanelOpen(false);
       }
     };
-    
 
     if (isLoginPanelOpen || isBagPanelOpen) {
       document.body.classList.add('no-scroll');
@@ -86,9 +103,17 @@ const Navbar = () => {
 
       {isLoginPanelOpen && <div className="backdrop" onClick={toggleLoginPanel} />}
       {isBagPanelOpen && <div className="backdrop" onClick={toggleBagPanel} />}
-
-      <SidePanelLogin isOpen={isLoginPanelOpen} onClose={toggleLoginPanel} />
-      <SidePanelBag isOpen={isBagPanelOpen} onClose={toggleBagPanel} items={cartItems} />
+      <SidePanelLogin 
+        isOpen={isLoginPanelOpen} 
+        onClose={toggleLoginPanel} 
+        onLogin={handleLogin} // Passa a função de login para o SidePanelLogin
+      />
+      <SidePanelBag 
+        isOpen={isBagPanelOpen} 
+        onClose={toggleBagPanel} 
+        items={cartItems} 
+        onRemoveItem={handleRemoveItem} 
+      />
     </div>
   );
 };

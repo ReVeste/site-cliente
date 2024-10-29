@@ -13,7 +13,7 @@ html, body {
     padding: 40px;
     height: auto;
     padding: 100px;
-    padding-top: 115px;
+    padding-top: 200px;
 }
 
 .image-upload-section {
@@ -103,14 +103,14 @@ html, body {
 }
 
 .additional-upload {
-    display: flex; /* Torna o elemento um contêiner flex */
-    align-items: center; /* Centraliza verticalmente */
-    justify-content: center; /* Centraliza horizontalmente */
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     width: 100px;
     height: 100px;
     border: 2px solid #000000;
-    margin: auto; /* Centraliza o elemento dentro do contêiner pai */
+    margin: auto;
     font-size: 48px;
     color: white;
     background-color: rgb(255, 255, 255);
@@ -123,18 +123,6 @@ html, body {
     align-items: center;
     height: 100%;
     margin-bottom: 10px;
-}
-
-.swap-image {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    background-color: #444;
-    color: rgb(0, 0, 0);
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-    font-size: 12px;
 }
 
 .product-form {

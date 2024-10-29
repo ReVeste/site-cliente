@@ -1,36 +1,51 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-import { useState } from 'react';
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './SidePanel.css';
 import api from '../../Api';
 
 const SidePanelLogin = ({ isOpen, onClose }) => {
-  if (!isOpen) return null;
-
   const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
-    api.post('/usuarios/login', {
-      email: email,
-      senha: senha
-    })
-    .then(response => {
+    if (!validateEmail(email) || !validatePassword(senha)) {
+      setErrorMessage('Por favor, insira credenciais válidas.');
+      return;
+    }
+
+    try {
+      const response = await api.post('/usuarios/login', {
+        email,
+        senha,
+      });
       console.log('Login bem-sucedido:', response.data);
+      
       localStorage.setItem('token', response.data.token);
-      navigate('/configuracao-cliente')
-    })
-    .catch(error => {
+      localStorage.setItem('isLoggedIn', 'true');
+
+      onClose();
+      navigate('/configuracao-cliente');
+    } catch (error) {
       console.error('Erro no login:', error.response.data);
       setErrorMessage('Credenciais inválidas. Tente novamente.');
-    });
+    }
   };
+
+  const validateEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
+  const validatePassword = (password) => {
+    return password.length >= 5;
+  };
+
+  if (!isOpen) return null;
 
   return (
     <div className="side-panel">
