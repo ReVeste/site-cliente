@@ -179,7 +179,6 @@ h2 {
     cursor: pointer;
     position: absolute;
     bottom: 220px;
-    left: 530px;
     width: 20%;
     height: 4vh;
 }
@@ -192,12 +191,14 @@ h2 {
 
 .popupContainer {
     position: fixed;
-    bottom: 25px;
-    right: 38px;
-    width: auto;
-    padding: 0 10px;
+    bottom: 20px;
+    right: 20px;
     z-index: 9999;
+    background-color: rgba(255, 255, 255, 0.9); /* Teste para maior contraste */
+    width: 300px;
+    padding: 20px;
 }
+
 
 .popupContent {
     display: flex;

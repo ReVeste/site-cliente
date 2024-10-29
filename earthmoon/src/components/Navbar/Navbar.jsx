@@ -37,12 +37,11 @@ const Navbar = () => {
       console.log('Login bem-sucedido:', response.data);
       localStorage.setItem('token', response.data.token);
       setIsLoggedIn(true);
-      localStorage.setItem('isLoggedIn', 'true'); // Atualiza o localStorage para o login
+      localStorage.setItem('isLoggedIn', 'true');
       setIsLoginPanelOpen(false);
-      navigate('/configuracao-cliente'); // Redireciona para a página de configuração do cliente
+      navigate('/configuracao-cliente');
     } catch (error) {
       console.error('Erro no login:', error.response.data);
-      // Aqui você pode querer exibir uma mensagem de erro ou lidar com o erro de outra forma
     }
   };
 
@@ -78,11 +77,11 @@ const Navbar = () => {
           </Link>
         </div>
         <ul className="nav-links">
-          <li className="nav-item">
-            <Link to="/acessorios" className="nav-link">Acessórios</Link>
+        <li className="nav-item">
+            <Link to="/produtos" className="nav-link">Roupas</Link>
           </li>
           <li className="nav-item">
-            <Link to="/produtos" className="nav-link">Roupas</Link>
+            <Link to="/acessorios" className="nav-link">Acessórios</Link>
           </li>
         </ul>
         <div className="nav-icons">
