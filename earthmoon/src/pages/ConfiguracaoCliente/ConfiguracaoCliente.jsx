@@ -6,16 +6,53 @@ import avaliacao from '../../assets/avaliacao.png';
 import sair from '../../assets/Close.png';
 import teste from '../../assets/teste.jpg';
 import { useNavigate } from 'react-router-dom';
+import api from '../../Api';
 
 const ConfiguracaoCliente = () => {
     const navigate = useNavigate();
     const [itemSelecionado, setItemSelecionado] = useState('Geral');
     const [isPopupOpen, setIsPopupOpen] = useState(false);
-    const [Enderecos, setEnderecos] = useState([]);
-    // const []
+    const [enderecos, setEnderecos] = useState([]);
+    const [pedidos, setPedidos] = useState([]);
+    const idUsuario = localStorage.getItem('userId');
+
 
     const itemClicado = (item) => {
         setItemSelecionado(item);
+
+        if (item === 'Meus Endereços') fetchEnderecos();
+        if (item === 'Minhas Compras') fetchCompras();
+    };
+
+    const fetchEnderecos = async () => {
+        try {
+            const response = await api.get(`/enderecos/usuario/${idUsuario}`);
+            setEnderecos(response.data);
+        } catch (error) {
+            console.error('Erro ao buscar itens:', error);
+        }
+    };
+
+    const removerEndereco = async (idEndereco) => {
+        try {
+            api.delete(`/enderecos/${idEndereco}`);
+            setEnderecos(enderecos.filter((endereco) => endereco.id !== idEndereco));
+        } catch (error) {
+            console.error('Erro ao buscar itens:', error);
+        }
+    };
+
+    const editarEndereco = async (idEndereco) => {
+    };
+
+    const fetchCompras = async () => {
+        try {
+            const response = await api.get(`/pedidos/status?status=CONCLUIDO`);
+            console.log('Pedidos:', response.data);
+            setPedidos(response.data);
+        } catch (error) {
+            console.error('Erro ao buscar itens:', error);
+        }
     };
 
     const togglePopup = () => {
@@ -24,7 +61,6 @@ const ConfiguracaoCliente = () => {
 
     useEffect(() => {
         const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-        console.log("Is Logged In:", isLoggedIn);
         if (!isLoggedIn) {
             navigate('/cadastro');
         }
@@ -35,21 +71,6 @@ const ConfiguracaoCliente = () => {
         navigate('/');
     };
 
-    const enderecos = [
-        {
-            id: 1,
-            nome: 'Casa',
-            local: 'Rua Exemplo 123, Apto 45, Bloco B',
-            cidade: 'São Paulo - SP'
-        },
-        {
-            id: 2,
-            nome: 'Escritório',
-            local: 'Av. Brasil, 1500, Sala 20',
-            cidade: 'Rio de Janeiro - RJ'
-        },
-    ];
-
     const renderContent = () => {
         switch (itemSelecionado) {
             case 'Geral':
@@ -57,8 +78,8 @@ const ConfiguracaoCliente = () => {
                     <div className={styles["detalhesGeral"]}>
                         <h2>Informações da conta</h2>
                         <div className={styles["contaInfo"]}>
-                            <p><strong>Nome</strong><br />Fabiana Nobre Barreto</p>
-                            <p><strong>Endereço de e-mail</strong><br />barretos_sp@gmail.com</p>
+                            <p><strong>Nome</strong><br />{localStorage.getItem('userName')}</p>
+                            <p><strong>Endereço de e-mail</strong><br />{localStorage.getItem('userEmail')}</p>
                         </div>
                     </div>
                 );
@@ -68,28 +89,42 @@ const ConfiguracaoCliente = () => {
                     <div className={styles["detalhesEndereco"]}>
                         <h2>Meus Endereços</h2>
                         <div className={styles["enderecosContainer"]}>
-                            {enderecos.map((endereco) => (
-                                <div key={endereco.id} className={styles["enderecoInfo"]}>
-                                    <p><strong>Nome</strong><br />{endereco.nome}</p>
-                                    <p><strong>Local</strong><br />{endereco.local}</p>
-                                    <p><strong>Cidade</strong><br />{endereco.cidade}</p>
-                                    <div className={styles["acoesEndereco"]}>
-                                        <button className={styles["editarBtn"]}>Editar</button>
-                                        <button className={styles["deletarBtn"]}>Deletar</button>
+                            {Array.isArray(enderecos) && enderecos.length > 0 ? (
+                                enderecos.map((endereco) => (
+                                    <div key={endereco.id} className={styles["enderecoInfo"]}>
+                                        <p><strong>Nome</strong><br />{endereco.apelido}</p>
+                                        <p><strong>Local</strong><br />{endereco.rua}</p>
+                                        <p><strong>Cidade</strong><br />{endereco.cidade}</p>
+                                        <div className={styles["acoesEndereco"]}>
+                                            <button onClick={() => editarEndereco(endereco.id)} className={styles["editarBtn"]}>Editar</button>
+                                            <button onClick={() => removerEndereco(endereco.id)} className={styles["deletarBtn"]}>Deletar</button>
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                ))
+                            ) : (
+                                <p>Nenhum endereço encontrado.</p>
+                            )}
                         </div>
                     </div>
                 );
+
 
             case 'Minhas Compras':
                 return (
                     <div className={styles["detalhesCompras"]}>
                         <h2>Histórico</h2>
                         <div className={styles["comprasInfo"]}>
-                            <p><strong>Pedido Vestido</strong><br />Data: 05/09/2024<br />Total: 89,50</p>
-                            <p><strong>Pedido Saia</strong><br />Data: 10/10/2024<br />Total: 100,00</p>
+                            {Array.isArray(pedidos) && pedidos.length > 0 ? (
+                                pedidos.map((pedido, index) => (
+                                    <p key={index}>
+                                        <strong>Pedido {index + 1}</strong><br />
+                                        Data: {new Date(pedido.dataHora).toLocaleDateString("pt-BR")}<br />
+                                        Total: R$ {pedido.valorTotal.toFixed(2)}
+                                    </p>
+                                ))
+                            ) : (
+                                <p>Nenhum pedido encontrado.</p>
+                            )}
                             <img
                                 src={avaliacao}
                                 alt="Avaliar"
@@ -97,6 +132,7 @@ const ConfiguracaoCliente = () => {
                                 onClick={togglePopup}
                             />
                         </div>
+
 
                         {isPopupOpen && (
                             <div className={styles["popupContainer"]}>
@@ -167,7 +203,7 @@ const ConfiguracaoCliente = () => {
             </div>
         </>
     );
-    
+
 }
 
 export default ConfiguracaoCliente;

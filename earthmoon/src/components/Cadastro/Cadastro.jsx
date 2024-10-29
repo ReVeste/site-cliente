@@ -144,11 +144,12 @@ const RegisterPage = () => {
       senha: formData.password,
     })
     .then(response => {
-      console.log('Login bem-sucedido:', response.data);
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('isLoggedIn', 'true');
-      localStorage.setItem('userId', response.data.id);
       setSuccessMessage('Login efetuado! Aguarde...');
+      localStorage.setItem('userId', response.data.userId);
+      localStorage.setItem('userName', response.data.nome);
+      localStorage.setItem('userEmail', response.data.email);
       setPopupVisible(true);
       setTimeout(() => {
         setPopupVisible(false);

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './ProductsRegister.css';
+import api from '../../Api';
 
 const ProductsRegister = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +14,25 @@ const ProductsRegister = () => {
     stock: ''
   });
 
+  const handleProduto = (e) => {
+    console.log('teste: ' + parsePrice(formData.price));
+    api.post('/produtos', {
+      nome: formData.title,
+      categoria: (formData.category).toUpperCase(),
+      descricao: formData.description,
+      preco: parsePrice(formData.price),
+      imagens: formData.images,
+      qtdEstoque: formData.stock,
+      status: 'DISPONIVEL'
+    })
+    .then(response => {
+      console.log('Cadastro bem-sucedido:', response.data);
+    })
+    .catch(error => {
+      console.error('Erro no cadastro:', error.response.data);
+    });
+  };
+
   let dragIndex = null;
 
   const handleChange = (e) => {
@@ -24,13 +44,19 @@ const ProductsRegister = () => {
   };
 
   const formatPrice = (value) => {
-    value = value.replace(/\D/g, ''); // Remove caracteres não numéricos
-    const formattedValue = parseFloat(value / 100)
-      .toFixed(2) // Define duas casas decimais
-      .replace(/\B(?=(\d{3})+(?!\d))/g, '.') // Adiciona pontos como separadores de milhar
-      .replace('.', ','); // Substitui o ponto por vírgula para o decimal
+    value = value.replace(/\D/g, '');
+    
+    const formattedValue = (value / 100).toFixed(2)
+        .replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+        .replace('.', ','); 
+    
     return formattedValue;
-  };
+};
+
+const parsePrice = (formattedValue) => {
+ const cleanValue = formattedValue.replace(/\./g, '').replace(',', '.');
+    return parseFloat(cleanValue);
+};
 
   const handlePriceChange = (e) => {
     const formattedPrice = formatPrice(e.target.value);
@@ -234,7 +260,7 @@ const ProductsRegister = () => {
           </>
         )}
 
-        <button type="submit" className="submit-button">Salvar</button>
+        <button onClick={handleProduto} type="submit" className="submit-button">Salvar</button>
       </form>
     </div>
   );

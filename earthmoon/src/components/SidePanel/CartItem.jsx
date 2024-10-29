@@ -5,7 +5,7 @@ const CartItem = ({ item, onRemove }) => {
   return (
     <div className="bag-item">
   <div className="item-image" style={{ backgroundColor: item.color }}>
-    <img src={item.urlImagem} className="image" />
+    <img src={item.imagens[0]} className="image" />
   </div>
   <div className="item-details">
     <p className="item-name">{item.nome}</p>

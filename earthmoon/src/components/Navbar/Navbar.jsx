@@ -36,6 +36,9 @@ const Navbar = () => {
       });
       console.log('Login bem-sucedido:', response.data);
       localStorage.setItem('token', response.data.token);
+      localStorage.setItem('userId', response.data.userId);
+      localStorage.setItem('userName', response.data.nome);
+      localStorage.setItem('userEmail', response.data.email);
       setIsLoggedIn(true);
       localStorage.setItem('isLoggedIn', 'true');
       setIsLoginPanelOpen(false);
@@ -105,7 +108,7 @@ const Navbar = () => {
       <SidePanelLogin 
         isOpen={isLoginPanelOpen} 
         onClose={toggleLoginPanel} 
-        onLogin={handleLogin} // Passa a função de login para o SidePanelLogin
+        onLogin={handleLogin}
       />
       <SidePanelBag 
         isOpen={isBagPanelOpen} 

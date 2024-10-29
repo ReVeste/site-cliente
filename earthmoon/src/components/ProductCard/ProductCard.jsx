@@ -19,7 +19,7 @@ const ProductCard = ({ produto }) => {
       <div className="product-info">
         <h3>{produto.nome}</h3>
         <p>{`R$${produto.preco.toFixed(2)}`}</p>
-        <p>{`${produto.parcelas}x de R$${(produto.preco / 3).toFixed(2)} sem juros`}</p>
+        <p>{`3x de R$${(produto.preco / 3).toFixed(2)} sem juros`}</p>
       </div>
     </div>
   );

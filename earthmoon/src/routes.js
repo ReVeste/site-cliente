@@ -23,7 +23,7 @@ const RoutesComponent = () => {
         element={isLoggedIn ? <ConfiguracaoCliente /> : <Navigate to="/cadastro" />}
       />
       <Route path="/acessorios" element={<Products />} />
-      <Route path="/produtos" element={<Products />} />
+      <Route path="/produtos" element={<Products />} /> 
     </Routes>
   );
 };
