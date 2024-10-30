@@ -64,7 +64,7 @@ const DetalheProdutos = ({ onAddToCart }) => {  // Adicione o props onAddToCart
           <h2 className="titulo-produto">{produto.nome}</h2>
           <div className="preco-parcelamento">
             <p className="preco">R$ {produto.preco.toFixed(2)}</p>
-            <p className="parcelamento">3x de R$ {produto.preco.toFixed(2)} sem juros</p>
+            <p className="parcelamento">3x de R$${(produto.preco / 3).toFixed(2)} sem juros</p>
           </div>
           <p className="detalhe-tamanho-cor">Tamanho {produto.tamanho}</p>
           <button className="botao-comprar" onClick={handleAddToCart}>Comprar</button> {/* Adiciona o evento aqui */}
