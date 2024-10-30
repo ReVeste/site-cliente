@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import './DetalheProdutos.css';
 import IconePagamento from '../../assets/pagamento.png';
-import ImagemEspecificacoes from '../../assets/tabelaMedida.jpg';
+import ImagemEspecificacoes from '../../assets/tabelaMedida.png';
 import api from '../../Api';
 
 

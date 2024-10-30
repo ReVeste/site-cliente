@@ -144,6 +144,9 @@ const RegisterPage = () => {
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('userId', response.data.id);
+      localStorage.setItem('userName', response.data.nome);
+      localStorage.setItem('userEmail', response.data.email);
+      
       setSuccessMessage('Login efetuado! Aguarde...');
       setPopupVisible(true);
       setTimeout(() => {
@@ -270,12 +273,6 @@ const RegisterPage = () => {
         onChange={handleChange}
         required
       />
-              <span
-                className="eye-icon"
-                onClick={() => setPasswordVisible(!passwordVisible)}
-              >
-                &#128065;
-              </span>
             </div>
             <button type="submit" className="submit-button">Login</button>
           </form>

@@ -1,20 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './ProductCard.css';
-import testeImage from '../../assets/teste.jpg';
 import { useNavigate } from 'react-router-dom';
 
 const ProductCard = ({ produto }) => {
   const navigate = useNavigate();
+  
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleClick = () => {
     navigate(`/produto/${produto.id}`);
   };
 
-
   return (
     <div className="product-card">
       <div className="product-image">
-        <img src={produto.imagens[0]} alt="Produto" style={{cursor: 'pointer'}} onClick={handleClick} /> 
+        {isLoading && <div className="image-placeholder">Carregando...</div>}
+        <img 
+          src={produto.imagens[0]} 
+          alt="Produto" 
+          style={{ cursor: 'pointer' }} 
+          onClick={handleClick} 
+          loading="lazy"
+          onLoad={() => setIsLoading(false)}
+        /> 
       </div>
       <div className="product-info">
         <h3>{produto.nome}</h3>

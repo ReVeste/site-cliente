@@ -115,8 +115,7 @@ h2 {
 
 .detalhesGeral h1,
 h2,
-.detalhesEndereco h1,
-h2,
+.detalhesEndereco h1
 .detalhesConta h1,
 h2 {
     font-weight: bold;
@@ -144,11 +143,20 @@ h2 {
     background-color: #7e7e7e;
 }
 
+.detalhesEndereco h2,
+.noAddressFound {
+    text-align: center;
+    width: 100%;
+    margin: 0;
+}
+
 .enderecosContainer {
     display: flex;
     gap: 20px;
     flex-wrap: wrap;
+    justify-content: center;
 }
+
 
 .enderecoInfo {
     background-color: #2f2f2f;
