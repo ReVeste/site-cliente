@@ -37,28 +37,24 @@ const RegisterPage = () => {
       setFormData({ ...formData, cpf: digits }); // Armazena apenas os dígitos
     } 
     
-    // Formatação e manipulação de Telefone
     else if (name === 'telefone') {
-      const digits = value.replace(/\D/g, ''); // Remove não dígitos
-      const formattedTelefone = formatTelefone(value); // Formata Telefone
+      const digits = value.replace(/\D/g, '');
+      const formattedTelefone = formatTelefone(value);
       setFormattedData({ ...formattedData, formattedTelefone });
-      setFormData({ ...formData, telefone: digits }); // Armazena apenas os dígitos
+      setFormData({ ...formData, telefone: digits });
     } 
     
-    // Manipulação de Senha
     else if (name === 'password') {
       setFormData({ ...formData, password: value });
-      const strength = validatePasswordStrength(value); // Valida a força da senha
+      const strength = validatePasswordStrength(value);
       setPasswordStrength(strength.text);
       setStrengthColor(strength.color);
     } 
     
-    // Para outros campos do formulário
     else {
       setFormData({ ...formData, [name]: value });
     }
   
-    // Limpa as mensagens de erro e sucesso
     setErrorMessage('');
     setSuccessMessage(''); 
   };
@@ -79,11 +75,11 @@ const RegisterPage = () => {
   };
 
   const toggleForm = (formType) => {
-    setIsLogin(formType === 'login');
-    setErrorMessage('');
-    setSuccessMessage(''); // Limpa a mensagem de sucesso ao alternar formulários
-    setFormData({ firstName: '', cpf: '', telefone: '', email: '', password: '' });
-    setFormattedData({ formattedCpf: '', formattedTelefone: '' });
+    setTimeout(() => {
+      setIsLogin(formType === 'login');
+      setFormData({ firstName: '', cpf: '', telefone: '', email: '', password: '' });
+      setFormattedData({ formattedCpf: '', formattedTelefone: '' });
+    }, 300);
   };
 
   const validateName = (name) => {
@@ -132,7 +128,7 @@ const RegisterPage = () => {
     return isValid;
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     if (!validateEmail(formData.email) || !validatePassword(formData.password)) {
       setErrorMessage('Por favor, insira credenciais válidas.');
@@ -144,12 +140,11 @@ const RegisterPage = () => {
       senha: formData.password,
     })
     .then(response => {
+      console.log('Login bem-sucedido:', response.data);
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('userId', response.data.id);
       setSuccessMessage('Login efetuado! Aguarde...');
-      localStorage.setItem('userId', response.data.userId);
-      localStorage.setItem('userName', response.data.nome);
-      localStorage.setItem('userEmail', response.data.email);
       setPopupVisible(true);
       setTimeout(() => {
         setPopupVisible(false);
@@ -202,7 +197,8 @@ const RegisterPage = () => {
       setPopupVisible(true);
       setTimeout(() => {
         setPopupVisible(false);
-        navigate('/');
+        setIsLogin(true); // Altera para mostrar a tela de login
+        setFormData({ firstName: '', cpf: '', telefone: '', email: '', password: '' }); // Limpa os campos
       }, 3000);
     })
     .catch(error => {
@@ -228,7 +224,7 @@ const RegisterPage = () => {
             className={`toggle-option ${isLogin ? 'active' : ''}`}
             onClick={() => toggleForm('login')}
           >
-            Fazer login
+            Login
           </h2>
           <h2
             className={`toggle-option ${!isLogin ? 'active' : ''}`}
@@ -254,26 +250,26 @@ const RegisterPage = () => {
           </div>
         )}
 
-        {isLogin ? (
-          <form className="login-form" onSubmit={handleSubmit}>
-            <h3>Fazer login</h3>
-            <input
-              type="email"
-              name="email"
-              placeholder="E-mail *"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-            <div className="password-container">
-              <input
-                type={passwordVisible ? 'text' : 'password'}
-                name="password"
-                placeholder="Senha *"
-                value={formData.password}
-                onChange={handleChange}
-                required
-              />
+{isLogin ? (
+  <form className="login-form" onSubmit={handleSubmit}>
+    <h3>Fazer login</h3>
+    <input
+      type="email"
+      name="email"
+      placeholder="E-mail *"
+      value={formData.email}
+      onChange={handleChange}
+      required
+    />
+    <div className="password-container">
+      <input
+        type={passwordVisible ? 'text' : 'password'}
+        name="password"
+        placeholder="Senha *"
+        value={formData.password}
+        onChange={handleChange}
+        required
+      />
               <span
                 className="eye-icon"
                 onClick={() => setPasswordVisible(!passwordVisible)}
@@ -285,11 +281,11 @@ const RegisterPage = () => {
           </form>
         ) : (
           <form className="register-form" onSubmit={handleSubmit}>
-            <h3>Cadastro</h3>
+            <h3>Criar conta</h3>
             <input
               type="text"
               name="firstName"
-              placeholder="Nome Completo *"
+              placeholder="Nome *"
               value={formData.firstName}
               onChange={handleChange}
               required

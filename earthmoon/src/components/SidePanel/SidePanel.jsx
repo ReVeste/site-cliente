@@ -9,6 +9,8 @@ const SidePanelLogin = ({ isOpen, onClose }) => {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState(''); // Novo estado para mensagem de sucesso
+  const [popupVisible, setPopupVisible] = useState(false); // Estado para controlar a visibilidade do pop-up
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -30,11 +32,22 @@ const SidePanelLogin = ({ isOpen, onClose }) => {
       localStorage.setItem('userId', response.data.userId);
       localStorage.setItem('userName', response.data.nome);
       localStorage.setItem('userEmail', response.data.email);
-      onClose();
-      navigate('/configuracao-cliente');
+      
+      // Exibe a mensagem de sucesso
+      setSuccessMessage('Login efetuado! Aguarde...');
+      setPopupVisible(true); // Torna o pop-up visível
+
+      // Redireciona após 2 segundos
+      setTimeout(() => {
+        setPopupVisible(false); // Oculta o pop-up
+        onClose();
+        navigate('/configuracao-cliente');
+      }, 2000);
+      
     } catch (error) {
       console.error('Erro no login:', error.response.data);
       setErrorMessage('Credenciais inválidas. Tente novamente.');
+      setSuccessMessage(''); // Limpa a mensagem de sucesso anterior
     }
   };
 
@@ -54,6 +67,9 @@ const SidePanelLogin = ({ isOpen, onClose }) => {
       <button className="close-button" onClick={onClose}>✖</button>
       <h2 className="title">Fazer login</h2>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
+      {successMessage && popupVisible && ( // Exibe o pop-up de sucesso se estiver visível
+        <div className="popup-message">{successMessage}</div>
+      )}
       <form onSubmit={handleLogin}>
         <input 
           type="email" 

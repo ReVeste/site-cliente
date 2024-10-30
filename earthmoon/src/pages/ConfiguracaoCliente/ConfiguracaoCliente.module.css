@@ -66,7 +66,6 @@ h2 {
     margin: 12px 0;
     padding: 15px;
     cursor: pointer;
-    color: #000000;
     transition: background-color 0.3s ease;
 }
 
@@ -177,11 +176,13 @@ h2 {
 
 .iconeAvaliacao {
     cursor: pointer;
-    position: absolute;
-    bottom: 220px;
-    width: 20%;
-    height: 4vh;
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 50px;
+    height: auto;
 }
+
 
 .iconeSair {
     cursor: pointer;
@@ -194,11 +195,9 @@ h2 {
     bottom: 20px;
     right: 20px;
     z-index: 9999;
-    background-color: rgba(255, 255, 255, 0.9); /* Teste para maior contraste */
-    width: 300px;
+    width: 400px;
     padding: 20px;
 }
-
 
 .popupContent {
     display: flex;
@@ -210,7 +209,7 @@ h2 {
     padding: 10px;
     border-radius: 8px;
     width: 90%;
-    max-width: 300px;
+    max-width: 400px; /* Aumentado para 400px */
 }
 
 .tituloAvaliacao {
@@ -218,7 +217,7 @@ h2 {
     text-align: center;
     width: 100%;
     font-size: 10px;
-    color: #000000;
+    color: #fff;
 }
 
 .tituloAvaliacao h2,
@@ -232,6 +231,7 @@ h2 {
 .popupContent p {
     font-size: 13px;
     line-height: 1.5;
+    margin-top: 5px; /* Adicionado para aproximar os textos */
 }
 
 .imgTeste {
@@ -247,6 +247,7 @@ h2 {
 .popupContent textarea {
     width: 90%;
     margin-bottom: 10px;
+    height: 50px;
     resize: none;
 }
 
@@ -263,7 +264,7 @@ h2 {
 }
 
 .botaoEnviar:hover {
-    background-color: #662323;
+    background-color: #747474;
 }
 
 .logoutBtn {
@@ -279,4 +280,24 @@ h2 {
 
 .logoutBtn:hover {
     background-color: #7e7e7e;
+}
+
+.starRating {
+    display: flex;
+    margin-top: -15px; 
+    margin-bottom: 10px;
+    justify-content: center;
+}
+
+.star {
+    font-size: 24px;
+    color: #c0c0c0;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.starSelected {
+    font-size: 24px;
+    color: #FFD700;
+    cursor: pointer;
 }

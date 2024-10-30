@@ -5,7 +5,7 @@ const reviews = [
   {
     name: 'Ana Oliveira',
     stars: 5,
-    text: 'Perfeito! Entrega rápida, produto de alta qualidade. Superou minhas expectativas!',
+    text: 'Perfeito! Entrega rápida, produto de alta qualidade.',
   },
   {
     name: 'João Pereira',

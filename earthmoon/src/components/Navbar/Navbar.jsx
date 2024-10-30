@@ -48,6 +48,14 @@ const Navbar = () => {
     }
   };
 
+  const handleUserIconClick = () => {
+    if (isLoggedIn) {
+      navigate('/configuracao-cliente'); // Redireciona para a configuração do cliente se o usuário já estiver logado
+    } else {
+      setIsLoginPanelOpen(true); // Abre o painel de login se o usuário não estiver logado
+    }
+  };
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (isLoginPanelOpen && !event.target.closest('.side-panel')) {
@@ -80,7 +88,7 @@ const Navbar = () => {
           </Link>
         </div>
         <ul className="nav-links">
-        <li className="nav-item">
+          <li className="nav-item">
             <Link to="/produtos" className="nav-link">Roupas</Link>
           </li>
           <li className="nav-item">
@@ -92,7 +100,7 @@ const Navbar = () => {
             src={userIcon}
             alt="user icon"
             className="icon"
-            onClick={toggleLoginPanel}
+            onClick={handleUserIconClick}
           />
           <img
             src={cartIcon}

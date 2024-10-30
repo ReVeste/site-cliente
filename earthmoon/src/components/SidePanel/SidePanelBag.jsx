@@ -1,12 +1,27 @@
-import React, { useState, useEffect } from 'react';
 import './SidePanelBag.css';
 import CartItem from './CartItem';
 import api from '../../Api';
+import React, { useState, useEffect } from 'react';
 
-const SidePanelBag = ({ isOpen, onClose }) => {
+const SidePanelBag = ({ isOpen, onClose, isLoggedIn }) => {
   const [items, setItems] = useState([]);
 
+  const addItemToBag = (produto) => {
+    setItems((prevItems) => [
+      ...prevItems,
+      {
+        id: produto.id,
+        nome: produto.nome,
+        preco: produto.preco,
+        imagens: produto.imagens,
+        descricao: produto.descricao,
+      },
+    ]);
+  };
+
+  // Modifiquei aqui a função para buscar os itens
   const fetchItems = async () => {
+    if (isLoggedIn) return; // Não busca itens se o usuário está logado
     try {
       const response = await api.get('/pedidos/2/produtos');
       setItems(response.data);
@@ -21,10 +36,18 @@ const SidePanelBag = ({ isOpen, onClose }) => {
     }
   }, [isOpen]);
 
+  // Limpa a sacola após o login
+  useEffect(() => {
+    if (isLoggedIn) {
+      console.log("Usuário logado, limpando a sacola");
+      setItems([]); // Limpa a sacola
+    }
+  }, [isLoggedIn]);
+
   const removeItem = async (idPedido, idProduto) => {
     try {
       idPedido = 2;
-      await api.delete(`pedidos/${idPedido}/produto/${idProduto}`); 
+      await api.delete(`pedidos/${idPedido}/produto/${idProduto}`);
       setItems(prevItems => prevItems.filter(item => item.id !== idProduto));
     } catch (error) {
       console.error('Erro ao remover o item:', error);
@@ -33,12 +56,12 @@ const SidePanelBag = ({ isOpen, onClose }) => {
 
   const removerTodosItens = async (idPedido) => {
     try {
-      await api.delete(`pedidos/1`); 
+      await api.delete(`pedidos/1`);
       setItems([]);
     } catch (error) {
       console.error('Erro ao remover o item:', error);
     }
-  }
+  };
 
   const handleCheckout = async () => {
     const payload = {
@@ -68,7 +91,7 @@ const SidePanelBag = ({ isOpen, onClose }) => {
           items.map((item) => (
             <CartItem 
               key={item.id}
-              item={item} 
+              item={item}
               onRemove={() => removeItem(null, item.id)}
             />
           ))

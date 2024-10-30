@@ -1,5 +1,5 @@
 import React from 'react';
-import Rotas from './routes'; // Certifique-se de que a importação está correta
+import Rotas from './routes';
 import './App.css';
 
 function App() {

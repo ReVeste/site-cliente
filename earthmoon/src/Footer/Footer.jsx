@@ -18,7 +18,6 @@ const Footer = () => {
                 <div className="footerSection">
                     <h4>INFORMAÇÃO</h4>
                     <ul>
-                        <li><a href="#contact">Contato</a></li>
                         <li><a href="#terms">Termos de Uso</a></li>
                         <li><a href="#care">Como cuidar da sua peça</a></li>
                         <li><a href="#measure">Como medir</a></li>
@@ -27,8 +26,7 @@ const Footer = () => {
                 <div className="footerSection">
                     <h4>ENTRE EM CONTATO</h4>
                     <ul>
-                        <li>numero</li>
-                        <li>email</li>
+                        <li>REVESTE.tech@outlook.com</li>
                     </ul>
                 </div>
             </div>

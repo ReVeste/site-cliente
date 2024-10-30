@@ -10,7 +10,7 @@ html, body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    padding-top: 70px;
+    padding-top: 50px;
     flex-direction: column;
 }
 
@@ -216,4 +216,53 @@ html, body {
 .password-strength.Fraca {
     color: red; 
 }
+
+.login-form input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+  }
+
+  input {
+    width: 100%; /* Altera para 100% para ocupar toda a largura do contêiner pai */
+    padding: 10px; /* Adiciona espaçamento interno */
+    margin-bottom: 10px; /* Espaçamento inferior entre inputs */
+    border: 1px solid #ccc; /* Define uma borda padrão */
+    border-radius: 4px; /* Arredonda os cantos */
+    box-sizing: border-box; /* Inclui o padding e a borda no cálculo da largura total */
+  }
   
+  .password-container {
+    width: 100%; /* Faz com que a caixa da senha também ocupe toda a largura */
+  }
+
+.eye-icon {
+  cursor: pointer;
+  margin-left: -35px; /* Ajuste para colocar o ícone dentro do campo */
+}
+
+.submit-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #2b2b2b; /* Cor verde */
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Efeitos de transição */
+}
+
+.submit-button:hover {
+  background-color: #252525; /* Cor verde mais escura ao passar o mouse */
+  transform: scale(1.05); /* Leve aumento ao passar o mouse */
+}
+
+.submit-button:focus {
+  outline: none; /* Remove o contorno padrão */
+  box-shadow: 0 0 0 2px rgba(45, 45, 45, 0.5); /* Sombra ao focar */
+}
