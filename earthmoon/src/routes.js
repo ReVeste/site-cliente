@@ -10,18 +10,7 @@ import ConfiguracaoCliente from './pages/ConfiguracaoCliente/ConfiguracaoCliente
 import Sacola from './components/Sacola/Sacola';
 
 const RoutesComponent = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isLoggedIn') === 'true');
-
-  useEffect(() => {
-    const handleStorageChange = () => {
-      setIsLoggedIn(localStorage.getItem('isLoggedIn') === 'true');
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-    };
-  }, []);
+  const isLoggedIn = localStorage.getItem('isLoggedIn');
 
   return (
     <Routes>
