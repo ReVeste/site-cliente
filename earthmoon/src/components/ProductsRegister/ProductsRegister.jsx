@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './ProductsRegister.css';
 import api from '../../Api';
+import axios from 'axios';
+// import { upload } from '@testing-library/user-event/dist/upload';
 
 const ProductsRegister = () => {
   const [formData, setFormData] = useState({
@@ -14,6 +16,24 @@ const ProductsRegister = () => {
     stock: ''
   });
 
+  const uploadImage = () => {
+  // Iterar sobre as imagens, uma por uma
+  formData.images.forEach((image) => {
+    const formCloud = new FormData();
+    formCloud.append("file", image); // Enviar uma imagem por vez
+    formCloud.append("upload_preset", "produtos");
+
+    axios.post(process.env.REACT_APP_CLOUDINARY_URL, formCloud)
+      .then((response) => {
+        console.log("Upload bem-sucedido:", response);
+      })
+      .catch((error) => {
+        console.error("Erro no upload:", error);
+      });
+  });
+}
+
+
   const handleProduto = (e) => {
     console.log('teste: ' + parsePrice(formData.price));
     api.post('/produtos', {
@@ -25,12 +45,12 @@ const ProductsRegister = () => {
       qtdEstoque: formData.stock,
       status: 'DISPONIVEL'
     })
-    .then(response => {
-      console.log('Cadastro bem-sucedido:', response.data);
-    })
-    .catch(error => {
-      console.error('Erro no cadastro:', error.response.data);
-    });
+      .then(response => {
+        console.log('Cadastro bem-sucedido:', response.data);
+      })
+      .catch(error => {
+        console.error('Erro no cadastro:', error.response.data);
+      });
   };
 
   let dragIndex = null;
@@ -45,18 +65,18 @@ const ProductsRegister = () => {
 
   const formatPrice = (value) => {
     value = value.replace(/\D/g, '');
-    
-    const formattedValue = (value / 100).toFixed(2)
-        .replace(/\B(?=(\d{3})+(?!\d))/g, '.')
-        .replace('.', ','); 
-    
-    return formattedValue;
-};
 
-const parsePrice = (formattedValue) => {
- const cleanValue = formattedValue.replace(/\./g, '').replace(',', '.');
+    const formattedValue = (value / 100).toFixed(2)
+      .replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+      .replace('.', ',');
+
+    return formattedValue;
+  };
+
+  const parsePrice = (formattedValue) => {
+    const cleanValue = formattedValue.replace(/\./g, '').replace(',', '.');
     return parseFloat(cleanValue);
-};
+  };
 
   const handlePriceChange = (e) => {
     const formattedPrice = formatPrice(e.target.value);
@@ -117,11 +137,11 @@ const parsePrice = (formattedValue) => {
         <h3>Imagens do Produto</h3>
 
         <div className="main-image-box">
-          <input 
-            type="file" 
+          <input
+            type="file"
             accept="image/*"
-            style={{ display: 'none' }} 
-            onChange={handleImageUpload} 
+            style={{ display: 'none' }}
+            onChange={handleImageUpload}
             id="mainImageUpload"
           />
           <label htmlFor="mainImageUpload" className="upload-label">
@@ -131,10 +151,10 @@ const parsePrice = (formattedValue) => {
                 <span>Clique para adicionar a imagem principal</span>
               </>
             ) : (
-              <img 
-                src={URL.createObjectURL(formData.images[0])} 
-                alt="Imagem Principal" 
-                className="main-image" 
+              <img
+                src={URL.createObjectURL(formData.images[0])}
+                alt="Imagem Principal"
+                className="main-image"
               />
             )}
           </label>
@@ -153,10 +173,10 @@ const parsePrice = (formattedValue) => {
               onDragOver={(e) => e.preventDefault()}
               onDrop={(e) => handleDrop(e, index + 1)}
             >
-              <img 
-                src={URL.createObjectURL(image)} 
+              <img
+                src={URL.createObjectURL(image)}
                 alt={`Imagem Adicional ${index + 1}`}
-                className="additional-image" 
+                className="additional-image"
               />
               <button className="remove-image" onClick={() => removeImage(index + 1)}>Remover</button>
             </div>
@@ -166,13 +186,13 @@ const parsePrice = (formattedValue) => {
               <span className="upload-icon">+</span>
             </div>
           )}
-          <input 
-            type="file" 
-            accept="image/*" 
-            multiple 
-            style={{ display: 'none' }} 
-            onChange={handleImageUpload} 
-            id="additionalImageUpload" 
+          <input
+            type="file"
+            accept="image/*"
+            multiple
+            style={{ display: 'none' }}
+            onChange={handleImageUpload}
+            id="additionalImageUpload"
           />
         </div>
       </div>
@@ -260,7 +280,7 @@ const parsePrice = (formattedValue) => {
           </>
         )}
 
-        <button onClick={handleProduto} type="submit" className="submit-button">Salvar</button>
+        <button onClick={uploadImage} type="submit" className="submit-button">Salvar</button>
       </form>
     </div>
   );
