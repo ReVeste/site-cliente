@@ -8,6 +8,8 @@ import CadastroProduto from './pages/CadastroProduto/CadastroProduto';
 import DetalheProdutoPage from './pages/DetalheProdutos/DetalheProdutos';
 import ConfiguracaoCliente from './pages/ConfiguracaoCliente/ConfiguracaoCliente';
 import Sacola from './components/Sacola/Sacola';
+import ListaPage from './pages/Lista/Lista';
+
 
 const RoutesComponent = () => {
   const isLoggedIn = localStorage.getItem('isLoggedIn');
@@ -26,6 +28,7 @@ const RoutesComponent = () => {
       <Route path="/acessorios" element={<Products />} />
       <Route path="/produtos" element={<Products />} />
       <Route path="/sacola" element={<Sacola />} />
+      <Route path="/lista" element={<ListaPage />} />
     </Routes>
   );
 };

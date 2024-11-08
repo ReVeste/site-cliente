@@ -13,6 +13,7 @@ const Navbar = () => {
   const [isBagPanelOpen, setIsBagPanelOpen] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(() => localStorage.getItem('isLoggedIn') === 'true');
+  const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 
   const toggleLoginPanel = () => {
@@ -50,10 +51,19 @@ const Navbar = () => {
 
   const handleUserIconClick = () => {
     if (isLoggedIn) {
-      navigate('/configuracao-cliente'); // Redireciona para a configuração do cliente se o usuário já estiver logado
+      navigate('/configuracao-cliente');
     } else {
-      setIsLoginPanelOpen(true); // Abre o painel de login se o usuário não estiver logado
+      setIsLoginPanelOpen(true);
     }
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    navigate(`/search?query=${searchQuery}`);
   };
 
   useEffect(() => {
@@ -82,19 +92,35 @@ const Navbar = () => {
   return (
     <div>
       <nav className="navbar">
-        <div className="nav-logo">
+        <div className="nav-left">
           <Link to="/">
             <img src={logo} alt="logo" className="logo" />
           </Link>
         </div>
-        <ul className="nav-links">
-          <li className="nav-item">
-            <Link to="/produtos" className="nav-link">Roupas</Link>
-          </li>
-          <li className="nav-item">
-            <Link to="/acessorios" className="nav-link">Acessórios</Link>
-          </li>
-        </ul>
+  
+        <div className="nav-middle">
+          {/* Barra de busca centralizada */}
+          <form className="search-form" onSubmit={handleSearchSubmit}>
+            <input
+              type="text"
+              className="search-input"
+              placeholder="Buscar..."
+              value={searchQuery}
+              onChange={handleSearchChange}
+            />
+          </form>
+
+          {/* Links de navegação abaixo da barra de busca */}
+          <ul className="nav-links">
+            <li className="nav-item">
+              <Link to="/produtos" className="nav-link">Roupas</Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/acessorios" className="nav-link">Acessórios</Link>
+            </li>
+          </ul>
+        </div>
+  
         <div className="nav-icons">
           <img
             src={userIcon}
@@ -110,7 +136,7 @@ const Navbar = () => {
           />
         </div>
       </nav>
-
+  
       {isLoginPanelOpen && <div className="backdrop" onClick={toggleLoginPanel} />}
       {isBagPanelOpen && <div className="backdrop" onClick={toggleBagPanel} />}
       <SidePanelLogin 
