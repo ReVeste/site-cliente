@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './ProductsRegister.css';
 import api from '../../Api';
 import axios from 'axios';
-// import { upload } from '@testing-library/user-event/dist/upload';
 
 const ProductsRegister = () => {
+  const [imageUrls, setImageUrls] = useState([]);
+
   const [formData, setFormData] = useState({
     title: '',
     brand: '',
@@ -16,42 +17,60 @@ const ProductsRegister = () => {
     stock: ''
   });
 
-  const uploadImage = () => {
-  // Iterar sobre as imagens, uma por uma
-  formData.images.forEach((image) => {
-    const formCloud = new FormData();
-    formCloud.append("file", image); // Enviar uma imagem por vez
-    formCloud.append("upload_preset", "produtos");
 
-    axios.post(process.env.REACT_APP_CLOUDINARY_URL, formCloud)
-      .then((response) => {
-        console.log("Upload bem-sucedido:", response);
+  const uploadImage = (imageFiles) => {
+    if (!Array.isArray(imageFiles)) {
+      imageFiles = Array.from(imageFiles);
+    }
+  
+    const uploadPromises = imageFiles.map((image) => {
+      const formCloud = new FormData();
+      formCloud.append("file", image);
+      formCloud.append("upload_preset", "produtos");
+  
+      console.log(`Iniciando upload para: ${image.name}`);
+      console.log("URL para Cloudinary:", process.env.REACT_APP_CLOUDINARY_URL);
+  
+      return axios.post(process.env.REACT_APP_CLOUDINARY_URL, formCloud)
+        .then((response) => response.data.secure_url)
+        .catch((error) => {
+          console.error("Erro no upload - Resposta do servidor:", error.response?.data || error.message);
+          return null;
+        });
+    });
+  
+    Promise.all(uploadPromises)
+      .then((imageUrls) => {
+        const validUrls = imageUrls.filter(url => url !== null);
+        setImageUrls(validUrls);
+        console.log("URLs de imagens carregadas:", validUrls);
       })
       .catch((error) => {
-        console.error("Erro no upload:", error);
-      });
-  });
-}
-
-
-  const handleProduto = (e) => {
-    console.log('teste: ' + parsePrice(formData.price));
-    api.post('/produtos', {
-      nome: formData.title,
-      categoria: (formData.category).toUpperCase(),
-      descricao: formData.description,
-      preco: parsePrice(formData.price),
-      imagens: formData.images,
-      qtdEstoque: formData.stock,
-      status: 'DISPONIVEL'
-    })
-      .then(response => {
-        console.log('Cadastro bem-sucedido:', response.data);
-      })
-      .catch(error => {
-        console.error('Erro no cadastro:', error.response.data);
+        console.error("Erro no upload das imagens:", error);
       });
   };
+
+
+  useEffect(() => {
+    if (imageUrls.length > 0) {
+      console.log("URLs prontas para enviar:", imageUrls);
+      api.post('/produtos', {
+        nome: formData.title,
+        categoria: (formData.category).toUpperCase(),
+        descricao: formData.description,
+        preco: parsePrice(formData.price),
+        imagens: imageUrls,
+        qtdEstoque: formData.stock,
+        status: 'DISPONIVEL'
+      })
+        .then(response => {
+          console.log('Cadastro bem-sucedido:', response.data);
+        })
+        .catch(error => {
+          console.error('Erro no cadastro:', error.response.data);
+        });
+    }
+  }, [imageUrls]); 
 
   let dragIndex = null;
 
@@ -85,17 +104,25 @@ const ProductsRegister = () => {
 
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
-    const newImages = [...formData.images, ...files];
+  
+    const imageFiles = files.filter(file => file.type.startsWith("image/"));
 
+    if (imageFiles.length < files.length) {
+      alert("Alguns arquivos selecionados não são imagens.");
+    }
+
+    const newImages = [...formData.images, ...imageFiles];
     if (newImages.length > 4) {
       alert("Você pode adicionar no máximo 4 imagens.");
       return;
     }
-
+  
     setFormData((prevData) => ({
       ...prevData,
       images: newImages,
     }));
+
+    uploadImage(imageFiles);
   };
 
   const removeImage = (index) => {
