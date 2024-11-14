@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './ProductsRegister.css';
 import api from '../../Api';
 import axios from 'axios';
 
 const ProductsRegister = () => {
   const [imageUrls, setImageUrls] = useState([]);
-
+  
   const [formData, setFormData] = useState({
     title: '',
     brand: '',
@@ -17,114 +17,94 @@ const ProductsRegister = () => {
     stock: ''
   });
 
-
-  const uploadImage = (imageFiles) => {
-    if (!Array.isArray(imageFiles)) {
-      imageFiles = Array.from(imageFiles);
-    }
-  
-    const uploadPromises = imageFiles.map((image) => {
+  const uploadImages = async (images) => {
+    const uploadPromises = images.map((image) => {
       const formCloud = new FormData();
       formCloud.append("file", image);
       formCloud.append("upload_preset", "produtos");
-  
-      console.log(`Iniciando upload para: ${image.name}`);
-      console.log("URL para Cloudinary:", process.env.REACT_APP_CLOUDINARY_URL);
-  
+      
       return axios.post(process.env.REACT_APP_CLOUDINARY_URL, formCloud)
         .then((response) => response.data.secure_url)
         .catch((error) => {
-          console.error("Erro no upload - Resposta do servidor:", error.response?.data || error.message);
+          console.error("Erro no upload:", error.response?.data || error.message);
           return null;
         });
     });
-  
-    Promise.all(uploadPromises)
-      .then((imageUrls) => {
-        const validUrls = imageUrls.filter(url => url !== null);
-        setImageUrls(validUrls);
-        console.log("URLs de imagens carregadas:", validUrls);
-      })
-      .catch((error) => {
-        console.error("Erro no upload das imagens:", error);
-      });
-  };
 
+    const  urls= await Promise.all(uploadPromises);
+    console.log('URLs:', urls);
+    console.log('URLs válidas:', urls.filter(url => url !== null));
+    return urls.filter(url => url !== null);
+  };  
 
-  useEffect(() => {
-    if (imageUrls.length > 0) {
-      console.log("URLs prontas para enviar:", imageUrls);
-      api.post('/produtos', {
-        nome: formData.title,
-        categoria: (formData.category).toUpperCase(),
-        descricao: formData.description,
-        preco: parsePrice(formData.price),
-        imagens: imageUrls,
-        qtdEstoque: formData.stock,
-        status: 'DISPONIVEL'
-      })
-        .then(response => {
-          console.log('Cadastro bem-sucedido:', response.data);
-        })
-        .catch(error => {
-          console.error('Erro no cadastro:', error.response.data);
-        });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!formData.title || !formData.category || !formData.description || !formData.price || formData.images.length === 0) {
+      console.error("Preencha todos os campos corretamente.");
+      return;
     }
-  }, [imageUrls]); 
 
-  let dragIndex = null;
+    const urls = await uploadImages(formData.images);
+    console.log('urls:', urls);
+    await setImageUrls(urls);
+
+    console.log('urls:', urls);
+    if (urls.length !== formData.images.length) {
+      console.error("Erro no upload de algumas imagens.");
+      return;
+    }
+
+    api.post('/produtos', {
+      nome: formData.title,
+      categoria: formData.category,
+      descricao: formData.description,
+      preco: parsePrice(formData.price),
+      images: urls,
+      qtdEstoque: formData.stock || 1,
+      status: 'DISPONIVEL'
+    })
+    .then(response => console.log('Cadastro bem-sucedido:', response.data))
+    .catch(error => console.error('Erro no cadastro:', error.response?.data));
+  };
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === 'checkbox' ? checked : value,
-    });
-  };
-
-  const formatPrice = (value) => {
-    value = value.replace(/\D/g, '');
-
-    const formattedValue = (value / 100).toFixed(2)
-      .replace(/\B(?=(\d{3})+(?!\d))/g, '.')
-      .replace('.', ',');
-
-    return formattedValue;
-  };
-
-  const parsePrice = (formattedValue) => {
-    const cleanValue = formattedValue.replace(/\./g, '').replace(',', '.');
-    return parseFloat(cleanValue);
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: type === 'checkbox' ? checked : value
+    }));
   };
 
   const handlePriceChange = (e) => {
-    const formattedPrice = formatPrice(e.target.value);
-    setFormData({ ...formData, price: formattedPrice });
+    let rawValue = e.target.value.replace(/\D/g, '');
+    let formattedPrice = (Number(rawValue) / 100).toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
+    });
+    
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      price: formattedPrice
+    }));
+  };
+
+  const parsePrice = (formattedPrice) => {
+    return parseFloat(formattedPrice.replace(/\D/g, '')) / 100;
   };
 
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
-  
-    const imageFiles = files.filter(file => file.type.startsWith("image/"));
-
-    if (imageFiles.length < files.length) {
-      alert("Alguns arquivos selecionados não são imagens.");
-    }
-
-    const newImages = [...formData.images, ...imageFiles];
+    const newImages = [...formData.images, ...files];
     if (newImages.length > 4) {
       alert("Você pode adicionar no máximo 4 imagens.");
       return;
     }
-  
     setFormData((prevData) => ({
       ...prevData,
       images: newImages,
     }));
-
-    uploadImage(imageFiles);
   };
-
   const removeImage = (index) => {
     setFormData((prevData) => {
       const newImages = [...prevData.images];
@@ -132,7 +112,6 @@ const ProductsRegister = () => {
       return { ...prevData, images: newImages };
     });
   };
-
   const swapImages = (dragIndex, hoverIndex) => {
     setFormData((prevData) => {
       const newImages = [...prevData.images];
@@ -141,22 +120,17 @@ const ProductsRegister = () => {
       return { ...prevData, images: newImages };
     });
   };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Product submitted', formData);
-  };
-
   const handleDragStart = (e, index) => {
     dragIndex = index;
   };
-
   const handleDrop = (e, index) => {
     e.preventDefault();
     if (dragIndex !== index) {
       swapImages(dragIndex, index);
     }
   };
+
+    let dragIndex = null;
 
   return (
     <div className="product-register-container">
@@ -186,7 +160,9 @@ const ProductsRegister = () => {
             )}
           </label>
           {formData.images.length > 0 && (
-            <button className="remove-image" onClick={() => removeImage(0)}>Remover</button>
+            <button className="remove-image"
+             onClick={() => removeImage(0)}
+             >Remover</button>
           )}
         </div>
 
@@ -202,10 +178,12 @@ const ProductsRegister = () => {
             >
               <img
                 src={URL.createObjectURL(image)}
-                alt={`Imagem Adicional ${index + 1}`}
+                // alt={Imagem Adicional ${index + 1}}
                 className="additional-image"
               />
-              <button className="remove-image" onClick={() => removeImage(index + 1)}>Remover</button>
+              <button className="remove-image" 
+              onClick={() => removeImage(index + 1)}
+              >Remover</button>
             </div>
           ))}
           {formData.images.length < 4 && (
@@ -288,8 +266,8 @@ const ProductsRegister = () => {
           required
         >
           <option value="" disabled>Selecione a Categoria</option>
-          <option value="roupas">Roupas</option>
-          <option value="acessorios">Acessórios</option>
+          <option value="ROUPA">Roupas</option>
+          <option value="ACESSORIO">Acessórios</option>
         </select>
 
         {formData.category === 'acessorios' && (
@@ -307,7 +285,7 @@ const ProductsRegister = () => {
           </>
         )}
 
-        <button onClick={uploadImage} type="submit" className="submit-button">Salvar</button>
+        <button type="submit" className="submit-button">Salvar</button>
       </form>
     </div>
   );
