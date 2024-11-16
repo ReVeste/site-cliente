@@ -27,11 +27,11 @@ const SidePanelLogin = ({ isOpen, onClose }) => {
       });
       console.log('Login bem-sucedido:', response.data);
       
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('isLoggedIn', 'true');
-      localStorage.setItem('userId', response.data.userId);
-      localStorage.setItem('userName', response.data.nome);
-      localStorage.setItem('userEmail', response.data.email);
+      sessionStorage.setItem('token', response.data.token);
+      sessionStorage.setItem('isLoggedIn', 'true');
+      sessionStorage.setItem('userId', response.data.userId);
+      sessionStorage.setItem('userName', response.data.nome);
+      sessionStorage.setItem('userEmail', response.data.email);
       
       // Exibe a mensagem de sucesso
       setSuccessMessage('Login efetuado! Aguarde...');
@@ -46,7 +46,12 @@ const SidePanelLogin = ({ isOpen, onClose }) => {
       
     } catch (error) {
       console.error('Erro no login:', error.response.data);
-      setErrorMessage('Credenciais inválidas. Tente novamente.');
+      if (error.response.status === 409) {
+        setErrorMessage('Erro no cadastro. CPF ou E-mail já cadastrado!');
+      } else {
+        setErrorMessage('Erro no cadastro. Verifique os dados e tente novamente.');
+      }
+
       setSuccessMessage(''); // Limpa a mensagem de sucesso anterior
     }
   };

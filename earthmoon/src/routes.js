@@ -12,7 +12,7 @@ import ListaPage from './pages/Lista/Lista';
 
 
 const RoutesComponent = () => {
-  const isLoggedIn = localStorage.getItem('isLoggedIn');
+  const isLoggedIn = sessionStorage.getItem('isLoggedIn');
 
   return (
     <Routes>

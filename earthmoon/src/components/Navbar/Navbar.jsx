@@ -12,7 +12,7 @@ const Navbar = () => {
   const [isLoginPanelOpen, setIsLoginPanelOpen] = useState(false);
   const [isBagPanelOpen, setIsBagPanelOpen] = useState(false);
   const [cartItems, setCartItems] = useState([]);
-  const [isLoggedIn, setIsLoggedIn] = useState(() => localStorage.getItem('isLoggedIn') === 'true');
+  const [isLoggedIn, setIsLoggedIn] = useState(() => sessionStorage.getItem('isLoggedIn') === 'true');
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 
@@ -36,12 +36,12 @@ const Navbar = () => {
         senha: senha,
       });
       console.log('Login bem-sucedido:', response.data);
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('userId', response.data.userId);
-      localStorage.setItem('userName', response.data.nome);
-      localStorage.setItem('userEmail', response.data.email);
+      sessionStorage.setItem('token', response.data.token);
+      sessionStorage.setItem('userId', response.data.userId);
+      sessionStorage.setItem('userName', response.data.nome);
+      sessionStorage.setItem('userEmail', response.data.email);
       setIsLoggedIn(true);
-      localStorage.setItem('isLoggedIn', 'true');
+      sessionStorage.setItem('isLoggedIn', 'true');
       setIsLoginPanelOpen(false);
       navigate('/configuracao-cliente');
     } catch (error) {

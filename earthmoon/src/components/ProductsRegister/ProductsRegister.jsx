@@ -59,6 +59,7 @@ const ProductsRegister = () => {
       nome: formData.title,
       categoria: formData.category,
       descricao: formData.description,
+      marca: formData.brand,
       preco: parsePrice(formData.price),
       images: urls,
       qtdEstoque: formData.stock || 1,
