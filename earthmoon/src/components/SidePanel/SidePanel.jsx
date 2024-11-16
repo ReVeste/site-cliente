@@ -45,7 +45,7 @@ const SidePanelLogin = ({ isOpen, onClose }) => {
       }, 2000);
       
     } catch (error) {
-      console.error('Erro no login:', error.response.data);
+      console.error('Erro no login:', error.response?.data);
       if (error.response.status === 409) {
         setErrorMessage('Erro no cadastro. CPF ou E-mail já cadastrado!');
       } else {

@@ -29,16 +29,16 @@ const ConfiguracaoCliente = () => {
             const response = await api.get(`/enderecos/usuario/${idUsuario}`);
             setEnderecos(response.data);
         } catch (error) {
-            console.error('Erro ao buscar itens:', error);
+            console.error('Erro ao buscar itens:', error.response?.data);
         }
     };
 
     const fetchCompras = async () => {
         try {
-            const response = await api.get(`/pedidos/status?status=CONCLUIDO`);
+            const response = await api.get(`/pedidos/${idUsuario}/status?status=CONCLUIDO`);
             setPedidos(response.data);
         } catch (error) {
-            console.error('Erro ao buscar itens:', error);
+            console.error('Erro ao buscar itens:', error.response?.data);
         }
     };
 
@@ -77,7 +77,7 @@ const ConfiguracaoCliente = () => {
                 alert('Erro ao enviar feedback. Tente novamente.');
             }
         } catch (error) {
-            console.error('Erro ao enviar feedback:', error);
+            console.error('Erro ao enviar feedback:', error.response?.data);
             alert('Ocorreu um erro ao enviar o feedback. Tente novamente.');
         }
     };
@@ -90,7 +90,7 @@ const ConfiguracaoCliente = () => {
     }, [navigate]);
 
     const handleLogout = () => {
-        sessionStorage.removeItem('isLoggedIn');
+        sessionStorage.clear();
         navigate('/');
     };
 
@@ -103,7 +103,7 @@ const ConfiguracaoCliente = () => {
             await api.delete(`/enderecos/${id}`);
             fetchEnderecos();
         } catch (error) {
-            console.error('Erro ao remover endereço:', error);
+            console.error('Erro ao remover endereço:', error.response?.data);
         }
     };
 

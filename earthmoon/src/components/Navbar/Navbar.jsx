@@ -45,7 +45,7 @@ const Navbar = () => {
       setIsLoginPanelOpen(false);
       navigate('/configuracao-cliente');
     } catch (error) {
-      console.error('Erro no login:', error.response.data);
+      console.error('Erro no login:', error.response?.data);
     }
   };
 

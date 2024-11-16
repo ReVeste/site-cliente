@@ -14,7 +14,7 @@ const Carrossel = () => {
         console.log(response.data);
         setReviews(response.data);
       } catch (error) {
-        console.error('Erro ao buscar feedback:', error);
+        console.error('Erro ao buscar feedback:', error.response?.data);
       }
     };
 

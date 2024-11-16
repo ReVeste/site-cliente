@@ -155,7 +155,7 @@ const RegisterPage = () => {
       }, 2000);
     })
     .catch(error => {
-      console.error('Erro no login:', error.response.data);
+      console.error('Erro no login:', error.response?.data);
       setErrorMessage('Credenciais inválidas. Tente novamente.');
       setSuccessMessage(''); // Limpa qualquer mensagem de sucesso anterior
     });
@@ -205,7 +205,7 @@ const RegisterPage = () => {
       }, 3000);
     })
     .catch(error => {
-      console.error('Erro no cadastro:', error.response.data);
+      console.error('Erro no cadastro:', error.response?.data);
     
       if (error.response.status === 409) {
         setErrorMessage('Erro no cadastro. CPF ou E-mail já cadastrado!');
