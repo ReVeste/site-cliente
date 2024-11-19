@@ -1,3 +1,6 @@
+// src/RoutesComponent.js
+import React from 'react';
+
 import { Route, Routes, Navigate } from 'react-router-dom';
 import Products from './pages/Products/Products';
 import Home from './pages/Home/Home';
@@ -8,7 +11,7 @@ import DetalheProdutoPage from './pages/DetalheProdutos/DetalheProdutos';
 import ConfiguracaoCliente from './pages/ConfiguracaoCliente/ConfiguracaoCliente';
 import Sacola from './components/Sacola/Sacola';
 import ListaPage from './pages/Lista/Lista';
-
+import ConfiguracaoEduarda from './pages/ConfiguracaoEduarda/ConfiguracaoEduarda';
 
 const RoutesComponent = () => {
   const isLoggedIn = sessionStorage.getItem('isLoggedIn');
@@ -28,6 +31,7 @@ const RoutesComponent = () => {
       <Route path="/produtos" element={<Products />} />
       <Route path="/sacola" element={<Sacola />} />
       <Route path="/lista" element={<ListaPage />} />
+      <Route path="/configuracao-eduarda" element={<ConfiguracaoEduarda />} />
     </Routes>
   );
 };

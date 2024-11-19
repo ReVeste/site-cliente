@@ -33,13 +33,11 @@ const SidePanelLogin = ({ isOpen, onClose }) => {
       sessionStorage.setItem('userName', response.data.nome);
       sessionStorage.setItem('userEmail', response.data.email);
       
-      // Exibe a mensagem de sucesso
       setSuccessMessage('Login efetuado! Aguarde...');
-      setPopupVisible(true); // Torna o pop-up visível
+      setPopupVisible(true);
 
-      // Redireciona após 2 segundos
       setTimeout(() => {
-        setPopupVisible(false); // Oculta o pop-up
+        setPopupVisible(false);
         onClose();
         navigate('/configuracao-cliente');
       }, 2000);
@@ -72,7 +70,7 @@ const SidePanelLogin = ({ isOpen, onClose }) => {
       <button className="close-button" onClick={onClose}>✖</button>
       <h2 className="title">Fazer login</h2>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
-      {successMessage && popupVisible && ( // Exibe o pop-up de sucesso se estiver visível
+      {successMessage && popupVisible && (
         <div className="popup-message">{successMessage}</div>
       )}
       <form onSubmit={handleLogin}>
