@@ -1,66 +1,49 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Carrossel.css';
-
-const reviews = [
-  {
-    name: 'Ana Oliveira',
-    stars: 5,
-    text: 'Perfeito! Entrega rápida, produto de alta qualidade.',
-  },
-  {
-    name: 'João Pereira',
-    stars: 4,
-    text: 'A entrega podia ser melhor.',
-  },
-  {
-    name: 'Maria Silva',
-    stars: 3,
-    text: 'O produto é ok, mas esperava algo diferente.',
-  },
-  {
-    name: 'Lucas Souza',
-    stars: 4,
-    text: 'Produto bom, mas o suporte poderia ser mais rápido.',
-  },
-  {
-    name: 'Carlos Mendes',
-    stars: 5,
-    text: 'Excelente! Superou as expectativas!',
-  },
-  {
-    name: 'Juliana Costa',
-    stars: 2,
-    text: 'Produto deixou a desejar, não atende às necessidades.',
-  },
-  {
-    name: 'Ketelyn Medina',
-    stars: 5,
-    text: 'Ótimo atendimento e peças bem cuidadas!',
-  },
-];
+import api from '../../Api';
 
 const Carrossel = () => {
+  const [reviews, setReviews] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const reviewsPerSlide = 3;
+  const reviewsPerSlide = 3;  // Define quantas reviews mostrar por vez
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await api.get('/feedbacks');
+        console.log(response.data);
+        setReviews(response.data);
+      } catch (error) {
+        console.error('Erro ao buscar feedback:', error.response?.data);
+      }
+    };
+
+    fetchReviews();
+  }, []);
 
   const nextReview = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % reviews.length);
+    setCurrentIndex((prevIndex) => {
+      const nextIndex = prevIndex + 1;
+      // Se o índice ultrapassar o limite, vai para o início
+      return nextIndex >= reviews.length ? 0 : nextIndex;
+    });
   };
 
   const prevReview = () => {
-    setCurrentIndex(
-      (prevIndex) => (prevIndex - 1 + reviews.length) % reviews.length
-    );
+    setCurrentIndex((prevIndex) => {
+      const prevIndexResult = prevIndex - 1;
+      // Se o índice for menor que zero, vai para o final
+      return prevIndexResult < 0 ? reviews.length - 1 : prevIndexResult;
+    });
   };
 
   const getVisibleReviews = () => {
+    if (reviews.length === 0) return [];
+    // Fazendo o "loop" circular para mostrar sempre 3 resenhas
     const visibleReviews = [];
-
     for (let i = 0; i < reviewsPerSlide; i++) {
-      const index = (currentIndex + i) % reviews.length;
-      visibleReviews.push(reviews[index]);
+      visibleReviews.push(reviews[(currentIndex + i) % reviews.length]);
     }
-
     return visibleReviews;
   };
 
@@ -71,22 +54,22 @@ const Carrossel = () => {
       </button>
 
       <div className="carrossel-inner">
-        {getVisibleReviews().map((review, index) => (
-          <div key={index} className="review-container">
+        {getVisibleReviews().map((review) => (
+          <div key={review.id} className="review-container">
             <div className="review-header">
               <div className="stars">
-                {[...Array(review.stars)].map((_, i) => (
+                {[...Array(review.nota)].map((_, i) => (
                   <span key={i} className="star">
                     ★
                   </span>
                 ))}
               </div>
               <div className="review-info">
-                <h3>{review.name}</h3>
+                <h3>{review.usuario.nome}</h3>
               </div>
             </div>
             <div className="review-text">
-              <p>{review.text}</p>
+              <p>{review.comentario}</p>
             </div>
           </div>
         ))}

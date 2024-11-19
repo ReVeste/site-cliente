@@ -1,5 +1,6 @@
 // src/RoutesComponent.js
 import React from 'react';
+
 import { Route, Routes, Navigate } from 'react-router-dom';
 import Products from './pages/Products/Products';
 import Home from './pages/Home/Home';
@@ -13,7 +14,7 @@ import ListaPage from './pages/Lista/Lista';
 import ConfiguracaoEduarda from './pages/ConfiguracaoEduarda/ConfiguracaoEduarda';
 
 const RoutesComponent = () => {
-  const isLoggedIn = localStorage.getItem('isLoggedIn');
+  const isLoggedIn = sessionStorage.getItem('isLoggedIn');
 
   return (
     <Routes>

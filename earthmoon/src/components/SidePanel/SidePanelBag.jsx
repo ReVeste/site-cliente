@@ -3,8 +3,11 @@ import CartItem from './CartItem';
 import api from '../../Api';
 import React, { useState, useEffect } from 'react';
 
+const idUsuario = sessionStorage.getItem("userId");
+
 const SidePanelBag = ({ isOpen, onClose, isLoggedIn }) => {
   const [items, setItems] = useState([]);
+  const [idPedido, setIdPedido] = useState(0);
 
   const addItemToBag = (produto) => {
     setItems((prevItems) => [
@@ -23,10 +26,12 @@ const SidePanelBag = ({ isOpen, onClose, isLoggedIn }) => {
   const fetchItems = async () => {
     if (isLoggedIn) return; // Não busca itens se o usuário está logado
     try {
-      const response = await api.get('/pedidos/2/produtos');
+      const response = await api.get(`/pedidos/${idUsuario}/em-aberto`);
+      console.log(response.data);
+      setIdPedido(response.data[0].idPedido);
       setItems(response.data);
     } catch (error) {
-      console.error('Erro ao buscar itens:', error);
+      console.error('Erro ao buscar itens:', error.response?.data);
     }
   };
 
@@ -36,30 +41,28 @@ const SidePanelBag = ({ isOpen, onClose, isLoggedIn }) => {
     }
   }, [isOpen]);
 
-  // Limpa a sacola após o login
   useEffect(() => {
     if (isLoggedIn) {
       console.log("Usuário logado, limpando a sacola");
-      setItems([]); // Limpa a sacola
+      setItems([]);
     }
   }, [isLoggedIn]);
 
-  const removeItem = async (idPedido, idProduto) => {
+  const removeItem = async (idProduto) => {
     try {
-      idPedido = 2;
       await api.delete(`pedidos/${idPedido}/produto/${idProduto}`);
       setItems(prevItems => prevItems.filter(item => item.id !== idProduto));
     } catch (error) {
-      console.error('Erro ao remover o item:', error);
+      console.error('Erro ao remover o item:', error.response?.data);
     }
   };
 
-  const removerTodosItens = async (idPedido) => {
+  const removerTodosItens = async () => {
     try {
-      await api.delete(`pedidos/1`);
+      await api.delete(`pedidos/${idPedido}`);
       setItems([]);
     } catch (error) {
-      console.error('Erro ao remover o item:', error);
+      console.error('Erro ao remover o item:', error.response?.data);
     }
   };
 
@@ -76,7 +79,7 @@ const SidePanelBag = ({ isOpen, onClose, isLoggedIn }) => {
       const response = await api.post('URL_DA_SUA_API/checkout', payload);
       console.log('Checkout successful:', response.data);
     } catch (error) {
-      console.error('Erro ao realizar checkout:', error);
+      console.error('Erro ao realizar checkout:', error.response?.data);
     }
   };
 
@@ -92,7 +95,7 @@ const SidePanelBag = ({ isOpen, onClose, isLoggedIn }) => {
             <CartItem 
               key={item.id}
               item={item}
-              onRemove={() => removeItem(null, item.id)}
+              onRemove={() => removeItem(item.id)}
             />
           ))
         ) : (

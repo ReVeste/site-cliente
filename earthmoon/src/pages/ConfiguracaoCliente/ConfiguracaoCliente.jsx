@@ -14,8 +14,9 @@ const ConfiguracaoCliente = () => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [enderecos, setEnderecos] = useState([]);
     const [pedidos, setPedidos] = useState([]);
-    const [rating, setRating] = useState(0); // Estado para armazenar a nota de 0 a 5
-    const idUsuario = localStorage.getItem('userId');
+    const [rating, setRating] = useState(0);
+    const [feedbackText, setFeedbackText] = useState('');
+    const idUsuario = sessionStorage.getItem('userId');
 
     const itemClicado = (item) => {
         setItemSelecionado(item);
@@ -28,16 +29,16 @@ const ConfiguracaoCliente = () => {
             const response = await api.get(`/enderecos/usuario/${idUsuario}`);
             setEnderecos(response.data);
         } catch (error) {
-            console.error('Erro ao buscar itens:', error);
+            console.error('Erro ao buscar itens:', error.response?.data);
         }
     };
 
     const fetchCompras = async () => {
         try {
-            const response = await api.get(`/pedidos/status?status=CONCLUIDO`);
+            const response = await api.get(`/pedidos/${idUsuario}/status?status=CONCLUIDO`);
             setPedidos(response.data);
         } catch (error) {
-            console.error('Erro ao buscar itens:', error);
+            console.error('Erro ao buscar itens:', error.response?.data);
         }
     };
 
@@ -45,34 +46,64 @@ const ConfiguracaoCliente = () => {
         setIsPopupOpen(prev => !prev);
     };
 
-    const handleRatingChange = (newRating) => {
-        setRating(newRating); // Atualiza a avaliação
+    const handleRatingChange = (star) => {
+        console.log(star);
+        setRating(star);
+    };
+
+    const handleSubmitFeedback = async () => {
+        if (!rating || feedbackText.trim() === '') {
+            alert('Por favor, escolha uma nota e preencha o feedback.');
+            return;
+        }
+    
+        try {
+            console.log({
+                nota: rating,
+                comentario: feedbackText,
+                idUsuario: idUsuario
+            }); 
+            
+            const response = await api.post('/feedbacks', {
+                nota: rating,
+                comentario: feedbackText,
+                idUsuario: idUsuario
+            });
+
+            if (response.status === 201 || response.status === 200) {
+                alert('Feedback enviado com sucesso!');
+                togglePopup();
+            } else {
+                alert('Erro ao enviar feedback. Tente novamente.');
+            }
+        } catch (error) {
+            console.error('Erro ao enviar feedback:', error.response?.data);
+            alert('Ocorreu um erro ao enviar o feedback. Tente novamente.');
+        }
     };
 
     useEffect(() => {
-        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
         if (!isLoggedIn) {
             navigate('/cadastro');
         }
     }, [navigate]);
 
     const handleLogout = () => {
-        localStorage.removeItem('isLoggedIn');
+        sessionStorage.clear();
         navigate('/');
     };
 
     const editarEndereco = (id) => {
-        // Lógica para editar o endereço, pode redirecionar para um formulário de edição
-        navigate(`/editar-endereco/${id}`); // Exemplo de redirecionamento
+        navigate(`/editar-endereco/${id}`);
     };
 
     const removerEndereco = async (id) => {
-        // Lógica para remover o endereço
         try {
-            await api.delete(`/enderecos/${id}`); // Ajuste a URL de acordo com sua API
-            fetchEnderecos(); // Atualiza a lista de endereços após a remoção
+            await api.delete(`/enderecos/${id}`);
+            fetchEnderecos();
         } catch (error) {
-            console.error('Erro ao remover endereço:', error);
+            console.error('Erro ao remover endereço:', error.response?.data);
         }
     };
 
@@ -83,8 +114,8 @@ const ConfiguracaoCliente = () => {
                     <div className={styles["detalhesGeral"]}>
                         <h2>Informações da conta</h2>
                         <div className={styles["contaInfo"]}>
-                            <p><strong>Nome</strong><br />{localStorage.getItem('userName')}</p>
-                            <p><strong>Endereço de e-mail</strong><br />{localStorage.getItem('userEmail')}</p>
+                            <p><strong>Nome</strong><br />{sessionStorage.getItem('userName')}</p>
+                            <p><strong>Endereço de e-mail</strong><br />{sessionStorage.getItem('userEmail')}</p>
                         </div>
                     </div>
                 );
@@ -151,7 +182,7 @@ const ConfiguracaoCliente = () => {
                                     <img src={teste} alt="Produto Comprado Imagem" className={styles["imgTeste"]} />
                                     <p><strong>Pedido Vestido</strong><br />Data: 10/10/2024<br />Total: 100,00</p>
 
-                                    {/* Star Rating Component */}
+                                    {/* Star Rating Componente */}
                                     <div className={styles["starRating"]}>
                                         {[1, 2, 3, 4, 5].map((star) => (
                                             <span
@@ -163,9 +194,15 @@ const ConfiguracaoCliente = () => {
                                             </span>
                                         ))}
                                     </div>
-                                    
-                                    <textarea rows="1" placeholder="Avaliar:"></textarea>
-                                    <button className={styles["botaoEnviar"]} onClick={togglePopup}>
+
+                                    <textarea
+                                        rows="1"
+                                        placeholder="Avaliar:"
+                                        value={feedbackText}
+                                        onChange={(e) => setFeedbackText(e.target.value)}
+                                    ></textarea>
+
+                                    <button className={styles["botaoEnviar"]} onClick={handleSubmitFeedback}>
                                         Enviar
                                     </button>
                                 </div>

@@ -31,10 +31,10 @@ const ProductsGrid = () => {
   useEffect(() => {
     switch (location.pathname) {
       case '/acessorios':
-        fetchProducts('Acessórios');
+        fetchProducts('ACESSORIO');
         break;
       case '/produtos':
-        fetchProducts('Roupas');
+        fetchProducts('ROUPA');
         break;
       default:
         fetchProducts();

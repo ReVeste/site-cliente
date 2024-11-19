@@ -7,6 +7,8 @@ import ImagemEspecificacoes from '../../assets/tabelaMedida.png';
 import api from '../../Api';
 
 
+const idUsuario = sessionStorage.getItem("userId");
+
 const DetalheProdutos = ({ onAddToCart }) => {  // Adicione o props onAddToCart
   const [isEspecificacoes, setIsEspecificacoes] = useState(true);
   const { id } = useParams();
@@ -23,7 +25,7 @@ const DetalheProdutos = ({ onAddToCart }) => {  // Adicione o props onAddToCart
         const response = await api.get(`/produtos/${id}`);
         setProduto(response.data);
       } catch (error) {
-        console.error("Erro ao buscar produto:", error);
+        console.error("Erro ao buscar produto:", error.response?.data);
       } finally {
         setLoading(false);
       }
@@ -32,9 +34,24 @@ const DetalheProdutos = ({ onAddToCart }) => {  // Adicione o props onAddToCart
     fetchProduto();
   }, [id]);
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     if (produto) {
-      onAddToCart(produto); // Chama a função passada por props para adicionar o produto ao carrinho
+      try {
+        setLoading(true);
+
+        const response = await api.post('/pedidos', {
+          idUsuario: idUsuario,
+          idProduto: produto.id,
+          quantidadeProduto: 1,
+        });
+
+        console.log('Produto adicionado ao carrinho:', response.data);
+        onAddToCart(produto); 
+      } catch (error) {
+        console.error('Erro ao adicionar o produto ao carrinho:', error.response?.data);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
