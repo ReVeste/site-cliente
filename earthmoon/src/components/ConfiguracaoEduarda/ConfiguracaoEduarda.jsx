@@ -66,12 +66,10 @@ const ConfiguracaoEduarda = () => {
                     <div className="totalBox">
                         <h4>Lucro total do mês</h4>
                         <h3>R$ 16.944,00</h3>
-                        <img src={exportIcon} alt="Exportar" className="exportIcon" />
                     </div>
                     <div className="totalBox">
                         <h4>Lucro total do ano</h4>
                         <h3>R$ 16.944,00</h3>
-                        <img src={exportIcon} alt="Exportar" className="exportIcon" />
                     </div>
                 </div>
             </div>
