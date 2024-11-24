@@ -9,7 +9,6 @@ const ConfiguracaoEduardaPage = () => {
     <div>
       <Navbar />
       <ConfiguracaoEduarda />
-      <Footer />
     </div>
   );
 };
