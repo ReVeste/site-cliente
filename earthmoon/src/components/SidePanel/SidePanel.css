@@ -13,10 +13,6 @@
     align-items: center;
 }
 
-.h{
-    color: #000000;
-}
-
 .close-button {
     background: transparent;
     border: none;
@@ -26,8 +22,9 @@
 }
 
 .title {
-    color: #000000;
+    color: #000000 !important;
 }
+
 
 
 .input-field {
@@ -54,6 +51,7 @@
 .title {
     color: #000000;
 }
+
 
 .forgot-password {
     text-decoration: none;
@@ -91,7 +89,7 @@
 }
 
 .create-account span {
-    color: #404040;
+    color: #323232;
 }
 
 .popup-message {

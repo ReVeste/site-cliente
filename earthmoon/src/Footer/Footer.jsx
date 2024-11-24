@@ -1,11 +1,11 @@
 import React from 'react';
 import logo from '../assets/iconeLUA.png';
-import visa from '../assets/teste.jpg';
-import mastercard from '../assets/teste.jpg';
-import amex from '../assets/teste.jpg';
-import diners from '../assets/teste.jpg';
-import elo from '../assets/teste.jpg';
-import pix from '../assets/teste.jpg';
+import visa from '../assets/bandeiras/visa.png';
+import mastercard from '../assets/bandeiras/mastercard.png';
+import express from '../assets/bandeiras/express.jpg';
+import mercadopago from '../assets/bandeiras/mercadopago.png';
+import elo from '../assets/bandeiras/elo.png';
+import pix from '../assets/bandeiras/pix.png';
 import './Footer.css';
 
 const Footer = () => {
@@ -33,8 +33,8 @@ const Footer = () => {
             <div className="footerPayments">
                 <img src={visa} alt="Visa" />
                 <img src={mastercard} alt="Mastercard" />
-                <img src={amex} alt="American Express" />
-                <img src={diners} alt="Diners Club" />
+                <img src={express} alt="American Express" />
+                <img src={mercadopago} alt="Mercado Pago" />
                 <img src={elo} alt="Elo" />
                 <img src={pix} alt="Pix" />
             </div>
