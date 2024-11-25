@@ -2,6 +2,7 @@ import './SidePanelBag.css';
 import CartItem from './CartItem';
 import api from '../../Api';
 import React, { useState, useEffect } from 'react';
+import Pagamento from '../Pagamento/Pagamento';
 
 const idUsuario = sessionStorage.getItem("userId");
 
@@ -109,6 +110,7 @@ const SidePanelBag = ({ isOpen, onClose, isLoggedIn }) => {
         </div>
         <button className="clear-button" onClick={removerTodosItens}>Excluir Tudo</button>
         <button className="checkout-button" onClick={handleCheckout}>Checkout</button>
+        <Pagamento/>
       </div>
     </div>
   );
