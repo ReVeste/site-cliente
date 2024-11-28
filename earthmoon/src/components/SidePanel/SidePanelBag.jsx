@@ -9,6 +9,7 @@ const idUsuario = sessionStorage.getItem("userId");
 const SidePanelBag = ({ isOpen, onClose, isLoggedIn }) => {
   const [items, setItems] = useState([]);
   const [idPedido, setIdPedido] = useState(0);
+  const [preferenciaId, setPreferenciaId] = useState('');
 
   const addItemToBag = (produto) => {
     setItems((prevItems) => [
@@ -67,23 +68,6 @@ const SidePanelBag = ({ isOpen, onClose, isLoggedIn }) => {
     }
   };
 
-  const handleCheckout = async () => {
-    const payload = {
-      items: items.map(item => ({
-        name: item.nome,
-        price: item.preco,
-      })),
-      subtotal: items.reduce((acc, item) => acc + item.preco, 0),
-    };
-
-    try {
-      const response = await api.post('URL_DA_SUA_API/checkout', payload);
-      console.log('Checkout successful:', response.data);
-    } catch (error) {
-      console.error('Erro ao realizar checkout:', error.response?.data);
-    }
-  };
-
   if (!isOpen) return null;
 
   return (
@@ -109,8 +93,7 @@ const SidePanelBag = ({ isOpen, onClose, isLoggedIn }) => {
           <span>R$ {items.reduce((acc, item) => acc + item.preco, 0).toFixed(2)}</span>
         </div>
         <button className="clear-button" onClick={removerTodosItens}>Excluir Tudo</button>
-        <button className="checkout-button" onClick={handleCheckout}>Checkout</button>
-        <Pagamento/>
+        <Pagamento items={items}/>
       </div>
     </div>
   );
