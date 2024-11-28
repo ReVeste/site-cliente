@@ -1,18 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600&display=swap');
 
-
 body {
     font-family: 'Plus Jakarta Sans', sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
 .navbar {
     background-color: #000000;
     padding: 10px 0px;
-    position: fixed;
     display: flex;
-    justify-content: space-between;    
+    justify-content: space-between;
     align-items: center;
     width: 100%;
+    position: fixed;
+    z-index: 100;
 }
 
 .nav-left {
@@ -27,44 +29,12 @@ body {
     margin-left: 10px;
 }
 
-
-.search-form {
-    display: flex;
-    align-items: center;
-    width: 50%;
-    margin-left: 80px;
-    position: relative;
-}
-
-.search-input {
-    width: 90%;
-    padding: 8px 0px 8px 15px; /* Espaço para o ícone da lupa */
-    border: 0.2px solid #ddd;
-    border-radius: 20px;
-    font-size: 16px;
-    outline: none;
-}
-
-.search-input:focus {
-    border-color: #666;
-}
-
-.search-form::after {
-    content: '🔍';
-    position: absolute;
-    right: 20px;
-    font-size: 18px;
-    padding-bottom: 10px;
-    color: #666;
-    pointer-events: none; /* Permite clicar no input sem bloquear pelo ícone */
-}
-
 .nav-middle {
-    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
+    margin-left: 170px;
 }
 
 .nav-links {
@@ -96,13 +66,45 @@ body {
     display: flex;
     gap: 20px;
     align-items: center;
-    margin-right: 15px;
+    margin-right: 20px;
+    position: relative;
+}
+
+.search-form {
+    display: flex;
+}
+
+.search-input-wrapper {
+    position: relative;
+}
+
+.search-icon {
+    position: absolute;
+    left: 10px;
+    top: 45%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    pointer-events: none;
+}
+
+.search-input {
+    margin-top: 5px;
+    padding: 8px 8px 8px 40px;
+    border: 0.2px solid #ddd;
+    border-radius: 20px;
+    font-size: 16px;
+    outline: none;
+    width: 250px; /* Largura ajustada para o campo de pesquisa */
+}
+
+.search-input:focus {
+    border-color: #666;
 }
 
 .icon {
     width: 25px;
     height: 25px;
-    margin-right: 20px;
     cursor: pointer;
     text-align: center;
 }

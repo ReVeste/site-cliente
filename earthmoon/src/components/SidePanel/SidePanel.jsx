@@ -9,8 +9,8 @@ const SidePanelLogin = ({ isOpen, onClose }) => {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [successMessage, setSuccessMessage] = useState(''); // Novo estado para mensagem de sucesso
-  const [popupVisible, setPopupVisible] = useState(false); // Estado para controlar a visibilidade do pop-up
+  const [successMessage, setSuccessMessage] = useState('');
+  const [popupVisible, setPopupVisible] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -50,7 +50,7 @@ const SidePanelLogin = ({ isOpen, onClose }) => {
         setErrorMessage('Erro no cadastro. Verifique os dados e tente novamente.');
       }
 
-      setSuccessMessage(''); // Limpa a mensagem de sucesso anterior
+      setSuccessMessage(''); 
     }
   };
 

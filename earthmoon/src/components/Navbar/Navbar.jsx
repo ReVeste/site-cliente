@@ -5,6 +5,7 @@ import SidePanelLogin from '../SidePanel/SidePanel';
 import SidePanelBag from '../SidePanel/SidePanelBag';
 import userIcon from '../../assets/userIcon.png';
 import cartIcon from '../../assets/sacolaIcon.png';
+import searchIcon from '../../assets/lupaIcon.png';
 import logo from '../../assets/icon.png';
 import api from '../../Api';
 
@@ -99,18 +100,6 @@ const Navbar = () => {
         </div>
   
         <div className="nav-middle">
-          {/* Barra de busca centralizada */}
-          <form className="search-form" onSubmit={handleSearchSubmit}>
-            <input
-              type="text"
-              className="search-input"
-              placeholder="Buscar..."
-              value={searchQuery}
-              onChange={handleSearchChange}
-            />
-          </form>
-
-          {/* Links de navegação abaixo da barra de busca */}
           <ul className="nav-links">
             <li className="nav-item">
               <Link to="/produtos" className="nav-link">Roupas</Link>
@@ -122,6 +111,19 @@ const Navbar = () => {
         </div>
   
         <div className="nav-icons">
+          <form className="search-form" onSubmit={handleSearchSubmit}>
+            <div className="search-input-wrapper">
+              <img src={searchIcon} alt="Search Icon" className="search-icon" />
+              <input
+                type="text"
+                className="search-input"
+                placeholder="Buscar..."
+                value={searchQuery}
+                onChange={handleSearchChange}
+              />
+            </div>
+          </form>
+
           <img
             src={userIcon}
             alt="user icon"

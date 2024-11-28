@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Navbar from '../Navbar/Navbar';
 import './ConfiguracaoEduarda.css';
 import { Bar, Line } from 'react-chartjs-2';
+import exportIcon from '../../assets/export.jpg';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -30,11 +31,6 @@ const ConfiguracaoEduarda = () => {
     const [filtroProdutosEnviados, setFiltroProdutosEnviados] = useState('Da semana');
     const [filtroProdutosCadastrados, setFiltroProdutosCadastrados] = useState('Da semana');
 
-    const handleFiltroChange = (e, setFiltro) => {
-        // Adiciona um pequeno atraso para preservar o hover
-        setTimeout(() => setFiltro(e.target.value), 100);
-    };
-
     const dataCadastrosUsuarios = {
         labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho'],
         datasets: [
@@ -62,26 +58,6 @@ const ConfiguracaoEduarda = () => {
         ],
     };
 
-    const dataVendasMensais = {
-        labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho'],
-        datasets: [
-            {
-                label: 'Roupas',
-                data: [15, 25, 30, 45, 50, 60],
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1,
-            },
-            {
-                label: 'Acessórios',
-                data: [10, 20, 25, 35, 40, 50],
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgba(255, 99, 132, 1)',
-                borderWidth: 1,
-            },
-        ],
-    };
-
     const renderDashboard = () => (
         <div className="dashboardContainer">
             <div className="dashboardHeader">
@@ -102,16 +78,19 @@ const ConfiguracaoEduarda = () => {
                 <div className="statCard">
                     <p>Pedidos para enviar</p>
                     <h3>12</h3>
+                    <img src={exportIcon} alt="Exportar" className="smallExportIcon" />
                 </div>
                 <div className="statCard">
                     <p>Produtos disponíveis</p>
                     <h3>5</h3>
                     <p>À venda</p>
+                    <img src={exportIcon} alt="Exportar" className="smallExportIcon" />
                 </div>
                 <div className="statCard">
                     <p>Você lucrou</p>
                     <h3>2%</h3>
                     <p className="smallText">a mais que no mês anterior</p>
+                    <img src={exportIcon} alt="Exportar" className="smallExportIcon" />
                 </div>
                 <div className="statCard">
                     <p>Produtos enviados</p>
@@ -119,12 +98,13 @@ const ConfiguracaoEduarda = () => {
                     <select
                         className="noBorderSelect"
                         value={filtroProdutosEnviados}
-                        onChange={(e) => handleFiltroChange(e, setFiltroProdutosEnviados)}
+                        onChange={(e) => setFiltroProdutosEnviados(e.target.value)}
                     >
                         <option>Da semana</option>
                         <option>Do mês</option>
                         <option>Do ano</option>
                     </select>
+                    <img src={exportIcon} alt="Exportar" className="smallExportIcon" />
                 </div>
                 <div className="statCard">
                     <p>Produtos cadastrados</p>
@@ -132,12 +112,13 @@ const ConfiguracaoEduarda = () => {
                     <select
                         className="noBorderSelect"
                         value={filtroProdutosCadastrados}
-                        onChange={(e) => handleFiltroChange(e, setFiltroProdutosCadastrados)}
+                        onChange={(e) => setFiltroProdutosCadastrados(e.target.value)}
                     >
                         <option>Da semana</option>
                         <option>Do mês</option>
                         <option>Do ano</option>
                     </select>
+                    <img src={exportIcon} alt="Exportar" className="smallExportIcon" />
                 </div>
             </div>
 
@@ -147,20 +128,8 @@ const ConfiguracaoEduarda = () => {
                         <div className="chartsWrapper">
                             <div className="chartContainer">
                                 <h3>Lucros Mensais</h3>
-                                <Line
-                                    data={{
-                                        labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho'],
-                                        datasets: [
-                                            {
-                                                label: 'Lucro Mensal',
-                                                data: [120, 150, 180, 220, 290, 320],
-                                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                                                borderColor: 'rgba(75, 192, 192, 1)',
-                                                borderWidth: 1,
-                                            },
-                                        ],
-                                    }}
-                                />
+                                <Line data={dataCadastrosUsuarios} />
+                                <img src={exportIcon} alt="Exportar" className="exportIcon" />
                             </div>
                         </div>
                     </div>
@@ -171,21 +140,8 @@ const ConfiguracaoEduarda = () => {
                         <div className="chartsWrapper">
                             <div className="chartContainer">
                                 <h3>Quantidades de vendas por mês</h3>
-                                <Bar
-                                    data={dataVendasMensais}
-                                    options={{
-                                        responsive: true,
-                                        plugins: {
-                                            legend: {
-                                                position: 'top',
-                                            },
-                                            title: {
-                                                display: true,
-                                                text: 'Vendas por Categoria de Produto',
-                                            },
-                                        },
-                                    }}
-                                />
+                                <Bar data={dataCadastrosPorRegiao} />
+                                <img src={exportIcon} alt="Exportar" className="exportIcon" />
                             </div>
                         </div>
                     </div>
@@ -197,10 +153,12 @@ const ConfiguracaoEduarda = () => {
                     <div className="chartContainer">
                         <h3>Cadastro de usuários</h3>
                         <Line data={dataCadastrosUsuarios} />
+                        <img src={exportIcon} alt="Exportar" className="exportIcon" />
                     </div>
                     <div className="chartContainer">
                         <h3>Cadastros por região</h3>
                         <Bar data={dataCadastrosPorRegiao} />
+                        <img src={exportIcon} alt="Exportar" className="exportIcon" />
                     </div>
                 </div>
             </div>
