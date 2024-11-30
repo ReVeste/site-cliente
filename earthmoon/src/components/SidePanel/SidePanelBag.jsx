@@ -1,10 +1,12 @@
 import './SidePanelBag.css';
 import CartItem from './CartItem';
 import api from '../../Api';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Pagamento from '../Pagamento/Pagamento';
 
 const idUsuario = sessionStorage.getItem("userId");
+
+
 
 const SidePanelBag = ({ isOpen, onClose, isLoggedIn }) => {
   const [items, setItems] = useState([]);
@@ -22,10 +24,11 @@ const SidePanelBag = ({ isOpen, onClose, isLoggedIn }) => {
         descricao: produto.descricao,
       },
     ]);
+    
   };
 
   // Modifiquei aqui a função para buscar os itens
-  const fetchItems = async () => {
+  const fetchItems = useCallback(async () => {
     if (isLoggedIn) return; // Não busca itens se o usuário está logado
     try {
       const response = await api.get(`/pedidos/${idUsuario}/em-aberto`);
@@ -35,13 +38,13 @@ const SidePanelBag = ({ isOpen, onClose, isLoggedIn }) => {
     } catch (error) {
       console.error('Erro ao buscar itens:', error.response?.data);
     }
-  };
+  }, [isLoggedIn]);
 
   useEffect(() => {
     if (isOpen) {
       fetchItems();
     }
-  }, [isOpen]);
+  }, [isOpen, fetchItems]);
 
   useEffect(() => {
     if (isLoggedIn) {

@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.6e6aa6ac.css",
-    "main.js": "/static/js/main.414ac380.js",
+    "main.css": "/static/css/main.927a8592.css",
+    "main.js": "/static/js/main.746e0eb1.js",
     "static/media/tabelaMedida.png": "/static/media/tabelaMedida.4890b8d5a128376a097c.png",
     "static/media/teste.jpg": "/static/media/teste.c4d61c4d6d96039e780b.jpg",
     "static/media/visa.png": "/static/media/visa.0222b978b1e5e51da672.png",
@@ -14,11 +14,11 @@
     "static/media/mercadopago.png": "/static/media/mercadopago.3d69ce7a807718cafa26.png",
     "static/media/export.jpg": "/static/media/export.e338bf07e01aca80ab81.jpg",
     "index.html": "/index.html",
-    "main.6e6aa6ac.css.map": "/static/css/main.6e6aa6ac.css.map",
-    "main.414ac380.js.map": "/static/js/main.414ac380.js.map"
+    "main.927a8592.css.map": "/static/css/main.927a8592.css.map",
+    "main.746e0eb1.js.map": "/static/js/main.746e0eb1.js.map"
   },
   "entrypoints": [
-    "static/css/main.6e6aa6ac.css",
-    "static/js/main.414ac380.js"
+    "static/css/main.927a8592.css",
+    "static/js/main.746e0eb1.js"
   ]
 }
