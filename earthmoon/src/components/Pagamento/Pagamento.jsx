@@ -8,7 +8,7 @@ const Pagamento = ({ items }) => {
   // Inicializar Mercado Pago
   useEffect(() => {
     initMercadoPago('APP_USR-1dfce30a-2ce2-4bc7-ab7e-940f3cb99123', { locale: 'pt-BR' });
-  }, []);
+  }, [handleCheckout]);
 
   // Função para criar a preferência
   const handleCheckout = async () => {
