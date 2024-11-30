@@ -64,6 +64,7 @@ const Navbar = () => {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
+    // Navegar para a página de resultados de pesquisa com a query
     navigate(`/search?query=${searchQuery}`);
   };
 

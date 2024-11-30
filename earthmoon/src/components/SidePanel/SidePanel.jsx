@@ -3,9 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import './SidePanel.css';
 import api from '../../Api';
 
-const SidePanelLogin = ({ isOpen, onClose }) => {
+const SidePanelLogin = ({ isOpen, onClose, onLogin }) => {
   const navigate = useNavigate();
-
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -38,6 +37,7 @@ const SidePanelLogin = ({ isOpen, onClose }) => {
 
       setTimeout(() => {
         setPopupVisible(false);
+        onLogin();
         onClose();
         navigate('/configuracao-cliente');
       }, 2000);
@@ -92,11 +92,6 @@ const SidePanelLogin = ({ isOpen, onClose }) => {
           onChange={(e) => setSenha(e.target.value)} 
           required
         />
-        <div className="forgot-password-container">
-          <Link to="/forgot-password" className="forgot-password" onClick={onClose}>
-            Esqueceu a senha?
-          </Link>
-        </div>
         <button className="login-button" type="submit">Fazer login</button>
       </form>
       <div className="create-account">
