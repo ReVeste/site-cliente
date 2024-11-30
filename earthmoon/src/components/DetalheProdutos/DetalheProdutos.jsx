@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import './DetalheProdutos.css';
+import PilhaObj from '../../Utils/PilhaObj';
 import IconePagamento from '../../assets/pagamento.png';
 import ImagemEspecificacoes from '../../assets/tabelaMedida.png';
 import api from '../../Api';
@@ -9,6 +10,7 @@ import api from '../../Api';
 const idUsuario = sessionStorage.getItem("userId");
 
 const DetalheProdutos = ({ onAddToCart }) => {
+  const pilha = new PilhaObj(30);
   const [isEspecificacoes, setIsEspecificacoes] = useState(true);
   const { id } = useParams();
   const [produto, setProduto] = useState(null);
@@ -45,6 +47,12 @@ const DetalheProdutos = ({ onAddToCart }) => {
           quantidadeProduto: 1,
         });
 
+        // Método para adicionar o Id do produto na pilha
+        pilha.push(produto.id);
+        pilha.exibe();
+        // chamar método que exibirá o pop-up
+        handleUndo();
+
         console.log('Produto adicionado ao carrinho:', response.data);
         onAddToCart(produto); 
       } catch (error) {
@@ -54,6 +62,12 @@ const DetalheProdutos = ({ onAddToCart }) => {
       }
     }
   };
+
+  const handleUndo = async () => {
+
+
+
+  }
 
   if (loading) return <p>Carregando...</p>;
   if (!produto) return <p>Produto não encontrado.</p>;
