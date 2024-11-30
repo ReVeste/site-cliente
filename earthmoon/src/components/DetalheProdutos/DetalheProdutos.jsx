@@ -6,14 +6,14 @@ import IconePagamento from '../../assets/pagamento.png';
 import ImagemEspecificacoes from '../../assets/tabelaMedida.png';
 import api from '../../Api';
 
-
 const idUsuario = sessionStorage.getItem("userId");
 
-const DetalheProdutos = ({ onAddToCart }) => {  // Adicione o props onAddToCart
+const DetalheProdutos = ({ onAddToCart }) => {
   const [isEspecificacoes, setIsEspecificacoes] = useState(true);
   const { id } = useParams();
   const [produto, setProduto] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showPaymentCard, setShowPaymentCard] = useState(false);
 
   const toggleDetalhe = (detalhe) => {
     setIsEspecificacoes(detalhe === 'especificacoes');
@@ -81,15 +81,26 @@ const DetalheProdutos = ({ onAddToCart }) => {  // Adicione o props onAddToCart
           <h2 className="titulo-produto">{produto.nome}</h2>
           <div className="preco-parcelamento">
             <p className="preco">R$ {produto.preco.toFixed(2)}</p>
-            <p className="parcelamento">3x de R$${(produto.preco / 3).toFixed(2)} sem juros</p>
+            <p className="parcelamento">3x de R$ {(produto.preco / 3).toFixed(2)} sem juros</p>
           </div>
           <p className="detalhe-tamanho-cor">Tamanho {produto.tamanho}</p>
-          <button className="botao-comprar" onClick={handleAddToCart}>Comprar</button> {/* Adiciona o evento aqui */}
-          <div className="meios-pagamento">
-            <img src={IconePagamento} alt="Ícone de pagamento" className="icone-pagamento"/>
-            <Link to="/meios-de-pagamento" style={{ color: '#000', textDecoration: 'none' }}>
-              <span>Meios de pagamento</span>
-            </Link>
+          <button className="botao-comprar" onClick={handleAddToCart}>Comprar</button>
+          <div
+            className="meios-pagamento"
+            onMouseEnter={() => setShowPaymentCard(true)}
+            onMouseLeave={() => setShowPaymentCard(false)}
+          >
+            <img src={IconePagamento} alt="Ícone de pagamento" className="icone-pagamento" />
+            <span>Meios de pagamento</span>
+            {showPaymentCard && (
+              <div className="payment-card">
+                <p><strong>Cartão de crédito e débito:</strong> Aceitamos as principais bandeiras como Visa, MasterCard, Elo, American Express, entre outras.</p>
+                <p><strong>Pix:</strong> Pagamento instantâneo para maior agilidade.</p>
+                <p><strong>Boleto bancário:</strong> Disponível para quem prefere pagamentos tradicionais.</p>
+                <p><strong>Carteira do Mercado Pago:</strong> Use seu saldo na conta do Mercado Pago para pagar.</p>
+                <p><strong>Parcelamento:</strong> Oferecemos a possibilidade de parcelamento (se aplicável), com ou sem juros, dependendo do valor e da oferta.</p>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -113,7 +124,7 @@ const DetalheProdutos = ({ onAddToCart }) => {  // Adicione o props onAddToCart
         
         {isEspecificacoes ? (
           <div className="detalhe-especificacoes">
-            <img src={ImagemEspecificacoes} alt="Especificações do Produto"/>
+            <img src={ImagemEspecificacoes} alt="Especificações do Produto" />
           </div>
         ) : (
           <div className="detalhe-caracteristicas">

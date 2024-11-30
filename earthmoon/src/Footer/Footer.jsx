@@ -16,14 +16,6 @@ const Footer = () => {
             </div>
             <div className="footerContent">
                 <div className="footerSection">
-                    <h4>INFORMAÇÃO</h4>
-                    <ul>
-                        <li><a href="#terms">Termos de Uso</a></li>
-                        <li><a href="#care">Como cuidar da sua peça</a></li>
-                        <li><a href="#measure">Como medir</a></li>
-                    </ul>
-                </div>
-                <div className="footerSection">
                     <h4>ENTRE EM CONTATO</h4>
                     <ul>
                         <li>REVESTE.tech@outlook.com</li>

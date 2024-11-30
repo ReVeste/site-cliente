@@ -22,6 +22,7 @@
     justify-content: flex-start; 
     gap: 50px;
     width: 100%;
+    margin-bottom: 30px;
     max-width: 600px;
 }
 

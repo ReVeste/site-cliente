@@ -217,7 +217,7 @@ h2 {
     padding: 10px;
     border-radius: 8px;
     width: 90%;
-    max-width: 400px; /* Aumentado para 400px */
+    max-width: 400px;
 }
 
 .tituloAvaliacao {
@@ -226,6 +226,107 @@ h2 {
     width: 100%;
     font-size: 10px;
     color: #fff;
+}
+.enderecosFormularioContainer {
+    display: flex;
+    justify-content: space-between; 
+    gap: 20px;
+}
+
+.enderecosContainer {
+    flex: 1; 
+    padding-right: 20px;
+}
+
+.formularioEndereco {
+    flex: 1;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 600px;
+}
+
+.formularioEndereco input {
+    padding: 5px;
+    font-size: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+.formularioEndereco input:focus {
+    border-color: #a6a6a6;
+    outline: none;
+}
+
+.formularioEndereco button {
+    padding: 10px;
+    font-size: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #949494;
+    color: white;
+    width: 100%;
+    max-width: 300px;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease;
+}
+
+.formularioEndereco button:hover {
+    background-color: #515151;
+}
+
+.cancelarBtn {
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 14px 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.cancelarBtn:hover {
+    background-color: #c9302c;
+}
+
+.adicionarEndereco {
+    cursor: pointer;
+    color: #757575;
+    text-decoration: none;
+    font-weight: bold;
+    background: transparent;
+    border: none;
+    padding: 5px;
+    font-size: 20px;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.adicionarEndereco:hover {
+    color: #828282;
+    border-color: #000000;
+}
+
+.enderecosContainer {
+    margin-top: 15px;
+}
+
+.adicionarEndereco:active {
+    color: #4f4f4f;
+    border-color: #4f4f4f;
+}
+
+.adicionarEndereco.disabled {
+    color: #B0B0B0;
+    cursor: not-allowed;
+    text-decoration: none;
 }
 
 .tituloAvaliacao h2,
@@ -239,7 +340,7 @@ h2 {
 .popupContent p {
     font-size: 13px;
     line-height: 1.5;
-    margin-top: 5px; /* Adicionado para aproximar os textos */
+    margin-top: 5px;
 }
 
 .imgTeste {
