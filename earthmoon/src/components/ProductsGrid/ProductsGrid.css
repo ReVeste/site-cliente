@@ -8,7 +8,7 @@
 
 .products-grid h2 {
   font-size: 1.5rem;
-  margin-bottom: 5px;
+  margin-bottom: 15px;
   font-weight: 400;
 }
 
@@ -35,8 +35,40 @@
 }
 
 .grid-container div {
-  padding-top: 5px;
   margin: 0 auto;
   width: 100%;
   max-width: 250px;
+}
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.popup-content button {
+  margin-top: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.popup-content button:hover {
+  background-color: #0056b3;
 }

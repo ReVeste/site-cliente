@@ -8,11 +8,13 @@
   text-align: center;
   padding: 5px;
   font-family: 'Plus Jakarta Sans', sans-serif;
+  position: relative;
 }
 
 .product-image {
   height: 300px;
   width: 100%;
+  margin-bottom: 10px;
 }
 
 .product-image img {
@@ -25,6 +27,11 @@
   margin-bottom: 5px;
   color: rgb(0, 0, 0);
   font-weight: 400;
+}
+
+.product-info {
+  position: relative;
+  top: -10px;
 }
 
 .product-info p {
