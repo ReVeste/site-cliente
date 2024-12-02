@@ -87,11 +87,11 @@ const idUsuario = sessionStorage.getItem("userId");
   
   const handleUndo = async () => {
 
-      console.log("HandleUndo chamado");
-      console.log("ID PEDIDO = " + idPedido + " ID PRODUTO " + pilha.peek());
+      console.log("ID PEDIDO = " + idPedido + " ID PRODUTO " + id);
+      setPopupVisible(false);
 
       try {
-        await api.delete(`pedidos/${idPedido}/produto/${pilha.pop()}`);
+        await api.delete(`pedidos/${idPedido}/produto/${id}`);
         setPilha(new PilhaObj(30, pilha.pilha, pilha.topo));
       } catch (error) {
         console.error('Erro ao remover o item:', error.response?.data);
@@ -155,9 +155,9 @@ const idUsuario = sessionStorage.getItem("userId");
       )}
 
       {popupVisible && (
-          <div className="popup-message">
+          <div className="popupUndo-message">
             Produto adicionado ao carrinho com sucesso!<br/>
-            Deseja desfazer essa ação?
+            Deseja desfazer essa ação?<br/>
             <button className="red-round-button" onClick={handleUndo}>Desfazer</button>
           </div>
           )}

@@ -120,7 +120,7 @@ const ConfiguracaoEduarda = () => {
     <div className="dashboardContainer">
       <div className="dashboardHeader">
         <h2>DASHBOARD</h2>
-        <div 
+        <div
           className="exportWrapper" 
           onClick={handleExport} 
           style={{ cursor: 'pointer' }}
