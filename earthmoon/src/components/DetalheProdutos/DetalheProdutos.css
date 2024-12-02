@@ -234,4 +234,42 @@ html, body {
   height: auto;
 }
 
+.popup-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 10px; 
+  border-radius: 5px;
+  margin: 10px 0; 
+  text-align: center;
+}
 
+
+.red-round-button {
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  outline: none;
+  
+  transition: background-color 0.3s ease;
+}
+
+.red-round-button:hover {
+  background-color: darkred;
+}
+
+.red-round-button:active {
+  background-color: crimson;
+}
+
+.popupLogin-message {
+  background-color: darkred;
+  color: white;
+  padding: 10px; 
+  border-radius: 5px;
+  margin: 10px 0; 
+  text-align: center;
+}
