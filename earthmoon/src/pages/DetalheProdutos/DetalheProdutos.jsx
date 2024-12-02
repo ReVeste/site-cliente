@@ -3,7 +3,7 @@ import React from 'react';
 import Navbar from '../../components/Navbar/Navbar';
 import DetalheProdutos from '../../components/DetalheProdutos/DetalheProdutos';
 import PainelDesfazer from '../../components/PainelDesfazer/PainelDesfazer';
-import Footer from '../../Footer/Footer';
+import Footer from '../../components/Footer/Footer';
 
 const DetalheProdutoPage = () => {
   return (
