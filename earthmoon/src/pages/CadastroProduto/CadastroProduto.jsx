@@ -1,7 +1,7 @@
 import React from 'react';
 import Navbar from '../../components/Navbar/Navbar';
 import ProductsRegister from '../../components/ProductsRegister/ProductsRegister';
-import Footer from '../../Footer/Footer';
+import Footer from '../../components/Footer/Footer';
 
 const CadastroProduto = () => {
   return (

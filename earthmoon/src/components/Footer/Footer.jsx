@@ -1,11 +1,11 @@
 import React from 'react';
-import logo from '../assets/iconeLUA.png';
-import visa from '../assets/bandeiras/visa.png';
-import mastercard from '../assets/bandeiras/mastercard.png';
-import express from '../assets/bandeiras/express.jpg';
-import mercadopago from '../assets/bandeiras/mercadopago.png';
-import elo from '../assets/bandeiras/elo.png';
-import pix from '../assets/bandeiras/pix.png';
+import logo from '../../assets/iconeLUA.png';
+import visa from '../../assets/bandeiras/visa.png';
+import mastercard from '../../assets/bandeiras/mastercard.png';
+import express from '../../assets/bandeiras/express.jpg';
+import mercadopago from '../../assets/bandeiras/mercadopago.png';
+import elo from '../../assets/bandeiras/elo.png';
+import pix from '../../assets/bandeiras/pix.png';
 import './Footer.css';
 
 const Footer = () => {

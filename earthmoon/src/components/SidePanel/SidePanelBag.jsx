@@ -3,13 +3,17 @@ import CartItem from './CartItem';
 import api from '../../Api';
 import React, { useState, useEffect } from 'react';
 import Pagamento from '../Pagamento/Pagamento';
+import { useNavigate } from 'react-router-dom';
 
 const idUsuario = sessionStorage.getItem("userId");
 
-const SidePanelBag = ({ isOpen, onClose, isLoggedIn }) => {
+const SidePanelBag = ({ isOpen, onClose }) => {
   const [items, setItems] = useState([]);
   const [idPedido, setIdPedido] = useState(0);
   const [preferenciaId, setPreferenciaId] = useState('');
+  const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+
+  const navigate = useNavigate();
 
   const addItemToBag = (produto) => {
     setItems((prevItems) => [
@@ -26,7 +30,7 @@ const SidePanelBag = ({ isOpen, onClose, isLoggedIn }) => {
 
   // Modifiquei aqui a função para buscar os itens
   const fetchItems = async () => {
-    if (isLoggedIn) return; // Não busca itens se o usuário está logado
+    if (!isLoggedIn) return; // Não busca itens se o usuário não está logado
     try {
       const response = await api.get(`/pedidos/${idUsuario}/em-aberto`);
       console.log(response.data);
@@ -68,6 +72,17 @@ const SidePanelBag = ({ isOpen, onClose, isLoggedIn }) => {
     }
   };
 
+  const handleCheckout = async () => {
+    if (isLoggedIn) {
+      const subTotal = items.reduce((acc, item) => acc + item.preco, 0).toFixed(2);
+      navigate('/pagamento', {
+        state: { items, subTotal },
+      });
+    } else {
+      navigate('/cadastro');
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -93,7 +108,8 @@ const SidePanelBag = ({ isOpen, onClose, isLoggedIn }) => {
           <span>R$ {items.reduce((acc, item) => acc + item.preco, 0).toFixed(2)}</span>
         </div>
         <button className="clear-button" onClick={removerTodosItens}>Excluir Tudo</button>
-        <Pagamento items={items}/>
+        <button className="checkout-button" onClick={handleCheckout}>Checkout</button>
+        {/* <Pagamento items={items}/> */}
       </div>
     </div>
   );
