@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { initMercadoPago, Wallet } from '@mercadopago/sdk-react';
 import api from '../../Api';
 
-const Pagamento = ({ items }) => {
+const Pagamento = ({ items, usuario, frete, endereco, ddd, telefone }) => {
   const [preferenciaId, setPreferenciaId] = useState(null);
 
   // Inicializar Mercado Pago
@@ -25,20 +25,30 @@ const Pagamento = ({ items }) => {
       produtoPreco: item.preco,
     }));
 
-    const usuario = {
-      usuarioNome: 'Matheus Rabello',
-      usuarioEmail: 'matheusmagsun@gmail.com',
-      usuarioCodigoTelefone: '11',
-      usuarioNumeroTelefone: '992247954',
-      usuarioCpf: '44867726877',
-      usuarioCep: '08450030',
-      usuarioRua: 'Doutor Almírio de Campos',
-      usuarioNumeroCasa: '33',
+    if (frete && parseFloat(frete) > 0) {
+      itens.push({
+        produtoId: 'frete', // ID único para identificar o frete
+        produtoNome: 'Frete',
+        produtoDescricao: 'Custo de entrega',
+        produtoQuantidade: 1,
+        produtoPreco: parseFloat(frete), // Certifique-se de que o frete é um número válido
+      });
+    }
+    
+    const user = {
+      usuarioNome: usuario.nome,
+      usuarioEmail: usuario.email,
+      usuarioCodigoTelefone: ddd,
+      usuarioNumeroTelefone: telefone,
+      usuarioCpf: usuario.cpf,
+      usuarioCep: endereco.cep,
+      usuarioRua: endereco.rua,
+      usuarioNumeroCasa: endereco.numero,
     };
 
     const payload = {
       itens,
-      ...usuario,
+      ...user,
     };
 
     try {

@@ -17,19 +17,13 @@ const PrivateRoute = ({ isLoggedIn, children }) => {
 };
 
 const RoutesComponent = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    const loggedInStatus = sessionStorage.getItem("isLoggedIn") === "true";
-    setIsLoggedIn(loggedInStatus);
-  }, []);
+  const isLoggedIn = sessionStorage.getItem("isLoggedIn");
 
   return (
     <Routes>
       {/* Rotas públicas */}
       <Route path="/" element={<Home />} />
       <Route path="/cadastro" element={<Cadastro />} />
-      <Route path="/login" element={<SidePanelLogin isOpen={true} onClose={() => {}} />} />
       <Route path="/cadastro-produto" element={<CadastroProduto />} />
       <Route path="/produto/:id" element={<DetalheProdutoPage />} />
       <Route path="/acessorios" element={<Products />} />

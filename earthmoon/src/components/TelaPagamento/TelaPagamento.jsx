@@ -1,13 +1,73 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./TelaPagamento.css";
+import api from "../../Api";
+import Pagamento from '../Pagamento/Pagamento';
+import { useLocation } from "react-router-dom";
 
 function TelaPagamento() {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(sessionStorage.getItem("userEmail"));
   const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState("Minha Casa");
+  const [enderecos, setEnderecos] = useState([]);
+  const [endereco, setEndereco] = useState([]);
+  const [address, setAddress] = useState("")
+  const idUsuario = sessionStorage.getItem("userId");
+  const [frete, setFrete] = useState(10.50);
+  const [usuario, setUsuario] = useState([]);
+  const [ddd, setDdd] = useState("");
+  const [resto, setResto] = useState("");
 
-  const handleContinue = () => {
-    alert(`Pedido enviado com sucesso!\nE-mail: ${email}\nTelefone: ${phone}\nEndereço: ${address}`);
+  const location = useLocation();
+  const { items, subTotal } = location.state || { items: [], subTotal: 0.0 };
+  
+  const fetchEnderecos = async () => {
+    try {
+      const response = await api.get(`/enderecos/usuario/${idUsuario}`);
+      setEnderecos(response.data.map(endereco => endereco.apelido));
+    } catch (error) {
+      console.error('Erro ao buscar endereço:', error.response?.data);
+    }
+  };
+
+  useEffect(() => {
+   fetchEnderecos();
+  }, []);
+
+  const fetchUsuario = async () => {
+    try {
+      const response = await api.get(`/usuarios/${idUsuario}`);
+      setUsuario(response.data);
+    } catch (error) {
+      console.error('Erro ao buscar usuário:', error.response?.data);
+    }
+  };
+
+  useEffect(() => {
+    fetchUsuario();
+  }, []);
+
+  function formatarTelefone(numero) {
+    const apenasNumeros = numero.replace(/\D/g, "");
+    if (apenasNumeros.length === 11) {
+      return apenasNumeros.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
+    } else if (apenasNumeros.length === 10) {
+      return apenasNumeros.replace(/(\d{2})(\d{4})(\d{4})/, "($1) $2-$3");
+    } else {
+      return numero;
+    }
+  }
+
+  const handlePhoneChange = (e) => {
+    const value = e.target.value.replace(/\D/g, ""); // Remove qualquer caractere não numérico
+
+    setPhone(value);
+
+    if (value.length > 2) {
+      setDdd(value.slice(0, 2)); // Pega os 2 primeiros dígitos como DDD
+      setResto(value.slice(2));  // Pega o restante do número
+    } else {
+      setDdd(value);  // Se tiver menos de 3 dígitos, o DDD é igual ao valor
+      setResto("");    // O restante fica vazio
+    }
   };
 
   return (
@@ -37,8 +97,8 @@ function TelaPagamento() {
                 <input
                   type="tel"
                   placeholder="Digite seu telefone"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
+                  value={formatarTelefone(phone)}
+                  onChange={handlePhoneChange}
                 />
               </label>
             </form>
@@ -46,35 +106,34 @@ function TelaPagamento() {
 
           <div className="delivery-address">
             <h2>Escolher Endereço de Entrega</h2>
-            <select
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-            >
-              <option value="Minha Casa">Minha Casa</option>
-              <option value="Trabalho">Trabalho</option>
-              <option value="Outro">Outro</option>
+            <select value={address} onChange={(e) => setAddress(e.target.value)}>
+              {enderecos.map((apelido, index) => (
+                <option key={index} value={apelido}>
+                  {apelido}
+                </option>
+              ))}
             </select>
           </div>
+
         </div>
 
-        <div className="order-summary">
-          <h2>Resumo do Pedido</h2>
-          <div className="item">
-            <img
-              src="https://via.placeholder.com/50"
-              alt="Produto"
-            />
-            <p>Vestido (Preto, P) - R$ 89,90 </p>
-          </div>
-          <div className="summary">
-            <p>Subtotal: R$ 89,90</p>
-            <p>Frete: R$ 0,00</p>
-            <h3>Total: R$ 89,90</h3>
-             <button className="btn-continue" onClick={handleContinue}>
-          Continuar
-        </button>
-          </div>
-        
+         <div className="order-summary">
+      <h2>Resumo do Pedido</h2>
+      {items?.map((item, index) => (
+        <div className="item" key={index}>
+          <img src={item?.imagens[0]} alt={item?.nome} />
+          <p>
+            {item?.nome} ({item?.tamanho}) - R${item?.preco.toFixed(2)}
+          </p>
+        </div>
+      ))}
+      <div className="summary">
+        <p>Subtotal: R$ {parseFloat(subTotal).toFixed(2)} </p>
+        <p>Frete: R$ {parseFloat(frete).toFixed(2)} </p>
+        <h3>Total: R$ {(parseFloat(subTotal) + parseFloat(frete)).toFixed(2)} </h3>
+        <Pagamento items={items} usuario={usuario} frete={frete} endereco={endereco} ddd={ddd} telefone={resto}/>
+      </div>
+
         </div>
       </main>
     </div>
