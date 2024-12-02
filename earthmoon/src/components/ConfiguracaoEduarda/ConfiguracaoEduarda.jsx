@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '../Navbar/Navbar';
 import './ConfiguracaoEduarda.css';
 import ListaEduarda from '../ListaEduarda/ListaEduarda';
@@ -33,6 +33,20 @@ const ConfiguracaoEduarda = () => {
   const [itemSelecionado, setItemSelecionado] = useState('Dashboard');
   const [filtroProdutosEnviados, setFiltroProdutosEnviados] = useState('Da semana');
   const [filtroProdutosCadastrados, setFiltroProdutosCadastrados] = useState('Da semana');
+  const [kpis, setKpis] = useState([]);
+
+  useEffect(() => {
+  const fetchKpis = async () => {
+    try {
+      const response = await api.get(`/pedidos/kpis`);
+      setKpis(response.data);
+      console.log(kpis);
+    } catch (error) {
+      console.error("Erro ao buscar kpis:", error.response?.data);
+    }
+  };
+  fetchKpis();
+}, []);
 
   const dataCadastrosUsuarios = {
     labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho'],
@@ -132,11 +146,11 @@ const ConfiguracaoEduarda = () => {
         <div className="dashboardLucros">
           <div className="totalBox">
             <h4>Lucro total do mês</h4>
-            <h3>R$ 16.944,00</h3>
+            <h3>R$ {kpis?.lucroTotalMes}</h3>
           </div>
           <div className="totalBox">
             <h4>Lucro total do ano</h4>
-            <h3>R$ 16.944,00</h3>
+            <h3>R$ {kpis?.lucroTotalAno}</h3>
           </div>
         </div>
       </div>
@@ -144,16 +158,16 @@ const ConfiguracaoEduarda = () => {
       <div className="dashboardStats">
         <div className="statCard">
           <p>Pedidos para enviar</p>
-          <h3>12</h3>
+          <h3>{kpis?.pedidosPagos}</h3>
         </div>
         <div className="statCard">
           <p>Produtos disponíveis</p>
-          <h3>5</h3>
+          <h3>{kpis?.produtosDisponiveis}</h3>
           <p>À venda</p>
         </div>
         <div className="statCard">
           <p>Você lucrou</p>
-          <h3>2%</h3>
+          <h3>{kpis?.porcetagemLucro}%</h3>
           <p className="smallText">a mais que no mês anterior</p>
         </div>
         <div className="statCard">

@@ -30,10 +30,8 @@ const SidePanelBag = ({ isOpen, onClose }) => {
 
   // Modifiquei aqui a função para buscar os itens
   const fetchItems = async () => {
-    if (!isLoggedIn) return; // Não busca itens se o usuário não está logado
     try {
       const response = await api.get(`/pedidos/${idUsuario}/em-aberto`);
-      console.log(response.data);
       setIdPedido(response.data[0].idPedido);
       setItems(response.data);
     } catch (error) {

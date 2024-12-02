@@ -17,11 +17,8 @@ const PrivateRoute = ({ isLoggedIn, children }) => {
 };
 
 const RoutesComponent = () => {
-  const isLoggedIn = sessionStorage.getItem("isLoggedIn");
-
   return (
     <Routes>
-      {/* Rotas públicas */}
       <Route path="/" element={<Home />} />
       <Route path="/cadastro" element={<Cadastro />} />
       <Route path="/cadastro-produto" element={<CadastroProduto />} />
@@ -31,25 +28,13 @@ const RoutesComponent = () => {
       <Route path="/sacola" element={<Sacola />} />
       <Route path="/lista" element={<ListaPage />} />
       <Route path="/pagamento" element={<TelaPagamento />} />
-
-      {/* Rotas privadas */}
-      <Route
-        path="/configuracao-cliente"
-        element={
-          <PrivateRoute isLoggedIn={isLoggedIn}>
-            <ConfiguracaoCliente />
-          </PrivateRoute>
-        }
+      <Route path="/configuracao-cliente"
+        element={sessionStorage.getItem("isLoggedIn") ? <ConfiguracaoCliente /> : <Navigate to="/cadastro" />}
       />
-      <Route
-        path="/configuracao-eduarda"
-        element={
-          <PrivateRoute isLoggedIn={isLoggedIn}>
-            <ConfiguracaoEduarda />
-          </PrivateRoute>
-        }
+      <Route path="/configuracao-eduarda"
+        element={sessionStorage.getItem("isLoggedIn") ? <ConfiguracaoEduarda /> : <Navigate to="/cadastro" />}
       />
-
+      
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );

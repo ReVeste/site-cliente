@@ -27,7 +27,7 @@ const SidePanelLogin = ({ isOpen, onClose, onLogin }) => {
       console.log('Login bem-sucedido:', response.data);
       
       sessionStorage.setItem('token', response.data.token);
-      sessionStorage.setItem('isLoggedIn', 'true');
+      sessionStorage.setItem('isLoggedIn', true);
       sessionStorage.setItem('userId', response.data.userId);
       sessionStorage.setItem('userName', response.data.nome);
       sessionStorage.setItem('userEmail', response.data.email);
