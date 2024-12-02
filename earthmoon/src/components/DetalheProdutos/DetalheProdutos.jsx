@@ -9,13 +9,17 @@ import api from '../../Api';
 
 const idUsuario = sessionStorage.getItem("userId");
 
-const DetalheProdutos = ({ onAddToCart }) => {
-  const pilha = new PilhaObj(30);
+  const DetalheProdutos = ({ onAddToCart }) => {
+
+  const [pilha, setPilha] = useState(new PilhaObj(30));
   const [isEspecificacoes, setIsEspecificacoes] = useState(true);
   const { id } = useParams();
   const [produto, setProduto] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showPaymentCard, setShowPaymentCard] = useState(false);
+  const [popupVisible, setPopupVisible] = useState(false);
+  const [popupLoginVisible, setPopupLoginVisible] = useState(false);
+  const [idPedido, setIdPedido] = useState(0);
 
   const toggleDetalhe = (detalhe) => {
     setIsEspecificacoes(detalhe === 'especificacoes');
@@ -38,34 +42,60 @@ const DetalheProdutos = ({ onAddToCart }) => {
 
   const handleAddToCart = async () => {
     if (produto) {
-      try {
-        setLoading(true);
 
-        const response = await api.post('/pedidos', {
-          idUsuario: idUsuario,
-          idProduto: produto.id,
-          quantidadeProduto: 1,
-        });
+      if (!idUsuario) {
 
-        // Método para adicionar o Id do produto na pilha
-        pilha.push(produto.id);
-        pilha.exibe();
-        // chamar método que exibirá o pop-up
-        handleUndo();
+        setPopupLoginVisible(true);
 
-        console.log('Produto adicionado ao carrinho:', response.data);
-        onAddToCart(produto); 
-      } catch (error) {
-        console.error('Erro ao adicionar o produto ao carrinho:', error.response?.data);
-      } finally {
-        setLoading(false);
+        setTimeout(() => {
+          setPopupLoginVisible(false);
+        }, 10000);
+
+      } else {
+
+        try {
+          setLoading(true);
+  
+          const response = await api.post('/pedidos', {
+            idUsuario: idUsuario,
+            idProduto: produto.id,
+            quantidadeProduto: 1,
+          });
+          
+          pilha.push(produto.id);
+          setPilha(new PilhaObj(30, pilha.pilha, pilha.topo));
+          console.log("O que tem na pilha: ");
+          pilha.exibe();
+          setIdPedido(response.data.id);
+          setPopupVisible(true);
+  
+          setTimeout(() => {
+            setPopupVisible(false);
+          }, 10000);
+  
+          console.log('Produto adicionado ao carrinho:', response.data);
+          onAddToCart(produto); 
+        } catch (error) {
+          console.error('Erro ao adicionar o produto ao carrinho:', error.response?.data);
+        } finally {
+          setLoading(false);
+        }
+
       }
     }
   };
-
+  
   const handleUndo = async () => {
 
+      console.log("HandleUndo chamado");
+      console.log("ID PEDIDO = " + idPedido + " ID PRODUTO " + pilha.peek());
 
+      try {
+        await api.delete(`pedidos/${idPedido}/produto/${pilha.pop()}`);
+        setPilha(new PilhaObj(30, pilha.pilha, pilha.topo));
+      } catch (error) {
+        console.error('Erro ao remover o item:', error.response?.data);
+      }
 
   }
 
@@ -98,7 +128,7 @@ const DetalheProdutos = ({ onAddToCart }) => {
             <p className="parcelamento">3x de R$ {(produto.preco / 3).toFixed(2)} sem juros</p>
           </div>
           <p className="detalhe-tamanho-cor">Tamanho {produto.tamanho}</p>
-          <button className="botao-comprar" onClick={handleAddToCart}>Comprar</button>
+          <button className="botao-comprar" onClick={handleAddToCart}>Adicionar ao Carrinho</button>
           <div
             className="meios-pagamento"
             onMouseEnter={() => setShowPaymentCard(true)}
@@ -118,6 +148,19 @@ const DetalheProdutos = ({ onAddToCart }) => {
           </div>
         </div>
       </div>
+
+      {popupLoginVisible && (
+        <div className="popupLogin-message">Ops! Para adicionar produtos ao carrinho, é necessário estar logado.<br/>
+         Faça login ou crie uma conta para continuar suas compras.</div>
+      )}
+
+      {popupVisible && (
+          <div className="popup-message">
+            Produto adicionado ao carrinho com sucesso!<br/>
+            Deseja desfazer essa ação?
+            <button className="red-round-button" onClick={handleUndo}>Desfazer</button>
+          </div>
+          )}
 
       <div className="informacoes-adicionais">
         <div className="detalhe-toggle">

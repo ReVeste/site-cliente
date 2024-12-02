@@ -4,6 +4,7 @@ import './ConfiguracaoEduarda.css';
 import ListaEduarda from '../ListaEduarda/ListaEduarda';
 import { Bar, Line } from 'react-chartjs-2';
 import minhaImagem from '../../assets/export.jpg';
+import api from '../../Api';
 
 import {
   Chart as ChartJS,
@@ -91,11 +92,39 @@ const ConfiguracaoEduarda = () => {
     ],
   };
 
+  const handleExport = async () => {
+    try {
+      const response = await api.get('pedidos/exportar', {
+        responseType: 'blob',
+      });
+  
+      const blob = new Blob([response.data], { type: 'text/csv' });
+      const downloadUrl = window.URL.createObjectURL(blob);
+  
+      const link = document.createElement('a');
+      link.href = downloadUrl;
+      link.download = 'pedidos_em_aberto.csv';
+      document.body.appendChild(link);
+      link.click();
+  
+      link.remove();
+      window.URL.revokeObjectURL(downloadUrl);
+  
+      console.log('Exportação bem-sucedida');
+    } catch (error) {
+      console.error('Erro ao exportar:', error.response?.data || error.message);
+    }
+  };  
+
   const renderDashboard = () => (
     <div className="dashboardContainer">
       <div className="dashboardHeader">
         <h2>DASHBOARD</h2>
-        <div className="exportWrapper">
+        <div 
+          className="exportWrapper" 
+          onClick={handleExport} 
+          style={{ cursor: 'pointer' }}
+        >
           <img className="export" src={minhaImagem} alt="Export Icon" />
           <div className="exportText">Exportar pedidos em aberto</div>
         </div>
