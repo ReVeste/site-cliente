@@ -16,13 +16,13 @@ function TelaPagamento() {
   const [resto, setResto] = useState("");
 
   const camposEndereco = {
-    apelido: "", // Exemplo: "Casa", "Trabalho"
+    apelido: "", 
     rua: "",
     numero: "",
     complemento: "",
     bairro: "",
     cidade: "",
-    estado: "",
+    uf: "",
     cep: "",
   };
 
@@ -60,15 +60,42 @@ function TelaPagamento() {
     }
   };
 
-  const handleSalvarEndereco = () => {
+  const handleSalvarEndereco = async () => {
     if (Object.values(novoEndereco).some((campo) => campo.trim() === "")) {
       alert("Preencha todos os campos.");
       return;
     }
-    setEnderecos([...enderecos, novoEndereco]);
-    alert("Endereço salvo com sucesso!");
-    setNovoEndereco(camposEndereco);
+  
+    try {
+      const idUsuario = sessionStorage.getItem("userId");
+      console.log('Id user:'  + idUsuario);
+  
+      const enderecoComUsuario = {
+        apelido: novoEndereco.apelido,
+        rua: novoEndereco.rua,
+        numero: novoEndereco.numero,
+        complemento: novoEndereco.complemento,
+        bairro: novoEndereco.bairro,
+        cidade: novoEndereco.cidade,
+        uf: novoEndereco.uf,
+        cep: novoEndereco.cep,
+        idUsuario,
+      };
+  
+      const response = await api.post("/enderecos", enderecoComUsuario);
+      if (response.status === 201) {
+        setEnderecos([...enderecos, response.data.map((endereco) => endereco.apelido)]);
+        alert("Endereço salvo com sucesso!");
+        setNovoEndereco(camposEndereco);
+      } else {
+        alert("Erro ao salvar endereço. Tente novamente.");
+      }
+    } catch (error) {
+      alert("Erro ao salvar endereço: " + error.message);
+    }
   };
+  
+  
 
   return (
     <div className="containerPagamento">
@@ -94,23 +121,24 @@ function TelaPagamento() {
           <>
             <div className="new-address-form">
               <h2>Criar Novo Endereço</h2>
-              <form>
-                {Object.keys(novoEndereco).map((campo) => (
-                  <label key={campo}>
-                    {campo.charAt(0).toUpperCase() + campo.slice(1)}:
+              <form className="form-grid">
+                {Object.keys(camposEndereco).map((campo) => (
+                  <div className="form-field" key={campo}>
+                    <label>{campo.charAt(0).toUpperCase() + campo.slice(1)}:</label>
                     <input
                       type="text"
                       name={campo}
                       value={novoEndereco[campo]}
                       onChange={handleChange}
                     />
-                  </label>
+                  </div>
                 ))}
                 <button type="button" onClick={handleSalvarEndereco}>
                   Salvar Endereço
                 </button>
               </form>
             </div>
+
 
             <div className="select-address">
               <h2>Escolher Endereço</h2>
