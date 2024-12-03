@@ -272,9 +272,11 @@ body, html {
     line-height: 1.5;
     margin-top: -10px;
     position: relative;
+    outline: none;
 }
 
 .noBorderSelect:focus {
+    border: none;
     outline: none;
     z-index: 15; 
 }
