@@ -1,7 +1,7 @@
 import React from 'react';
 import Navbar from '../../components/Navbar/Navbar'; 
 import ProductsGrid from '../../components/ProductsGrid/ProductsGrid';
-import Footer from '../../Footer/Footer';
+import Footer from '../../components/Footer/Footer';
 
 const Products = () => {
   return (

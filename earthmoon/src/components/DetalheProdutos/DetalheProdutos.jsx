@@ -2,18 +2,24 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import './DetalheProdutos.css';
+import PilhaObj from '../../Utils/PilhaObj';
 import IconePagamento from '../../assets/pagamento.png';
 import ImagemEspecificacoes from '../../assets/tabelaMedida.png';
 import api from '../../Api';
 
-
 const idUsuario = sessionStorage.getItem("userId");
 
-const DetalheProdutos = ({ onAddToCart }) => {  // Adicione o props onAddToCart
+  const DetalheProdutos = ({ onAddToCart }) => {
+
+  const [pilha, setPilha] = useState(new PilhaObj(30));
   const [isEspecificacoes, setIsEspecificacoes] = useState(true);
   const { id } = useParams();
   const [produto, setProduto] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showPaymentCard, setShowPaymentCard] = useState(false);
+  const [popupVisible, setPopupVisible] = useState(false);
+  const [popupLoginVisible, setPopupLoginVisible] = useState(false);
+  const [idPedido, setIdPedido] = useState(0);
 
   const toggleDetalhe = (detalhe) => {
     setIsEspecificacoes(detalhe === 'especificacoes');
@@ -36,24 +42,62 @@ const DetalheProdutos = ({ onAddToCart }) => {  // Adicione o props onAddToCart
 
   const handleAddToCart = async () => {
     if (produto) {
-      try {
-        setLoading(true);
 
-        const response = await api.post('/pedidos', {
-          idUsuario: idUsuario,
-          idProduto: produto.id,
-          quantidadeProduto: 1,
-        });
+      if (!idUsuario) {
 
-        console.log('Produto adicionado ao carrinho:', response.data);
-        onAddToCart(produto); 
-      } catch (error) {
-        console.error('Erro ao adicionar o produto ao carrinho:', error.response?.data);
-      } finally {
-        setLoading(false);
+        setPopupLoginVisible(true);
+
+        setTimeout(() => {
+          setPopupLoginVisible(false);
+        }, 10000);
+
+      } else {
+
+        try {
+          setLoading(true);
+  
+          const response = await api.post('/pedidos', {
+            idUsuario: idUsuario,
+            idProduto: produto.id,
+            quantidadeProduto: 1,
+          });
+          
+          pilha.push(produto.id);
+          setPilha(new PilhaObj(30, pilha.pilha, pilha.topo));
+          console.log("O que tem na pilha: ");
+          pilha.exibe();
+          setIdPedido(response.data.id);
+          setPopupVisible(true);
+  
+          setTimeout(() => {
+            setPopupVisible(false);
+          }, 10000);
+  
+          console.log('Produto adicionado ao carrinho:', response.data);
+          onAddToCart(produto); 
+        } catch (error) {
+          console.error('Erro ao adicionar o produto ao carrinho:', error.response?.data);
+        } finally {
+          setLoading(false);
+        }
+
       }
     }
   };
+  
+  const handleUndo = async () => {
+
+      console.log("ID PEDIDO = " + idPedido + " ID PRODUTO " + id);
+      setPopupVisible(false);
+
+      try {
+        await api.delete(`pedidos/${idPedido}/produto/${id}`);
+        setPilha(new PilhaObj(30, pilha.pilha, pilha.topo));
+      } catch (error) {
+        console.error('Erro ao remover o item:', error.response?.data);
+      }
+
+  }
 
   if (loading) return <p>Carregando...</p>;
   if (!produto) return <p>Produto não encontrado.</p>;
@@ -81,18 +125,42 @@ const DetalheProdutos = ({ onAddToCart }) => {  // Adicione o props onAddToCart
           <h2 className="titulo-produto">{produto.nome}</h2>
           <div className="preco-parcelamento">
             <p className="preco">R$ {produto.preco.toFixed(2)}</p>
-            <p className="parcelamento">3x de R$${(produto.preco / 3).toFixed(2)} sem juros</p>
+            <p className="parcelamento">3x de R$ {(produto.preco / 3).toFixed(2)} sem juros</p>
           </div>
           <p className="detalhe-tamanho-cor">Tamanho {produto.tamanho}</p>
-          <button className="botao-comprar" onClick={handleAddToCart}>Comprar</button> {/* Adiciona o evento aqui */}
-          <div className="meios-pagamento">
-            <img src={IconePagamento} alt="Ícone de pagamento" className="icone-pagamento"/>
-            <Link to="/meios-de-pagamento" style={{ color: '#000', textDecoration: 'none' }}>
-              <span>Meios de pagamento</span>
-            </Link>
+          <button className="botao-comprar" onClick={handleAddToCart}>Adicionar ao Carrinho</button>
+          <div
+            className="meios-pagamento"
+            onMouseEnter={() => setShowPaymentCard(true)}
+            onMouseLeave={() => setShowPaymentCard(false)}
+          >
+            <img src={IconePagamento} alt="Ícone de pagamento" className="icone-pagamento" />
+            <span>Meios de pagamento</span>
+            {showPaymentCard && (
+              <div className="payment-card">
+                <p><strong>Cartão de crédito e débito:</strong> Aceitamos as principais bandeiras como Visa, MasterCard, Elo, American Express, entre outras.</p>
+                <p><strong>Pix:</strong> Pagamento instantâneo para maior agilidade.</p>
+                <p><strong>Boleto bancário:</strong> Disponível para quem prefere pagamentos tradicionais.</p>
+                <p><strong>Carteira do Mercado Pago:</strong> Use seu saldo na conta do Mercado Pago para pagar.</p>
+                <p><strong>Parcelamento:</strong> Oferecemos a possibilidade de parcelamento (se aplicável), com ou sem juros, dependendo do valor e da oferta.</p>
+              </div>
+            )}
           </div>
         </div>
       </div>
+
+      {popupLoginVisible && (
+        <div className="popupLogin-message">Ops! Para adicionar produtos ao carrinho, é necessário estar logado.<br/>
+         Faça login ou crie uma conta para continuar suas compras.</div>
+      )}
+
+      {popupVisible && (
+          <div className="popupUndo-message">
+            Produto adicionado ao carrinho com sucesso!<br/>
+            Deseja desfazer essa ação?<br/>
+            <button className="red-round-button" onClick={handleUndo}>Desfazer</button>
+          </div>
+          )}
 
       <div className="informacoes-adicionais">
         <div className="detalhe-toggle">
@@ -113,7 +181,7 @@ const DetalheProdutos = ({ onAddToCart }) => {  // Adicione o props onAddToCart
         
         {isEspecificacoes ? (
           <div className="detalhe-especificacoes">
-            <img src={ImagemEspecificacoes} alt="Especificações do Produto"/>
+            <img src={ImagemEspecificacoes} alt="Especificações do Produto" />
           </div>
         ) : (
           <div className="detalhe-caracteristicas">

@@ -3,9 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import './SidePanel.css';
 import api from '../../Api';
 
-const SidePanelLogin = ({ isOpen, onClose }) => {
+const SidePanelLogin = ({ isOpen, onClose, onLogin }) => {
   const navigate = useNavigate();
-
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -28,7 +27,7 @@ const SidePanelLogin = ({ isOpen, onClose }) => {
       console.log('Login bem-sucedido:', response.data);
       
       sessionStorage.setItem('token', response.data.token);
-      sessionStorage.setItem('isLoggedIn', 'true');
+      sessionStorage.setItem('isLoggedIn', true);
       sessionStorage.setItem('userId', response.data.userId);
       sessionStorage.setItem('userName', response.data.nome);
       sessionStorage.setItem('userEmail', response.data.email);
@@ -38,13 +37,14 @@ const SidePanelLogin = ({ isOpen, onClose }) => {
 
       setTimeout(() => {
         setPopupVisible(false);
+        onLogin();
         onClose();
         navigate('/configuracao-cliente');
       }, 2000);
       
     } catch (error) {
-      console.error('Erro no login:', error.response?.data);
-      if (error.response.status === 409) {
+      console.error('Erro no login:', error.response);
+      if (error.response === 409) {
         setErrorMessage('Erro no cadastro. CPF ou E-mail já cadastrado!');
       } else {
         setErrorMessage('Erro no cadastro. Verifique os dados e tente novamente.');
@@ -92,11 +92,6 @@ const SidePanelLogin = ({ isOpen, onClose }) => {
           onChange={(e) => setSenha(e.target.value)} 
           required
         />
-        <div className="forgot-password-container">
-          <Link to="/forgot-password" className="forgot-password" onClick={onClose}>
-            Esqueceu a senha?
-          </Link>
-        </div>
         <button className="login-button" type="submit">Fazer login</button>
       </form>
       <div className="create-account">

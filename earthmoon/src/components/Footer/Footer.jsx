@@ -1,11 +1,11 @@
 import React from 'react';
-import logo from '../assets/iconeLUA.png';
-import visa from '../assets/bandeiras/visa.png';
-import mastercard from '../assets/bandeiras/mastercard.png';
-import express from '../assets/bandeiras/express.jpg';
-import mercadopago from '../assets/bandeiras/mercadopago.png';
-import elo from '../assets/bandeiras/elo.png';
-import pix from '../assets/bandeiras/pix.png';
+import logo from '../../assets/iconeLUA.png';
+import visa from '../../assets/bandeiras/visa.png';
+import mastercard from '../../assets/bandeiras/mastercard.png';
+import express from '../../assets/bandeiras/express.jpg';
+import mercadopago from '../../assets/bandeiras/mercadopago.png';
+import elo from '../../assets/bandeiras/elo.png';
+import pix from '../../assets/bandeiras/pix.png';
 import './Footer.css';
 
 const Footer = () => {
@@ -15,14 +15,6 @@ const Footer = () => {
                 <img src={logo} alt="Logo" />
             </div>
             <div className="footerContent">
-                <div className="footerSection">
-                    <h4>INFORMAÇÃO</h4>
-                    <ul>
-                        <li><a href="#terms">Termos de Uso</a></li>
-                        <li><a href="#care">Como cuidar da sua peça</a></li>
-                        <li><a href="#measure">Como medir</a></li>
-                    </ul>
-                </div>
                 <div className="footerSection">
                     <h4>ENTRE EM CONTATO</h4>
                     <ul>
