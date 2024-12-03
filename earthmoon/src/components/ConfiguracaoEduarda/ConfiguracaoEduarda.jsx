@@ -29,7 +29,7 @@ ChartJS.register(
   Legend
 );
 
-const ConfiguracaoEduarda = () => {
+const   ConfiguracaoEduarda = () => {
   const [itemSelecionado, setItemSelecionado] = useState('Dashboard');
   const [filtroProdutosEnviados, setFiltroProdutosEnviados] = useState('Da semana');
   const [filtroProdutosCadastrados, setFiltroProdutosCadastrados] = useState('Da semana');
@@ -275,7 +275,7 @@ const ConfiguracaoEduarda = () => {
   };
 
   const renderDashboard = () => (
-    <div className="dashboardContainer">
+    <div className="dashboardContainer" role="region" aria-labelledby="dashboard-title">
       <div className="dashboardHeader">
         <h2>DASHBOARD</h2>
         <div
@@ -286,9 +286,9 @@ const ConfiguracaoEduarda = () => {
           <img className="export" src={minhaImagem} alt="Export Icon" />
           <div className="exportText">Exportar pedidos em aberto</div>
         </div>
-
+  
         <div className="dashboardLucros">
-          <div className="totalBox">
+          <div className="totalBox" role="group" aria-label="Lucro total do mês e ano">
             <h4>Lucro total do mês</h4>
             <h3>R$ {kpis?.lucroTotalMes}</h3>
           </div>
@@ -298,23 +298,24 @@ const ConfiguracaoEduarda = () => {
           </div>
         </div>
       </div>
-
-      <div className="dashboardStats">
-        <div className="statCard">
+  
+      <div className="dashboardStats" role="list" aria-labelledby="dashboard-stats-title">
+        <h3 id="dashboard-stats-title">Estatísticas principais</h3>
+        <div className="statCard" role="listitem">
           <p>Pedidos para enviar</p>
           <h3>{kpis?.pedidosPagos}</h3>
         </div>
-        <div className="statCard">
+        <div className="statCard" role="listitem">
           <p>Produtos disponíveis</p>
           <h3>{kpis?.produtosDisponiveis}</h3>
           <p>À venda</p>
         </div>
-        <div className="statCard">
+        <div className="statCard" role="listitem">
           <p>Você lucrou</p>
           <h3>{kpis?.porcetagemLucro}%</h3>
           <p className="smallText">a mais que no mês anterior</p>
         </div>
-        <div className="statCard">
+        <div className="statCard" role="listitem">
           <p>Produtos enviados</p>
           <h3>
             {
@@ -325,6 +326,7 @@ const ConfiguracaoEduarda = () => {
           </h3>
           <select
             className="noBorderSelect"
+            aria-label="Filtro para produtos enviados"
             value={filtroProdutosEnviados}
             onChange={(e) => setFiltroProdutosEnviados(e.target.value)}
           >
@@ -332,8 +334,7 @@ const ConfiguracaoEduarda = () => {
             <option>Do mês</option>
           </select>
         </div>
-
-        <div className="statCard">
+        <div className="statCard" role="listitem">
           <p>Produtos cadastrados</p>
           <h3>
             {
@@ -344,6 +345,7 @@ const ConfiguracaoEduarda = () => {
           </h3>
           <select
             className="noBorderSelect"
+            aria-label="Filtro para produtos cadastrados"
             value={filtroProdutosCadastrados}
             onChange={(e) => setFiltroProdutosCadastrados(e.target.value)}
           >
@@ -353,31 +355,31 @@ const ConfiguracaoEduarda = () => {
         </div>
 
       </div>
-
+  
       <div className="dashboardMainContent">
-        <div className="dashboardLeft">
+        <div className="dashboardLeft" role="region" aria-labelledby="monthly-profits-title">
           <div className="dashboardCharts">
             <div className="chartsWrapper">
               <div className="chartContainer">
-                <h3>Lucros Mensais</h3>
-                <Line data={LucrosDash} />
+                <h3 id="monthly-profits-title">Lucros Mensais</h3>
+                <Line data={lucros} />
+ 
               </div>
             </div>
           </div>
         </div>
-
-        <div className="dashboardRight">
+  
+        <div className="dashboardRight" role="region" aria-labelledby="monthly-sales-title">
           <div className="dashboardCharts">
             <div className="chartsWrapper">
               <div className="chartContainer">
-                <h3>Quantidades de vendas por mês</h3>
+                <h3 id="monthly-sales-title">Quantidades de vendas por mês</h3>
                 <Bar data={dataQtdVendas} />
               </div>
             </div>
           </div>
         </div>
       </div>
-
       <div className="dashboardMainContent">
         <div className="dashboardLeft">
           <div className="dashboardCharts">
@@ -401,19 +403,21 @@ const ConfiguracaoEduarda = () => {
         </div>
       </div>
     </div>
-  );
+  );  
 
   return (
     <>
       <Navbar />
-      <div className="configContainer">
-        <aside className="sidebar">
+      <div className="configContainer" role="main">
+        <aside className="sidebar" role="navigation" aria-label="Menu de configurações">
           <h1>Minhas Configurações</h1>
-          <ul className="settingsMenu">
+          <ul className="settingsMenu" role="menu">
             {['Geral', 'Dashboard'].map((item) => (
               <li
                 key={item}
                 className={itemSelecionado === item ? 'active' : ''}
+                role="menuitem"
+                aria-current={itemSelecionado === item ? 'page' : undefined}
                 onClick={() => setItemSelecionado(item)}
               >
                 {item}
@@ -424,7 +428,9 @@ const ConfiguracaoEduarda = () => {
             Sair da minha conta
           </a>
         </aside>
-        <main className="mainContent">
+        <main className="mainContent" role="region" aria-labelledby="main-content">
+          <h2 id="main-content">Conteúdo principal</h2>
+
           {itemSelecionado === 'Geral' && renderGeral()}
           {itemSelecionado === 'Dashboard' && renderDashboard()}
         </main>

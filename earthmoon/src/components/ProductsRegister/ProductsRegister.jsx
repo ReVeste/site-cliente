@@ -31,7 +31,7 @@ const ProductsRegister = () => {
         });
     });
 
-    const  urls= await Promise.all(uploadPromises);
+    const urls = await Promise.all(uploadPromises);
     console.log('URLs:', urls);
     console.log('URLs válidas:', urls.filter(url => url !== null));
     return urls.filter(url => url !== null);
@@ -106,6 +106,7 @@ const ProductsRegister = () => {
       images: newImages,
     }));
   };
+
   const removeImage = (index) => {
     setFormData((prevData) => {
       const newImages = [...prevData.images];
@@ -113,6 +114,7 @@ const ProductsRegister = () => {
       return { ...prevData, images: newImages };
     });
   };
+
   const swapImages = (dragIndex, hoverIndex) => {
     setFormData((prevData) => {
       const newImages = [...prevData.images];
@@ -121,9 +123,11 @@ const ProductsRegister = () => {
       return { ...prevData, images: newImages };
     });
   };
+
   const handleDragStart = (e, index) => {
     dragIndex = index;
   };
+
   const handleDrop = (e, index) => {
     e.preventDefault();
     if (dragIndex !== index) {
@@ -131,26 +135,27 @@ const ProductsRegister = () => {
     }
   };
 
-    let dragIndex = null;
+  let dragIndex = null;
 
   return (
     <div className="product-register-container">
       <div className="image-upload-section">
-        <h3>Imagens do Produto</h3>
+        <h3 id="image-upload-heading">Imagens do Produto</h3>
 
-        <div className="main-image-box">
+        <div className="main-image-box" aria-labelledby="image-upload-heading">
           <input
             type="file"
             accept="image/*"
             style={{ display: 'none' }}
             onChange={handleImageUpload}
             id="mainImageUpload"
+            aria-describedby="mainImageDescription"
           />
           <label htmlFor="mainImageUpload" className="upload-label">
             {formData.images.length === 0 ? (
               <>
                 <span className="upload-icon"></span>
-                <span>Clique para adicionar a imagem principal</span>
+                <span id="mainImageDescription">Clique para adicionar a imagem principal</span>
               </>
             ) : (
               <img
@@ -162,12 +167,16 @@ const ProductsRegister = () => {
           </label>
           {formData.images.length > 0 && (
             <button className="remove-image"
-             onClick={() => removeImage(0)}
-             >Remover</button>
+              onClick={() => removeImage(0)}
+              aria-label="Remover imagem principal"
+            >
+              Remover
+            </button>
           )}
         </div>
 
-        <div className="additional-images-container">
+        <div className="additional-images-container" aria-labelledby="additionalImagesHeading">
+          <h4 id="additionalImagesHeading">Imagens Adicionais</h4>
           {formData.images.slice(1).map((image, index) => (
             <div
               className="additional-image-box"
@@ -176,19 +185,23 @@ const ProductsRegister = () => {
               onDragStart={(e) => handleDragStart(e, index + 1)}
               onDragOver={(e) => e.preventDefault()}
               onDrop={(e) => handleDrop(e, index + 1)}
+              aria-labelledby={`image-${index + 1}-label`}
             >
               <img
                 src={URL.createObjectURL(image)}
-                // alt={Imagem Adicional ${index + 1}}
+                alt={`Imagem Adicional ${index + 1}`}
                 className="additional-image"
               />
-              <button className="remove-image" 
-              onClick={() => removeImage(index + 1)}
-              >Remover</button>
+              <button className="remove-image"
+                onClick={() => removeImage(index + 1)}
+                aria-label={`Remover imagem adicional ${index + 1}`}
+              >
+                Remover
+              </button>
             </div>
           ))}
           {formData.images.length < 4 && (
-            <div className="additional-upload" onClick={() => document.getElementById('additionalImageUpload').click()}>
+            <div className="additional-upload" onClick={() => document.getElementById('additionalImageUpload').click()} aria-label="Adicionar imagens adicionais">
               <span className="upload-icon">+</span>
             </div>
           )}
@@ -199,11 +212,14 @@ const ProductsRegister = () => {
             style={{ display: 'none' }}
             onChange={handleImageUpload}
             id="additionalImageUpload"
+            aria-describedby="additionalImagesDescription"
           />
         </div>
       </div>
 
-      <form className="product-form" onSubmit={handleSubmit}>
+      <form className="product-form" onSubmit={handleSubmit} aria-labelledby="form-title">
+        <h2 id="form-title">Cadastro de Produto</h2>
+
         <label htmlFor="title">TÍTULO DO PRODUTO</label>
         <input
           type="text"
@@ -213,6 +229,7 @@ const ProductsRegister = () => {
           value={formData.title}
           onChange={handleChange}
           required
+          aria-required="true"
         />
 
         <label htmlFor="brand">MARCA</label>
@@ -225,6 +242,7 @@ const ProductsRegister = () => {
             value={formData.noBrand ? '' : formData.brand}
             onChange={handleChange}
             disabled={formData.noBrand}
+            aria-disabled={formData.noBrand}
           />
           <label>
             <input
@@ -232,6 +250,7 @@ const ProductsRegister = () => {
               name="noBrand"
               checked={formData.noBrand}
               onChange={handleChange}
+              aria-label="Produto sem marca"
             />
             Produto sem marca
           </label>
@@ -245,6 +264,7 @@ const ProductsRegister = () => {
           value={formData.description}
           onChange={handleChange}
           required
+          aria-required="true"
         />
 
         <label htmlFor="price">PREÇO</label>
@@ -256,6 +276,7 @@ const ProductsRegister = () => {
           value={formData.price}
           onChange={handlePriceChange}
           required
+          aria-required="true"
         />
 
         <label htmlFor="category">CATEGORIA</label>
@@ -265,6 +286,7 @@ const ProductsRegister = () => {
           value={formData.category}
           onChange={handleChange}
           required
+          aria-required="true"
         >
           <option value="" disabled>Selecione a Categoria</option>
           <option value="ROUPA">Roupas</option>
@@ -282,11 +304,12 @@ const ProductsRegister = () => {
               value={formData.stock}
               onChange={handleChange}
               required
+              aria-required="true"
             />
           </>
         )}
 
-        <button type="submit" className="submit-button">Salvar</button>
+        <button type="submit" className="submit-button" aria-label="Salvar produto">Salvar</button>
       </form>
     </div>
   );

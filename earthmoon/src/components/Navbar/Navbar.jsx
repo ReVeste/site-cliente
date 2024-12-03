@@ -64,7 +64,6 @@ const Navbar = () => {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    // Navegar para a página de resultados de pesquisa com a query
     navigate(`/search?query=${searchQuery}`);
   };
 
@@ -93,65 +92,77 @@ const Navbar = () => {
 
   return (
     <div>
-      <nav className="navbar">
+      <nav className="navbar" role="navigation" aria-label="Barra de navegação">
         <div className="nav-left">
-          <Link to="/">
-            <img src={logo} alt="logo" className="logo" />
+          <Link to="/" aria-label="Ir para a página inicial">
+            <img src={logo} alt="Logo da loja" className="logo" />
           </Link>
         </div>
-  
+
         <div className="nav-middle">
-          <ul className="nav-links">
+          <ul className="nav-links" aria-label="Links de navegação">
             <li className="nav-item">
-              <Link to="/produtos" className="nav-link">Roupas</Link>
+              <Link to="/produtos" className="nav-link" aria-label="Ver roupas">
+                Roupas
+              </Link>
             </li>
             <li className="nav-item">
-              <Link to="/acessorios" className="nav-link">Acessórios</Link>
+              <Link to="/acessorios" className="nav-link" aria-label="Ver acessórios">
+                Acessórios
+              </Link>
             </li>
           </ul>
         </div>
-  
+
         <div className="nav-icons">
-          <form className="search-form" onSubmit={handleSearchSubmit}>
+          <form className="search-form" onSubmit={handleSearchSubmit} role="search" aria-label="Buscar produtos">
             <div className="search-input-wrapper">
-              <img src={searchIcon} alt="Search Icon" className="search-icon" />
+              <img src={searchIcon} alt="Ícone de pesquisa" className="search-icon" />
               <input
                 type="text"
                 className="search-input"
                 placeholder="Buscar..."
                 value={searchQuery}
                 onChange={handleSearchChange}
+                aria-label="Digite o nome do produto para pesquisar"
               />
             </div>
           </form>
 
           <img
             src={userIcon}
-            alt="user icon"
+            alt={isLoggedIn ? "Configurações do usuário" : "Ícone de login do usuário"}
             className="icon"
             onClick={handleUserIconClick}
+            role="button"
+            aria-label={isLoggedIn ? "Ir para as configurações do usuário" : "Fazer login"}
           />
           <img
             src={cartIcon}
-            alt="cart icon"
+            alt="Ícone do carrinho"
             className="icon"
             onClick={toggleBagPanel}
+            role="button"
+            aria-label="Abrir carrinho de compras"
           />
         </div>
       </nav>
-  
-      {isLoginPanelOpen && <div className="backdrop" onClick={toggleLoginPanel} />}
-      {isBagPanelOpen && <div className="backdrop" onClick={toggleBagPanel} />}
+
+      {isLoginPanelOpen && <div className="backdrop" onClick={toggleLoginPanel} role="button" aria-label="Fechar painel de login" />}
+      {isBagPanelOpen && <div className="backdrop" onClick={toggleBagPanel} role="button" aria-label="Fechar painel do carrinho" />}
+      
       <SidePanelLogin 
         isOpen={isLoginPanelOpen} 
         onClose={toggleLoginPanel} 
         onLogin={handleLogin}
+        aria-labelledby="painel-login"
       />
       <SidePanelBag 
         isOpen={isBagPanelOpen} 
         onClose={toggleBagPanel} 
         items={cartItems} 
         onRemoveItem={handleRemoveItem} 
+        aria-labelledby="painel-carrinho"
       />
     </div>
   );

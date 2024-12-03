@@ -4,7 +4,3 @@ body {
   transition: overflow 0.3s ease, padding-right 0.3s ease; 
 }
 
-.no-scroll {
-  overflow: hidden; 
-  padding-right: 15px; 
-}

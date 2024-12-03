@@ -39,7 +39,7 @@ const SidePanelLogin = ({ isOpen, onClose, onLogin }) => {
         setPopupVisible(false);
         onLogin();
         onClose();
-        navigate('/configuracao-cliente');
+        window.location.reload();
       }, 2000);
       
     } catch (error) {

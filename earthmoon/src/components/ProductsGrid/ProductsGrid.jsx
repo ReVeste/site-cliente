@@ -41,31 +41,37 @@ const ProductsGrid = () => {
         break;
     }
   }, [location.pathname]);
-    
+
   if (loading) {
-    return <p>Carregando produtos...</p>;
+    return <p role="status" aria-live="polite">Carregando produtos...</p>;
   }
 
   if (error) {
-    return <p>{error}</p>;
+    return <p role="alert">{error}</p>;
   }
 
   const produtosExibidos = showAll ? produtos : produtos.slice(0, 4);
 
   return (
-    <div className="products-grid">
-      <h2>Disponíveis</h2>
+    <div className="products-grid" role="region" aria-labelledby="products-heading">
+      <h2 id="products-heading">Produtos Disponíveis</h2>
       {!showAll && (
-        <button onClick={() => setShowAll(true)}>Ver mais</button>
+        <button 
+          onClick={() => setShowAll(true)} 
+          aria-expanded={showAll}
+          aria-controls="products-grid-container"
+        >
+          Ver mais
+        </button>
       )}
-      <div className="grid-container">
-      {Array.isArray(produtosExibidos) && produtosExibidos.map((produto) => (
-  <div key={produto.id}>
-    <ProductCard 
-      produto={produto} 
-    />
-  </div>
-))}
+      <div className="grid-container" id="products-grid-container" role="list">
+        {Array.isArray(produtosExibidos) && produtosExibidos.map((produto) => (
+          <div key={produto.id} role="listitem">
+            <ProductCard 
+              produto={produto} 
+            />
+          </div>
+        ))}
       </div>    
     </div>
   );

@@ -54,10 +54,17 @@ const ListaEduarda = () => {
   }
 
   return (
-    <div className="product-list">
+    <div className="product-list" role="main" aria-labelledby="lista-pedidos">
       <div className="header">
-        <img src={IconeVenda} alt="Ícone de Venda" className="title-image" />
-        <h1 className="title">Pedidos em aberto</h1>
+        <img
+          src={IconeVenda}
+          alt="Ícone de Venda"
+          className="title-image"
+          aria-hidden="true"
+        />
+        <h1 id="lista-pedidos" className="title">
+          Pedidos em aberto
+        </h1>
         <div className="tabs">
           <button className="buttonConcluir" onClick={concluirPedido}>Concluir Pedido</button>
         </div>
@@ -89,7 +96,13 @@ const ListaEduarda = () => {
                   ))}
                 </div>
               ) : (
-                <div className="image-placeholder">Sem imagem</div>
+                <div
+                  className="image-placeholder"
+                  role="img"
+                  aria-label="Imagem não disponível"
+                >
+                  Sem imagem
+                </div>
               )}
             </div>
 

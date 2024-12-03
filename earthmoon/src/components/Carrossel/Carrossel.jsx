@@ -5,7 +5,7 @@ import api from '../../Api';
 const Carrossel = () => {
   const [reviews, setReviews] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const reviewsPerSlide = 3;  // Define quantas reviews mostrar por vez
+  const reviewsPerSlide = 3;
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -24,7 +24,6 @@ const Carrossel = () => {
   const nextReview = () => {
     setCurrentIndex((prevIndex) => {
       const nextIndex = prevIndex + 1;
-      // Se o índice ultrapassar o limite, vai para o início
       return nextIndex >= reviews.length ? 0 : nextIndex;
     });
   };
@@ -32,14 +31,12 @@ const Carrossel = () => {
   const prevReview = () => {
     setCurrentIndex((prevIndex) => {
       const prevIndexResult = prevIndex - 1;
-      // Se o índice for menor que zero, vai para o final
       return prevIndexResult < 0 ? reviews.length - 1 : prevIndexResult;
     });
   };
 
   const getVisibleReviews = () => {
     if (reviews.length === 0) return [];
-    // Fazendo o "loop" circular para mostrar sempre 3 resenhas
     const visibleReviews = [];
     for (let i = 0; i < reviewsPerSlide; i++) {
       visibleReviews.push(reviews[(currentIndex + i) % reviews.length]);
@@ -48,18 +45,35 @@ const Carrossel = () => {
   };
 
   return (
-    <div className="carrossel">
-      <button className="carrossel-control-left" onClick={prevReview}>
+    <div className="carrossel" role="region" aria-label="Carrossel de feedbacks">
+      <button
+        className="carrossel-control-left"
+        onClick={prevReview}
+        aria-label="Mostrar feedbacks anteriores"
+        aria-controls="carrossel-content"
+      >
         ◄
       </button>
 
-      <div className="carrossel-inner">
-        {getVisibleReviews().map((review) => (
-          <div key={review.id} className="review-container">
-            <div className="review-header">
-              <div className="stars">
+      <div
+        className="carrossel-inner"
+        id="carrossel-content"
+        role="list"
+        aria-live="polite"
+        aria-atomic="true"
+        aria-relevant="additions removals"
+      >
+        {getVisibleReviews().map((review, index) => (
+          <div
+            key={review.id}
+            className="review-container"
+            role="listitem"
+            aria-labelledby={`review-${index}`}
+          >
+            <div className="review-header" id={`review-${index}`}>
+              <div className="stars" aria-label={`Nota: ${review.nota} estrelas`}>
                 {[...Array(review.nota)].map((_, i) => (
-                  <span key={i} className="star">
+                  <span key={i} className="star" aria-hidden="true">
                     ★
                   </span>
                 ))}
@@ -75,7 +89,12 @@ const Carrossel = () => {
         ))}
       </div>
 
-      <button className="carrossel-control-right" onClick={nextReview}>
+      <button
+        className="carrossel-control-right"
+        onClick={nextReview}
+        aria-label="Mostrar próximos feedbacks"
+        aria-controls="carrossel-content"
+      >
         ►
       </button>
     </div>
