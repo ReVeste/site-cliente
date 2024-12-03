@@ -5,7 +5,7 @@ import Footer from '../../components/Footer/Footer';
 const TelaPagamento = () => {
   return (
     <div>
-'      <TelaPagamentoComponent />
+      <TelaPagamentoComponent />
       <Footer />
     </div>
   );

@@ -29,7 +29,7 @@ ChartJS.register(
   Legend
 );
 
-const ConfiguracaoEduarda = () => {
+const   ConfiguracaoEduarda = () => {
   const [itemSelecionado, setItemSelecionado] = useState('Dashboard');
   const [filtroProdutosEnviados, setFiltroProdutosEnviados] = useState('Da semana');
   const [filtroProdutosCadastrados, setFiltroProdutosCadastrados] = useState('Da semana');
