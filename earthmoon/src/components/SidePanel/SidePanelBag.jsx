@@ -1,15 +1,13 @@
 import './SidePanelBag.css';
 import CartItem from './CartItem';
 import api from '../../Api';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import Pagamento from '../Pagamento/Pagamento';
 import { useNavigate } from 'react-router-dom';
 
 const idUsuario = sessionStorage.getItem("userId");
 
-
 const SidePanelBag = ({ isOpen, onClose }) => {
-
   const [items, setItems] = useState([]);
   const [idPedido, setIdPedido] = useState(0);
   const [preferenciaId, setPreferenciaId] = useState('');
@@ -28,11 +26,9 @@ const SidePanelBag = ({ isOpen, onClose }) => {
         descricao: produto.descricao,
       },
     ]);
-    
   };
 
   // Modifiquei aqui a função para buscar os itens
-
   const fetchItems = async () => {
     try {
       const response = await api.get(`/pedidos/${idUsuario}/em-aberto`);
@@ -41,13 +37,13 @@ const SidePanelBag = ({ isOpen, onClose }) => {
     } catch (error) {
       console.error('Erro ao buscar itens:', error.response?.data);
     }
-  }, [isLoggedIn]);
+  };
 
   useEffect(() => {
     if (isOpen) {
       fetchItems();
     }
-  }, [isOpen, fetchItems]);
+  }, [isOpen]);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -94,7 +90,7 @@ const SidePanelBag = ({ isOpen, onClose }) => {
       <div className="bag-content">
         {items.length > 0 ? (
           items.map((item) => (
-            <CartItem 
+            <CartItem
               key={item.id}
               item={item}
               onRemove={() => removeItem(item.id)}

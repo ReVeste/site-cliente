@@ -362,7 +362,7 @@ const ConfiguracaoEduarda = () => {
             <div className="chartsWrapper">
               <div className="chartContainer">
                 <h3 id="monthly-profits-title">Lucros Mensais</h3>
-                <Line data={Lucros} />
+                <Line data={lucros} />
  
               </div>
             </div>
