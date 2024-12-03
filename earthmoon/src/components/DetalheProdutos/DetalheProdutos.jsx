@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import './DetalheProdutos.css';
 import PilhaObj from '../../Utils/PilhaObj';
 import IconePagamento from '../../assets/pagamento.png';
@@ -103,26 +103,26 @@ const idUsuario = sessionStorage.getItem("userId");
   if (!produto) return <p>Produto não encontrado.</p>;
 
   return (
-    <div className="detalhe-produto">
+    <div className="detalhe-produto" role="main">
       <div className="topo">
         <div className="galeria">
-          <div className="imagem-principal">
-            <img src={produto.imagens[0]} alt="Imagem Principal" />
+          <div className="imagem-principal" aria-labelledby="imagem-principal">
+            <img src={produto.imagens[0]} alt="Imagem Principal do Produto" />
           </div>
-          <div className="coluna-imagens">
+          <div className="coluna-imagens" role="list" aria-labelledby="outras-imagens">
             {produto.imagens && produto.imagens.length > 1 && (
-              <img src={produto.imagens[1]} alt="Imagem Secundária 1" />
+              <img src={produto.imagens[1]} alt="Imagem Secundária 1" role="listitem" />
             )}
             {produto.imagens && produto.imagens.length > 2 && (
-              <img src={produto.imagens[2]} alt="Imagem Secundária 2" />
+              <img src={produto.imagens[2]} alt="Imagem Secundária 2" role="listitem" />
             )}
             {produto.imagens && produto.imagens.length > 3 && (
-              <img src={produto.imagens[3]} alt="Imagem Secundária 3" />
+              <img src={produto.imagens[3]} alt="Imagem Secundária 3" role="listitem" />
             )}
           </div>
         </div>
-        <div className="detalhe-info">
-          <h2 className="titulo-produto">{produto.nome}</h2>
+        <div className="detalhe-info" aria-labelledby="detalhe-produto">
+          <h2 className="titulo-produto" id="detalhe-produto">{produto.nome}</h2>
           <div className="preco-parcelamento">
             <p className="preco">R$ {produto.preco.toFixed(2)}</p>
             <p className="parcelamento">3x de R$ {(produto.preco / 3).toFixed(2)} sem juros</p>
@@ -133,12 +133,16 @@ const idUsuario = sessionStorage.getItem("userId");
             className="meios-pagamento"
             onMouseEnter={() => setShowPaymentCard(true)}
             onMouseLeave={() => setShowPaymentCard(false)}
+            aria-haspopup="true"
+            aria-expanded={showPaymentCard}
           >
             <img src={IconePagamento} alt="Ícone de pagamento" className="icone-pagamento" />
             <span>Meios de pagamento</span>
             {showPaymentCard && (
-              <div className="payment-card">
-                <p><strong>Cartão de crédito e débito:</strong> Aceitamos as principais bandeiras como Visa, MasterCard, Elo, American Express, entre outras.</p>
+              <div className="payment-card" role="dialog" aria-labelledby="detalhe-pagamento">
+                <p id="detalhe-pagamento">
+                  <strong>Cartão de crédito e débito:</strong> Aceitamos as principais bandeiras como Visa, MasterCard, Elo, American Express, entre outras.
+                </p>
                 <p><strong>Pix:</strong> Pagamento instantâneo para maior agilidade.</p>
                 <p><strong>Boleto bancário:</strong> Disponível para quem prefere pagamentos tradicionais.</p>
                 <p><strong>Carteira do Mercado Pago:</strong> Use seu saldo na conta do Mercado Pago para pagar.</p>
@@ -148,7 +152,6 @@ const idUsuario = sessionStorage.getItem("userId");
           </div>
         </div>
       </div>
-
       {popupLoginVisible && (
         <div className="popupLogin-message">Ops! Para adicionar produtos ao carrinho, é necessário estar logado.<br/>
          Faça login ou crie uma conta para continuar suas compras.</div>
@@ -167,12 +170,18 @@ const idUsuario = sessionStorage.getItem("userId");
           <h3 
             className={`toggle-option ${isEspecificacoes ? 'active' : ''}`} 
             onClick={() => toggleDetalhe('especificacoes')}
+            tabIndex="0"
+            role="tab"
+            aria-selected={isEspecificacoes}
           >
             Especificações
           </h3>
           <h3 
             className={`toggle-option ${!isEspecificacoes ? 'active' : ''}`} 
             onClick={() => toggleDetalhe('caracteristicas')}
+            tabIndex="0"
+            role="tab"
+            aria-selected={!isEspecificacoes}
           >
             Características
           </h3>
