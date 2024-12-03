@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./TelaPagamento.css";
 import api from "../../Api";
 import Pagamento from "../Pagamento/Pagamento";
+
 import { useLocation } from "react-router-dom";
 
 function TelaPagamento() {
@@ -14,16 +15,18 @@ function TelaPagamento() {
   const [usuario, setUsuario] = useState([]);
   const [ddd, setDdd] = useState("");
   const [resto, setResto] = useState("");
+  const [erros, setErros] = useState({});
+
 
   const camposEndereco = {
     apelido: "", 
+    cep: "",
     rua: "",
     numero: "",
     complemento: "",
     bairro: "",
     cidade: "",
     uf: "",
-    cep: "",
   };
 
   const [novoEndereco, setNovoEndereco] = useState(camposEndereco);
@@ -61,24 +64,34 @@ function TelaPagamento() {
   };
 
   const handleSalvarEndereco = async () => {
-    if (Object.values(novoEndereco).some((campo) => campo.trim() === "")) {
-      alert("Preencha todos os campos.");
+    const camposObrigatorios = Object.keys(camposEndereco).filter((campo) => campo !== "complemento");
+    const novosErros = {};
+  
+    camposObrigatorios.forEach((campo) => {
+      if (novoEndereco[campo].trim() === "") {
+        novosErros[campo] = `O campo ${campo} é obrigatório.`;
+      }
+    });
+  
+    if (Object.keys(novosErros).length > 0) {
+      setErros(novosErros);
       return;
     }
   
+    setErros({});
+  
     try {
       const idUsuario = sessionStorage.getItem("userId");
-      console.log('Id user:'  + idUsuario);
   
       const enderecoComUsuario = {
         apelido: novoEndereco.apelido,
+        cep: novoEndereco.cep,
         rua: novoEndereco.rua,
         numero: novoEndereco.numero,
         complemento: novoEndereco.complemento,
         bairro: novoEndereco.bairro,
         cidade: novoEndereco.cidade,
         uf: novoEndereco.uf,
-        cep: novoEndereco.cep,
         idUsuario,
       };
   
@@ -93,7 +106,7 @@ function TelaPagamento() {
     } catch (error) {
       alert("Erro ao salvar endereço: " + error.message);
     }
-  };
+  };  
   
   
 
@@ -137,21 +150,6 @@ function TelaPagamento() {
                   Salvar Endereço
                 </button>
               </form>
-            </div>
-
-
-            <div className="select-address">
-              <h2>Escolher Endereço</h2>
-              <select
-                value={enderecoSelecionado}
-                onChange={(e) => setEnderecoSelecionado(e.target.value)}
-              >
-                {enderecos.map((apelido, index) => (
-                  <option key={index} value={apelido}>
-                    {apelido}
-                  </option>
-                ))}
-              </select>
             </div>
           </>
         )}
