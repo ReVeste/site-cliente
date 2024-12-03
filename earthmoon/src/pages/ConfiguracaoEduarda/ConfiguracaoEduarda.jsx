@@ -2,7 +2,7 @@
 import React from 'react';
 import Navbar from '../../components/Navbar/Navbar';
 import ConfiguracaoEduarda from '../../components/ConfiguracaoEduarda/ConfiguracaoEduarda';
-import Footer from '../../Footer/Footer';
+import Footer from '../../components/Footer/Footer';
 
 const ConfiguracaoEduardaPage = () => {
   return (

@@ -1,6 +1,6 @@
 import React from 'react';
 import TelaPagamentoComponent from '../../components/TelaPagamento/TelaPagamento';
-import Footer from '../../Footer/Footer';
+import Footer from '../../components/Footer/Footer';
 
 const TelaPagamento = () => {
   return (

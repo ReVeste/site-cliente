@@ -27,7 +27,7 @@ const SidePanelLogin = ({ isOpen, onClose, onLogin }) => {
       console.log('Login bem-sucedido:', response.data);
       
       sessionStorage.setItem('token', response.data.token);
-      sessionStorage.setItem('isLoggedIn', 'true');
+      sessionStorage.setItem('isLoggedIn', true);
       sessionStorage.setItem('userId', response.data.userId);
       sessionStorage.setItem('userName', response.data.nome);
       sessionStorage.setItem('userEmail', response.data.email);
@@ -43,8 +43,8 @@ const SidePanelLogin = ({ isOpen, onClose, onLogin }) => {
       }, 2000);
       
     } catch (error) {
-      console.error('Erro no login:', error.response?.data);
-      if (error.response.status === 409) {
+      console.error('Erro no login:', error.response);
+      if (error.response === 409) {
         setErrorMessage('Erro no cadastro. CPF ou E-mail já cadastrado!');
       } else {
         setErrorMessage('Erro no cadastro. Verifique os dados e tente novamente.');
