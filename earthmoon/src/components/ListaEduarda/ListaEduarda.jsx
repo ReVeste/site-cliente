@@ -6,7 +6,7 @@ import api from "../../Api";
 const ListaEduarda = () => {
   const [produtos, setProdutos] = useState([]);
   const [busca, setBusca] = useState("");
-  const [hoveredProdutoId, setHoveredProdutoId] = useState(null); // Estado para armazenar o ID do produto em foco
+  const [hoveredProdutoId, setHoveredProdutoId] = useState(null);
 
   useEffect(() => {
     api
@@ -25,11 +25,11 @@ const ListaEduarda = () => {
   );
 
   const handleMouseEnter = (id) => {
-    setHoveredProdutoId(id); // Define o ID do produto em foco
+    setHoveredProdutoId(id);
   };
 
   const handleMouseLeave = () => {
-    setHoveredProdutoId(null); // Limpa o foco
+    setHoveredProdutoId(null);
   };
 
   return (
