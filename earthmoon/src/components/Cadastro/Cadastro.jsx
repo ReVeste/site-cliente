@@ -226,95 +226,55 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="register-container">
+    <div className="register-container" role="main">
       <div className="form-wrapper">
-        <div className="form-toggle">
+        <div className="form-toggle" role="tablist" aria-label="Alternar entre Login e Cadastro">
           <h2
             className={`toggle-option ${isLogin ? 'active' : ''}`}
             onClick={() => toggleForm('login')}
+            role="tab"
+            aria-selected={isLogin}
+            tabIndex={0}
           >
             Login
           </h2>
           <h2
             className={`toggle-option ${!isLogin ? 'active' : ''}`}
             onClick={() => toggleForm('cadastro')}
+            role="tab"
+            aria-selected={!isLogin}
+            tabIndex={0}
           >
             Cadastro
           </h2>
-          <div className={`underline ${isLogin ? 'login' : 'cadastro'}`}></div>
+          <div className={`underline ${isLogin ? 'login' : 'cadastro'}`} />
         </div>
-
+  
         {popupVisible && (
           <>
-            <div className="backdrop" />
-            <div className="popup-message">
+            <div className="backdrop" role="presentation" />
+            <div className="popup-message" role="alert" aria-live="assertive">
               {successMessage}
             </div>
           </>
         )}
-
+  
         {errorMessage && (
-          <div className="error-message">
+          <div className="error-message" role="alert" aria-live="assertive">
             {errorMessage}
           </div>
         )}
-
-{isLogin ? (
-  <form className="login-form" onSubmit={handleSubmit}>
-    <h3>Fazer login</h3>
-    <input
-      type="email"
-      name="email"
-      placeholder="E-mail *"
-      value={formData.email}
-      onChange={handleChange}
-      required
-    />
-    <div className="password-container">
-      <input
-        type={passwordVisible ? 'text' : 'password'}
-        name="password"
-        placeholder="Senha *"
-        value={formData.password}
-        onChange={handleChange}
-        required
-      />
-            </div>
-            <button type="submit" className="submit-button">Login</button>
-          </form>
-        ) : (
-          <form className="register-form" onSubmit={handleSubmit}>
-            <h3>Criar conta</h3>
-            <input
-              type="text"
-              name="firstName"
-              placeholder="Nome *"
-              value={formData.firstName}
-              onChange={handleChange}
-              required
-            />
-            <input
-              type="text"
-              name="cpf"
-              placeholder="CPF *"
-              value={formattedData.formattedCpf}
-              onChange={handleChange}
-              required
-            />
-            <input
-              type="text"
-              name="telefone"
-              placeholder="Telefone *"
-              value={formattedData.formattedTelefone}
-              onChange={handleChange}
-              required
-            />
+  
+        {isLogin ? (
+          <form className="login-form" onSubmit={handleSubmit} aria-label="Formulário de login">
+            <h3>Fazer login</h3>
             <input
               type="email"
               name="email"
               placeholder="E-mail *"
               value={formData.email}
               onChange={handleChange}
+              aria-label="Insira seu e-mail"
               required
             />
             <div className="password-container">
@@ -324,17 +284,80 @@ const RegisterPage = () => {
                 placeholder="Senha *"
                 value={formData.password}
                 onChange={handleChange}
+                aria-label="Insira sua senha"
+                required
+              />
+            </div>
+            <button type="submit" className="submit-button" aria-label="Enviar formulário de login">
+              Login
+            </button>
+          </form>
+        ) : (
+          <form className="register-form" onSubmit={handleSubmit} aria-label="Formulário de cadastro">
+            <h3>Criar conta</h3>
+            <input
+              type="text"
+              name="firstName"
+              placeholder="Nome *"
+              value={formData.firstName}
+              onChange={handleChange}
+              aria-label="Insira seu nome completo"
+              required
+            />
+            <input
+              type="text"
+              name="cpf"
+              placeholder="CPF *"
+              value={formattedData.formattedCpf}
+              onChange={handleChange}
+              aria-label="Insira seu CPF"
+              required
+            />
+            <input
+              type="text"
+              name="telefone"
+              placeholder="Telefone *"
+              value={formattedData.formattedTelefone}
+              onChange={handleChange}
+              aria-label="Insira seu telefone"
+              required
+            />
+            <input
+              type="email"
+              name="email"
+              placeholder="E-mail *"
+              value={formData.email}
+              onChange={handleChange}
+              aria-label="Insira seu e-mail"
+              required
+            />
+            <div className="password-container">
+              <input
+                type={passwordVisible ? 'text' : 'password'}
+                name="password"
+                placeholder="Senha *"
+                value={formData.password}
+                onChange={handleChange}
+                aria-label="Insira sua senha"
                 required
               />
               <span
                 className="eye-icon"
                 onClick={() => setPasswordVisible(!passwordVisible)}
+                aria-label={passwordVisible ? "Ocultar senha" : "Mostrar senha"}
+                role="button"
+                tabIndex={0}
               >
                 &#128065;
               </span>
             </div>
             {formData.password && (
-              <div className="password-strength-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: '10px' }}>
+              <div
+                className="password-strength-container"
+                role="status"
+                aria-live="polite"
+                style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: '10px' }}
+              >
                 <p className="password-strength" style={{ color: 'black', fontSize: '12px', marginBottom: '5px' }}>
                   Força da senha: {passwordStrength}
                 </p>
@@ -349,12 +372,14 @@ const RegisterPage = () => {
                 />
               </div>
             )}
-            <button type="submit" className="submit-button">Cadastrar</button>
+            <button type="submit" className="submit-button" aria-label="Enviar formulário de cadastro">
+              Cadastrar
+            </button>
           </form>
         )}
       </div>
     </div>
-  );
-};
+  )
+}  
 
 export default RegisterPage;
