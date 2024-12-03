@@ -1,17 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { initMercadoPago, Wallet } from '@mercadopago/sdk-react';
 import api from '../../Api';
 
 const Pagamento = ({ items, usuario, frete, endereco, ddd, telefone }) => {
   const [preferenciaId, setPreferenciaId] = useState(null);
 
-  // Inicializar Mercado Pago
-  useEffect(() => {
-    initMercadoPago('APP_USR-1dfce30a-2ce2-4bc7-ab7e-940f3cb99123', { locale: 'pt-BR' });
-  }, []);
-
-  // Função para criar a preferência
-  const handleCheckout = async () => {
+  // Função para criar a preferência, agora memorizada com useCallback
+  const handleCheckout = useCallback(async () => {
     if (!items || items.length === 0) {
       console.error('A lista de itens está vazia.');
       return;
@@ -58,12 +53,17 @@ const Pagamento = ({ items, usuario, frete, endereco, ddd, telefone }) => {
     } catch (error) {
       console.error('Erro ao realizar checkout:', error.response?.data || error.message);
     }
-  };
+  }, [items]); // Dependências de useCallback
+
+  // Inicializar Mercado Pago
+  useEffect(() => {
+    initMercadoPago('APP_USR-1dfce30a-2ce2-4bc7-ab7e-940f3cb99123', { locale: 'pt-BR' });
+  }, []);
 
   // Executar o checkout ao carregar o componente
   useEffect(() => {
     handleCheckout();
-  }, [items]);
+  }, [handleCheckout]);
 
   return (
     <div>
