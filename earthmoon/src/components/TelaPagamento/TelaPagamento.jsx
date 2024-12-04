@@ -19,14 +19,13 @@ function TelaPagamento() {
 
 
   const camposEndereco = {
-    apelido: "", 
     cep: "",
+    uf: "",
+    cidade: "",
     rua: "",
     numero: "",
     complemento: "",
     bairro: "",
-    cidade: "",
-    uf: "",
   };
 
   const [novoEndereco, setNovoEndereco] = useState(camposEndereco);
@@ -78,7 +77,7 @@ function TelaPagamento() {
       return;
     }
   
-    setErros({});
+    setErros({}); // Reseta os erros ao salvar com sucesso
   
     try {
       const idUsuario = sessionStorage.getItem("userId");
@@ -97,7 +96,7 @@ function TelaPagamento() {
   
       const response = await api.post("/enderecos", enderecoComUsuario);
       if (response.status === 201) {
-        setEnderecos([...enderecos, response.data.map((endereco) => endereco.apelido)]);
+        setEnderecos([...enderecos, novoEndereco.apelido]);
         alert("Endereço salvo com sucesso!");
         setNovoEndereco(camposEndereco);
       } else {
@@ -106,8 +105,7 @@ function TelaPagamento() {
     } catch (error) {
       alert("Erro ao salvar endereço: " + error.message);
     }
-  };  
-  
+  };
   
 
   return (
@@ -133,24 +131,40 @@ function TelaPagamento() {
         {currentStep === "Entrega" && (
           <>
             <div className="new-address-form">
-              <h2>Criar Novo Endereço</h2>
-              <form className="form-grid">
-                {Object.keys(camposEndereco).map((campo) => (
-                  <div className="form-field" key={campo}>
-                    <label>{campo.charAt(0).toUpperCase() + campo.slice(1)}:</label>
-                    <input
-                      type="text"
-                      name={campo}
-                      value={novoEndereco[campo]}
-                      onChange={handleChange}
-                    />
-                  </div>
-                ))}
-                <button type="button" onClick={handleSalvarEndereco}>
-                  Salvar Endereço
-                </button>
-              </form>
-            </div>
+            <h2>Endereço de entrega</h2>
+            <form className="form-grid">
+              {Object.keys(camposEndereco).map((campo) => (
+                <div className="form-field" key={campo}>
+                  <label>{campo.charAt(0).toUpperCase() + campo.slice(1)}:</label>
+                  <input
+                    type="text"
+                    name={campo}
+                    value={novoEndereco[campo]}
+                    onChange={handleChange}
+                    onBlur={() => {
+                      if (novoEndereco[campo].trim() === "") {
+                        setErros((prevErros) => ({
+                          ...prevErros,
+                          [campo]: `O campo ${campo} é obrigatório.`,
+                        }));
+                      } else {
+                        setErros((prevErros) => {
+                          const { [campo]: _, ...restoErros } = prevErros;
+                          return restoErros;
+                        });
+                      }
+                    }}
+                    className={erros[campo] ? "input-error" : ""}
+                  />
+                  {erros[campo] && <span className="error-message">{erros[campo]}</span>}
+                </div>
+              ))}
+              <button type="button" onClick={handleSalvarEndereco}>
+                Próximo
+              </button>
+            </form>
+          </div>
+
           </>
         )}
 
