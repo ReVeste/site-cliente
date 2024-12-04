@@ -29,7 +29,7 @@ ChartJS.register(
   Legend
 );
 
-const   ConfiguracaoEduarda = () => {
+const ConfiguracaoEduarda = () => {
   const [itemSelecionado, setItemSelecionado] = useState('Dashboard');
   const [filtroProdutosEnviados, setFiltroProdutosEnviados] = useState('Da semana');
   const [filtroProdutosCadastrados, setFiltroProdutosCadastrados] = useState('Da semana');
@@ -277,16 +277,18 @@ const   ConfiguracaoEduarda = () => {
   const renderDashboard = () => (
     <div className="dashboardContainer" role="region" aria-labelledby="dashboard-title">
       <div className="dashboardHeader">
-        <h2>DASHBOARD</h2>
-        <div
-          className="exportWrapper"
-          onClick={handleExport}
-          style={{ cursor: 'pointer' }}
-        >
-          <img className="export" src={minhaImagem} alt="Export Icon" />
-          <div className="exportText">Exportar pedidos em aberto</div>
+        <div className="leftSection">
+          <h2>DASHBOARD</h2>
+          <div
+            className="exportWrapper"
+            onClick={handleExport}
+            style={{ cursor: 'pointer' }}
+          >
+            <img className="export" src={minhaImagem} alt="Export Icon" />
+            <div className="exportText">Exportar pedidos em aberto</div>
+          </div>
         </div>
-  
+
         <div className="dashboardLucros">
           <div className="totalBox" role="group" aria-label="Lucro total do mês e ano">
             <h4>Lucro total do mês</h4>
@@ -298,7 +300,8 @@ const   ConfiguracaoEduarda = () => {
           </div>
         </div>
       </div>
-  
+
+
       <div className="dashboardStats" role="list" aria-labelledby="dashboard-stats-title">
         <h3 id="dashboard-stats-title">Estatísticas principais</h3>
         <div className="statCard" role="listitem">
@@ -355,20 +358,20 @@ const   ConfiguracaoEduarda = () => {
         </div>
 
       </div>
-  
+
       <div className="dashboardMainContent">
         <div className="dashboardLeft" role="region" aria-labelledby="monthly-profits-title">
           <div className="dashboardCharts">
             <div className="chartsWrapper">
               <div className="chartContainer">
                 <h3 id="monthly-profits-title">Lucros Mensais</h3>
-                <Line data={lucros} />
- 
+                <Line data={LucrosDash} />
+
               </div>
             </div>
           </div>
         </div>
-  
+
         <div className="dashboardRight" role="region" aria-labelledby="monthly-sales-title">
           <div className="dashboardCharts">
             <div className="chartsWrapper">
@@ -403,7 +406,7 @@ const   ConfiguracaoEduarda = () => {
         </div>
       </div>
     </div>
-  );  
+  );
 
   return (
     <>

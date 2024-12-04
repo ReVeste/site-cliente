@@ -28,7 +28,6 @@ const SidePanelBag = ({ isOpen, onClose }) => {
     ]);
   };
 
-  // Modifiquei aqui a função para buscar os itens
   const fetchItems = async () => {
     try {
       const response = await api.get(`/pedidos/${idUsuario}/em-aberto`);

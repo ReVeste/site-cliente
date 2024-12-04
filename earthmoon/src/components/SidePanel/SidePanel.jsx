@@ -35,6 +35,12 @@ const SidePanelLogin = ({ isOpen, onClose, onLogin }) => {
       setSuccessMessage('Login efetuado! Aguarde...');
       setPopupVisible(true);
 
+      console.log('Tipo usuário ====> ' + response.data.tipo);
+
+      if (response.data.tipo === 'admin') {
+        navigate('/configuracao-eduarda');
+      }
+
       setTimeout(() => {
         setPopupVisible(false);
         onLogin();
