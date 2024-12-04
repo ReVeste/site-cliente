@@ -152,8 +152,9 @@ body, html {
 }
 
 .totalBox h3 {
-    margin-top: 0;
-    font-size: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .dashboardHeader {
@@ -162,35 +163,46 @@ body, html {
     align-items: center;
     margin-bottom: 20px;
     position: relative;
+    width: 100%;
+}
+
+.dashboardHeader .leftSection {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .exportWrapper {
     display: flex;
-    align-items: center; /* Alinha o ícone e o texto na mesma linha */
+    align-items: center;
+    cursor: pointer;
     position: relative;
 }
 
+.dashboardHeader h2 {
+    margin: 0; 
+}
+
 .export {
-    margin-right: 370px;
-    margin-bottom: 20px;
     width: 30px;
-    cursor: pointer;
+    margin-right: 10px;
     transition: transform 0.3s ease;
+    cursor: pointer;
 }
 
 .exportText {
-    display: none; /* Oculta o texto por padrão */
+    display: none;
     position: absolute;
-    margin-right: 370px;
-    margin-bottom: 20px; /* Ajusta a posição do texto em relação ao ícone */
-    left: 17%;
-    transform: translateX(-50%);
+    top: 35px; /* Ajusta a distância vertical entre o ícone e o texto */
+    left: 50%;
+    transform: translateX(-50%); /* Centraliza o texto em relação ao ícone */
     font-size: 12px;
     color: #333;
     background-color: #f0f0f0;
     padding: 5px;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    white-space: nowrap;
 }
 
 .export:hover {
@@ -203,7 +215,7 @@ body, html {
 
 .dashboardLucros {
     display: flex;
-    gap: 25px;
+    gap: 20px;
 }
 
 .dashboardCharts .chartsWrapper {
