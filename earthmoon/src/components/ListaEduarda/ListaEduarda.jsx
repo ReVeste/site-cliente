@@ -66,7 +66,7 @@ const ListaEduarda = () => {
           Pedidos em aberto
         </h1>
         <div className="tabs">
-          <button className="buttonConcluir" onClick={concluirPedido}>Concluir Pedido</button>
+          <button className="buttonConcluir" onClick={concluirPedido}>Concluir 1º pedido</button>
         </div>
       </div>
 

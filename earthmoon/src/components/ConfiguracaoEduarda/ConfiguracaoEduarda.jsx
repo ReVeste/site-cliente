@@ -178,7 +178,6 @@ const ConfiguracaoEduarda = () => {
 
 
     fetchData();
-    // Fórmula para tempo de atualização dos dados
     const interval = setInterval(fetchData, 1 * 60 * 1000);
     return () => clearInterval(interval);
 
@@ -249,7 +248,6 @@ const ConfiguracaoEduarda = () => {
     ],
   };
 
-
   const handleExport = async () => {
     try {
       const response = await api.get('pedidos/exportar', {
@@ -303,7 +301,6 @@ const ConfiguracaoEduarda = () => {
 
 
       <div className="dashboardStats" role="list" aria-labelledby="dashboard-stats-title">
-        <h3 id="dashboard-stats-title">Estatísticas principais</h3>
         <div className="statCard" role="listitem">
           <p>Pedidos para enviar</p>
           <h3>{kpis?.pedidosPagos}</h3>
@@ -432,8 +429,6 @@ const ConfiguracaoEduarda = () => {
           </a>
         </aside>
         <main className="mainContent" role="region" aria-labelledby="main-content">
-          <h2 id="main-content">Conteúdo principal</h2>
-
           {itemSelecionado === 'Geral' && renderGeral()}
           {itemSelecionado === 'Dashboard' && renderDashboard()}
         </main>

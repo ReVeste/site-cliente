@@ -167,7 +167,7 @@
   font-size: 0.9rem;
 }
 
-button {
+.botaoo {
   grid-column: span 2;
   padding: 10px;
   font-size: 1rem;
@@ -178,7 +178,7 @@ button {
   cursor: pointer;
 }
 
-button:hover {
+.botaoo:hover {
   background-color: #0056b3;
 }
 

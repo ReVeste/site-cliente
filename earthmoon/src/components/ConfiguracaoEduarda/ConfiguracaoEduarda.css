@@ -147,15 +147,15 @@ body, html {
 }
 
 .totalBox h4 {
-    margin-bottom: 5px;
-    font-size: 0.8rem;
+    margin-bottom: 0;
+    font-size: 0.9rem; 
 }
 
 .totalBox h3 {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    margin-top: 2px;
+    font-size: 1.2rem;
 }
+
 
 .dashboardHeader {
     display: flex;
@@ -215,6 +215,7 @@ body, html {
 
 .dashboardLucros {
     display: flex;
+    justify-content: center;
     gap: 20px;
 }
 

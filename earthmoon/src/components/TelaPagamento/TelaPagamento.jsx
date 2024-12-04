@@ -182,7 +182,7 @@ function TelaPagamento() {
                   {erros[campo] && <span className="error-message">{erros[campo]}</span>}
                 </div>
               ))}
-              <button type="button" onClick={handleSalvarEndereco}>
+              <button className="botaoo" onClick={handleSalvarEndereco}>
                 Próximo
               </button>
             </form>
@@ -212,7 +212,7 @@ function TelaPagamento() {
                 frete={frete}
                 endereco={enderecoSelecionado}
               />
-              <button onClick={handleConclusao}>Concluir</button>
+              <button onClick={handleConclusao} className="botaoo" >Concluir</button>
             </div>
           </div>
         )}
