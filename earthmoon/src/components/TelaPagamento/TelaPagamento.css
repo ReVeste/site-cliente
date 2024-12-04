@@ -177,7 +177,7 @@
     font-size: 0.9rem;
   }
   
-  button {
+  .botaoProximo {
     grid-column: span 2;
     padding: 10px;
     font-size: 1rem;
@@ -188,7 +188,7 @@
     cursor: pointer;
   }
   
-  button:hover {
+  botaoProximo:hover {
     background-color: #0056b3;
   }
   

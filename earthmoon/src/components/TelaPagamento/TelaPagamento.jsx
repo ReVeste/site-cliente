@@ -159,7 +159,7 @@ function TelaPagamento() {
                   {erros[campo] && <span className="error-message">{erros[campo]}</span>}
                 </div>
               ))}
-              <button type="button" onClick={handleSalvarEndereco}>
+              <button type="botaoProximo" onClick={handleSalvarEndereco}>
                 Próximo
               </button>
             </form>
