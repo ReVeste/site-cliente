@@ -37,7 +37,8 @@ const SidePanelLogin = ({ isOpen, onClose, onLogin }) => {
 
       console.log('Tipo usuário ====> ' + response.data.tipo);
 
-      if (response.data.tipo === 'admin') {
+      if (response.data.tipo == 'admin') {
+        console.log("entrou?");
         navigate('/configuracao-eduarda');
       }
 
