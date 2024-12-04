@@ -40,14 +40,14 @@ const SidePanelLogin = ({ isOpen, onClose, onLogin }) => {
       if (response.data.tipo == 'admin') {
         console.log("entrou?");
         navigate('/configuracao-eduarda');
+      } else {
+        setTimeout(() => {
+          setPopupVisible(false);
+          onLogin();
+          onClose();
+          window.location.reload();
+        }, 2000);
       }
-
-      setTimeout(() => {
-        setPopupVisible(false);
-        onLogin();
-        onClose();
-        window.location.reload();
-      }, 2000);
       
     } catch (error) {
       console.error('Erro no login:', error.response);
