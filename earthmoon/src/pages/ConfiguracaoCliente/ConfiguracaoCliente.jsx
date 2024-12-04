@@ -14,8 +14,6 @@ const ConfiguracaoCliente = () => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [enderecos, setEnderecos] = useState([]);
     const [mostrarFormulario, setMostrarFormulario] = useState(false);
-    const [editandoEndereco, setEditandoEndereco] = useState(null);
-    const [novoEndereco, setNovoEndereco] = useState({ apelido: '', CEP: '', cidade: '', estado: '', rua: '', bairro: '' });
     const [pedidos, setPedidos] = useState([]);
     const [rating, setRating] = useState(0);
     const [feedbackText, setFeedbackText] = useState('');
@@ -23,17 +21,7 @@ const ConfiguracaoCliente = () => {
 
     const itemClicado = (item) => {
         setItemSelecionado(item);
-        if (item === 'Meus Endereços') fetchEnderecos();
         if (item === 'Minhas Compras') fetchCompras();
-    };
-
-    const fetchEnderecos = async () => {
-        try {
-            const response = await api.get(`/enderecos/usuario/${idUsuario}`);
-            setEnderecos(response.data);
-        } catch (error) {
-            console.error('Erro ao buscar itens:', error.response?.data);
-        }
     };
 
     const fetchCompras = async () => {
@@ -43,22 +31,6 @@ const ConfiguracaoCliente = () => {
         } catch (error) {
             console.error('Erro ao buscar itens:', error.response?.data);
         }
-    };
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setNovoEndereco((prev) => ({ ...prev, [name]: value }));
-    };
-    
-    const adicionarEndereco = (novoEndereco) => {
-        // Lógica para adicionar o novo endereço, exemplo:
-        setEnderecos([...enderecos, novoEndereco]);
-        setMostrarFormulario(false);  // Esconde o formulário após adicionar o endereço
-    };
-    
-    const resetFormulario = () => {
-        setNovoEndereco({ apelido: '', CEP: '', cidade: '', estado: '', rua: '', bairro: '' });
-        setEditandoEndereco(null);
     };
     
     const togglePopup = () => {
@@ -113,18 +85,6 @@ const ConfiguracaoCliente = () => {
         navigate('/');
     };
 
-    const editarEndereco = (id) => {
-        navigate(`/editar-endereco/${id}`);
-    };
-
-    const removerEndereco = async (id) => {
-        try {
-            await api.delete(`/enderecos/${id}`);
-            fetchEnderecos();
-        } catch (error) {
-            console.error('Erro ao remover endereço:', error.response?.data);
-        }
-    };
 
     const renderContent = () => {
         switch (itemSelecionado) {
@@ -138,96 +98,6 @@ const ConfiguracaoCliente = () => {
                         </div>
                     </div>
                 );
-
-                case 'Meus Endereços':
-    return (
-        <div className={styles["detalhesEndereco"]}>
-            <h2>Meus Endereços</h2>
-
-            {/* Só exibe o botão de adicionar se o número de endereços for menor que 2 */}
-            {enderecos.length < 2 && !mostrarFormulario && (
-                <button className={styles["adicionarEndereco"]} onClick={() => setMostrarFormulario(true)}>
-                    Adicionar Novo Endereço
-                </button>
-            )}
-
-            <div className={styles["enderecosFormularioContainer"]}>
-                <div className={styles["enderecosContainer"]}>
-                    {enderecos.length > 0 ? (
-                        enderecos.map((endereco, index) => (
-                            <div key={index} className={styles["enderecoInfo"]}>
-                                <p><strong>Nome:</strong> {endereco.apelido}</p>
-                                <p><strong>Rua:</strong> {endereco.rua}</p>
-                                <p><strong>Cidade:</strong> {endereco.cidade}</p>
-                                <div className={styles["acoesEndereco"]}>
-                                    <button onClick={() => editarEndereco(endereco.id)} className={styles["editarBtn"]}>Editar</button>
-                                    <button onClick={() => removerEndereco(endereco.id)} className={styles["deletarBtn"]}>Deletar</button>
-                                </div>
-                            </div>
-                        ))
-                    ) : null}
-                </div>
-
-                {/* Exibe o formulário de adicionar/editar endereço */}
-                {mostrarFormulario && (
-                    <div className={styles["formularioEndereco"]}>
-                        <h3>{editandoEndereco ? 'Editar Endereço' : 'Adicionar Novo Endereço'}</h3>
-                        <input
-                            type="text"
-                            name="apelido"
-                            placeholder="Apelido"
-                            value={novoEndereco.apelido}
-                            onChange={handleChange}
-                        />
-                        <input
-                            type="text"
-                            name="cep"
-                            placeholder="CEP"
-                            value={novoEndereco.cep}
-                            onChange={handleChange}
-                        />
-                        <input
-                            type="text"
-                            name="estado"
-                            placeholder="Estado"
-                            value={novoEndereco.estado}
-                            onChange={handleChange}
-                        />
-                        <input
-                            type="text"
-                            name="cidade"
-                            placeholder="Cidade"
-                            value={novoEndereco.cidade}
-                            onChange={handleChange}
-                        />
-                        <input
-                            type="text"
-                            name="bairro"
-                            placeholder="Bairro"
-                            value={novoEndereco.bairro}
-                            onChange={handleChange}
-                        />
-                        <input
-                            type="text"
-                            name="rua"
-                            placeholder="Rua"
-                            value={novoEndereco.rua}
-                            onChange={handleChange}
-                        />
-                        
-                        <button onClick={adicionarEndereco}>
-                            {editandoEndereco ? 'Salvar' : 'Adicionar'}
-                        </button>
-                        {editandoEndereco && (
-                            <button onClick={resetFormulario} className={styles["cancelarBtn"]}>
-                                Cancelar
-                            </button>
-                        )}
-                    </div>
-                )}
-            </div>
-        </div>
-    );                
 
             case 'Minhas Compras':
                 return (
@@ -314,7 +184,7 @@ const ConfiguracaoCliente = () => {
                         <h1>Minhas configurações</h1>
                     </div>
                     <ul className={styles["settingsMenu"]}>
-                        {['Geral', 'Meus Endereços', 'Minhas Compras'].map((item) => (
+                        {['Geral', 'Minhas Compras'].map((item) => (
                             <li
                                 key={item}
                                 className={itemSelecionado === item ? styles['active'] : ''}
