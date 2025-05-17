@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import "./TelaPagamento.css";
 import api from "../../Api";
 import Pagamento from "../Pagamento/Pagamento";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function TelaPagamento() {
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState("Entrega");
   const [email, setEmail] = useState(sessionStorage.getItem("userEmail"));
   const [phone, setPhone] = useState("");
@@ -34,7 +35,12 @@ function TelaPagamento() {
     console.log("Clicou em Concluir");
     setCurrentStep("Conclusão");
     console.log("Estado atual de currentStep:", currentStep);
+  
+    setTimeout(() => {
+      navigate("/");
+    }, 3000);
   };
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -119,7 +125,6 @@ function TelaPagamento() {
   };
 
   const handleStepChange = (step) => {
-    // Impede que o usuário volte para etapas anteriores quando estiver em Pagamento ou Conclusão
     if (
       (currentStep === "Pagamento" && step === "Entrega") ||
       (currentStep === "Conclusão" && (step === "Entrega" || step === "Pagamento"))
@@ -136,28 +141,18 @@ function TelaPagamento() {
         <div className="progress-bar">
           <span className="step completed">Carrinho</span>
           <span
-            className={`step ${
-              currentStep === "Entrega" ? "active" : "completed"
-            }`}
+            className={`step ${currentStep === "Entrega" ? "active" : "completed"}`}
             onClick={() => handleStepChange("Entrega")}
           >
             Entrega
           </span>
           <span
-            className={`step ${
-              currentStep === "Pagamento"
-                ? "active"
-                : currentStep === "Conclusão"
-                ? "completed"
-                : ""
-            }`}
+            className={`step ${currentStep === "Pagamento" ? "active" : currentStep === "Conclusão" ? "completed" : ""}`}
             onClick={() => handleStepChange("Pagamento")}
           >
             Pagamento
           </span>
-          <span
-            className={`step ${currentStep === "Conclusão" ? "active" : ""}`}
-          >
+          <span className={`step ${currentStep === "Conclusão" ? "active" : ""}`}>
             Conclusão
           </span>
         </div>
@@ -170,27 +165,27 @@ function TelaPagamento() {
                 <div className="form-field" key={campo}>
                   <label>{campo.charAt(0).toUpperCase() + campo.slice(1)}:</label>
                   <input
-              type="text"
-              name={campo}
-              value={novoEndereco[campo]}
-              onChange={handleChange}
-              onBlur={() => {
-                if (campo === "complemento") return;
+                    type="text"
+                    name={campo}
+                    value={novoEndereco[campo]}
+                    onChange={handleChange}
+                    onBlur={() => {
+                      if (campo === "complemento") return;
 
-                if (novoEndereco[campo].trim() === "") {
-                  setErros((prevErros) => ({
-                    ...prevErros,
-                    [campo]: `O campo ${campo} é obrigatório.`,
-                  }));
-                } else {
-                  setErros((prevErros) => {
-                    const { [campo]: _, ...restoErros } = prevErros;
-                    return restoErros;
-                  });
-                }
-              }}
-              className={erros[campo] ? "input-error" : ""}
-            />
+                      if (novoEndereco[campo].trim() === "") {
+                        setErros((prevErros) => ({
+                          ...prevErros,
+                          [campo]: `O campo ${campo} é obrigatório.`,
+                        }));
+                      } else {
+                        setErros((prevErros) => {
+                          const { [campo]: _, ...restoErros } = prevErros;
+                          return restoErros;
+                        });
+                      }
+                    }}
+                    className={erros[campo] ? "input-error" : ""}
+                  />
                   {erros[campo] && <span className="error-message">{erros[campo]}</span>}
                 </div>
               ))}
@@ -224,8 +219,8 @@ function TelaPagamento() {
                 frete={frete}
                 endereco={enderecoSelecionado}
               />
-              <button type="button" className="botaoo" onClick={handleSalvarEndereco}>
-              Próximo
+              <button type="button" className="botaoo" onClick={handleConclusao}>
+                Próximo
               </button>
             </div>
           </div>
@@ -234,7 +229,7 @@ function TelaPagamento() {
         {currentStep === "Conclusão" && (
           <div className="container-conclusao">
             <h2>Pedido efetuado!</h2>
-            <p>Entraremos em contato para enviar o código de rastreamento!</p>
+            <p>Baixe o aplicativo dos Correios para ser notificado sobre o envio do pedido!</p>
             <p>Obrigada por confiar no Earth Moon!</p>
           </div>
         )}
