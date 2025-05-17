@@ -28,18 +28,25 @@ function TelaPagamento() {
   const [novoEndereco, setNovoEndereco] = useState(camposEndereco);
 
   const location = useLocation();
-  const { items, subTotal } = location.state || { items: [], subTotal: 0.0 };
+  const { items, subTotal, idPedido } = location.state || { items: [], subTotal: 0.0 };
   const idUsuario = sessionStorage.getItem("userId");
 
-  const handleConclusao = () => {
-    console.log("Clicou em Concluir");
-    setCurrentStep("Conclusão");
-    console.log("Estado atual de currentStep:", currentStep);
-  
-    setTimeout(() => {
-      navigate("/");
-    }, 3000);
-  };
+
+ const handleConclusao = async () => {
+  try {
+    const response = await api.put(`/pedidos/${idPedido}`);
+    console.log('Pedido recebido:', response.data);
+  } catch (error) {
+    console.error('Erro ao buscar o pedido:', error);
+  }
+
+  setCurrentStep("Conclusão");
+
+  setTimeout(() => {
+    navigate("/");
+  }, 5000);
+};
+
   
 
   const handleChange = (e) => {

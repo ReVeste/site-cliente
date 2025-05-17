@@ -2,7 +2,6 @@ import './SidePanelBag.css';
 import CartItem from './CartItem';
 import api from '../../Api';
 import React, { useState, useEffect } from 'react';
-import Pagamento from '../Pagamento/Pagamento';
 import { useNavigate } from 'react-router-dom';
 
 const idUsuario = sessionStorage.getItem("userId");
@@ -10,7 +9,6 @@ const idUsuario = sessionStorage.getItem("userId");
 const SidePanelBag = ({ isOpen, onClose }) => {
   const [items, setItems] = useState([]);
   const [idPedido, setIdPedido] = useState(0);
-  const [preferenciaId, setPreferenciaId] = useState('');
   const isLoggedIn = sessionStorage.getItem("isLoggedIn");
 
   const navigate = useNavigate();
@@ -73,7 +71,7 @@ const SidePanelBag = ({ isOpen, onClose }) => {
     if (isLoggedIn) {
       const subTotal = items.reduce((acc, item) => acc + item.preco, 0).toFixed(2);
       navigate('/pagamento', {
-        state: { items, subTotal },
+        state: { items, subTotal, idPedido },
       });
     } else {
       navigate('/cadastro');
