@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import './ProductsRegister.css';
 import api from '../../Api';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; 
 
 const ProductsRegister = () => {
   const [imageUrls, setImageUrls] = useState([]);
+  const navigate = useNavigate(); 
+
   
   const [formData, setFormData] = useState({
     title: '',
@@ -139,6 +142,14 @@ const ProductsRegister = () => {
 
   return (
     <div className="product-register-container">
+       <button 
+        type="button" 
+        onClick={() => navigate('/configuracao-eduarda')} 
+        className="back-button"
+        aria-label="Voltar para configurações"
+      >
+        ← Voltar
+      </button>
       <div className="image-upload-section">
         <h3 id="image-upload-heading">Imagens do Produto</h3>
 
