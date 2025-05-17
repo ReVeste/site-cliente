@@ -37,6 +37,7 @@ const Navbar = () => {
         senha: senha,
       });
       console.log('Login bem-sucedido:', response.data);
+  
       sessionStorage.setItem('token', response.data.token);
       sessionStorage.setItem('userId', response.data.userId);
       sessionStorage.setItem('userName', response.data.nome);
@@ -44,7 +45,12 @@ const Navbar = () => {
       setIsLoggedIn(true);
       sessionStorage.setItem('isLoggedIn', 'true');
       setIsLoginPanelOpen(false);
-      navigate('/configuracao-cliente');
+  
+      if (response.data.email.toLowerCase() === 'eduardaprocorro10@gmail.com') {
+        navigate('/configuracao-eduarda');
+      } else {
+        navigate('/configuracao-cliente');
+      }
     } catch (error) {
       console.error('Erro no login:', error.response?.data);
     }
@@ -52,7 +58,12 @@ const Navbar = () => {
 
   const handleUserIconClick = () => {
     if (isLoggedIn) {
-      navigate('/configuracao-cliente');
+      const email = sessionStorage.getItem('userEmail') || '';
+      if (email.toLowerCase() === 'eduardaprocorro10@gmail.com') {
+        navigate('/configuracao-eduarda');
+      } else {
+        navigate('/configuracao-cliente');
+      }
     } else {
       setIsLoginPanelOpen(true);
     }

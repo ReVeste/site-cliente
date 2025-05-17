@@ -31,6 +31,7 @@ function TelaPagamento() {
   const { items, subTotal, idPedido } = location.state || { items: [], subTotal: 0.0 };
   const idUsuario = sessionStorage.getItem("userId");
 
+
  const handleConclusao = async () => {
   try {
     const response = await api.put(`/pedidos/${idPedido}`);
@@ -45,6 +46,7 @@ function TelaPagamento() {
     navigate("/");
   }, 5000);
 };
+
   
 
   const handleChange = (e) => {
@@ -234,7 +236,7 @@ function TelaPagamento() {
         {currentStep === "Conclusão" && (
           <div className="container-conclusao">
             <h2>Pedido efetuado!</h2>
-            <p>Entraremos em contato para enviar o código de rastreamento!</p>
+            <p>Baixe o aplicativo dos Correios para ser notificado sobre o envio do pedido!</p>
             <p>Obrigada por confiar no Earth Moon!</p>
           </div>
         )}

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Navbar from '../Navbar/Navbar';
 import './ConfiguracaoEduarda.css';
 import ListaEduarda from '../ListaEduarda/ListaEduarda';
+import { useNavigate } from "react-router-dom";
+import ProductsRegister from '../ProductsRegister/ProductsRegister';
 import { Bar, Line } from 'react-chartjs-2';
 import minhaImagem from '../../assets/export.jpg';
 import api from '../../Api';
@@ -29,8 +31,16 @@ ChartJS.register(
   Legend
 );
 
+
+
 const ConfiguracaoEduarda = () => {
-  const [itemSelecionado, setItemSelecionado] = useState('Dashboard');
+  const navigate = useNavigate();
+
+  const handleNavigate = () => {
+    navigate('/cadastro-produto');
+  };
+
+  const [itemSelecionado, setItemSelecionado] = useState('Geral');
   const [filtroProdutosEnviados, setFiltroProdutosEnviados] = useState('Da semana');
   const [filtroProdutosCadastrados, setFiltroProdutosCadastrados] = useState('Da semana');
   const [kpis, setKpis] = useState([]);
@@ -197,11 +207,27 @@ const ConfiguracaoEduarda = () => {
   };
 
   const renderGeral = () => (
-    <div className="geralContainer">
-      <ListaEduarda />
-    </div>
+    <>
+      <div className="mensagemBoasVindas">
+        <h2>Bem-vinda, Eduarda!</h2>
+        <p>
+          Aqui, você pode gerenciar todas as operações de forma eficiente e intuitiva.
+          <br />
+          Use as ferramentas abaixo para controlar os cadastros, analisar relatórios e tomar decisões estratégicas com base em informações atualizadas.
+          <br />
+          Se precisar de ajuda, estamos à disposição para garantir que sua experiência seja a melhor possível.
+        </p>
+      </div>
+      
+      <div className="geralContainer">
+        <ListaEduarda />
+        <button className="btnGeral" onClick={handleNavigate}>Cadastrar produtos</button>
+        </div>
+    </>
   );
-
+  
+  
+ 
   const LucrosDash = {
     labels: mesesAnteriores,
     datasets: [
@@ -424,9 +450,18 @@ const ConfiguracaoEduarda = () => {
               </li>
             ))}
           </ul>
-          <a href="/" className="backLink">
-            Sair da minha conta
-          </a>
+          <a
+        href="/"
+        className="backLink"
+        onClick={(e) => {
+          e.preventDefault();
+          sessionStorage.clear();
+
+          window.location.href = '/'; 
+        }}
+      >
+        Sair da minha conta
+      </a>
         </aside>
         <main className="mainContent" role="region" aria-labelledby="main-content">
           {itemSelecionado === 'Geral' && renderGeral()}
