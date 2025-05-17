@@ -2,9 +2,6 @@ import React, { useEffect, useState } from 'react';
 import Navbar from '../../components/Navbar/Navbar';
 import styles from './ConfiguracaoCliente.module.css';
 import home from '../../assets/Home.png';
-import avaliacao from '../../assets/avaliacao.png';
-import sair from '../../assets/Close.png';
-import teste from '../../assets/teste.jpg';
 import { useNavigate } from 'react-router-dom';
 import api from '../../Api';
 
@@ -33,44 +30,9 @@ const ConfiguracaoCliente = () => {
         }
     };
     
-    const togglePopup = () => {
-        setIsPopupOpen(prev => !prev);
-    };
-
     const handleRatingChange = (star) => {
         console.log(star);
         setRating(star);
-    };
-
-    const handleSubmitFeedback = async () => {
-        if (!rating || feedbackText.trim() === '') {
-            alert('Por favor, escolha uma nota e preencha o feedback.');
-            return;
-        }
-    
-        try {
-            console.log({
-                nota: rating,
-                comentario: feedbackText,
-                idUsuario: idUsuario
-            }); 
-            
-            const response = await api.post('/feedbacks', {
-                nota: rating,
-                comentario: feedbackText,
-                idUsuario: idUsuario
-            });
-
-            if (response.status === 201 || response.status === 200) {
-                alert('Feedback enviado com sucesso!');
-                togglePopup();
-            } else {
-                alert('Erro ao enviar feedback. Tente novamente.');
-            }
-        } catch (error) {
-            console.error('Erro ao enviar feedback:', error.response?.data);
-            alert('Ocorreu um erro ao enviar o feedback. Tente novamente.');
-        }
     };
 
     useEffect(() => {
@@ -115,54 +77,7 @@ const ConfiguracaoCliente = () => {
                             ) : (
                                 <p>Nenhum pedido encontrado.</p>
                             )}
-                            <img
-                                src={avaliacao}
-                                alt="Avaliar"
-                                className={styles["iconeAvaliacao"]}
-                                onClick={togglePopup}
-                            />
                         </div>
-
-                        {isPopupOpen && (
-                            <div className={styles["popupContainer"]}>
-                                <div className={styles["popupContent"]}>
-                                    <img
-                                        src={sair}
-                                        alt="Sair da Avaliação"
-                                        className={styles["iconeSair"]}
-                                        onClick={togglePopup}
-                                    />
-                                    <h2>Avalie sua compra!</h2>
-                                    <p>É rápido e sua opinião é muito importante!</p>
-                                    <img src={teste} alt="Produto Comprado Imagem" className={styles["imgTeste"]} />
-                                    <p><strong>Pedido Vestido</strong><br />Data: 10/10/2024<br />Total: 100,00</p>
-
-                                    {/* Star Rating Componente */}
-                                    <div className={styles["starRating"]}>
-                                        {[1, 2, 3, 4, 5].map((star) => (
-                                            <span
-                                                key={star}
-                                                className={star <= rating ? styles["starSelected"] : styles["star"]}
-                                                onClick={() => handleRatingChange(star)}
-                                            >
-                                                ★
-                                            </span>
-                                        ))}
-                                    </div>
-
-                                    <textarea
-                                        rows="1"
-                                        placeholder="Avaliar:"
-                                        value={feedbackText}
-                                        onChange={(e) => setFeedbackText(e.target.value)}
-                                    ></textarea>
-
-                                    <button className={styles["botaoEnviar"]} onClick={handleSubmitFeedback}>
-                                        Enviar
-                                    </button>
-                                </div>
-                            </div>
-                        )}
                     </div>
                 );
 
