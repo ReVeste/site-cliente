@@ -136,18 +136,28 @@ function TelaPagamento() {
         <div className="progress-bar">
           <span className="step completed">Carrinho</span>
           <span
-              className={`step ${currentStep === "Entrega" ? "active" : "completed"}`}
-              onClick={() => handleStepChange("Entrega")}
-            >
-              Entrega
-            </span>
-            <span
-              className={`step ${currentStep === "Pagamento" ? "active" : currentStep === "Conclusão" ? "completed" : ""}`}
-              onClick={() => handleStepChange("Pagamento")}
-            >
-              Pagamento
-            </span>
-          <span className={`step ${currentStep === "Conclusão" ? "active" : ""}`} >
+            className={`step ${
+              currentStep === "Entrega" ? "active" : "completed"
+            }`}
+            onClick={() => handleStepChange("Entrega")}
+          >
+            Entrega
+          </span>
+          <span
+            className={`step ${
+              currentStep === "Pagamento"
+                ? "active"
+                : currentStep === "Conclusão"
+                ? "completed"
+                : ""
+            }`}
+            onClick={() => handleStepChange("Pagamento")}
+          >
+            Pagamento
+          </span>
+          <span
+            className={`step ${currentStep === "Conclusão" ? "active" : ""}`}
+          >
             Conclusão
           </span>
         </div>
@@ -160,25 +170,27 @@ function TelaPagamento() {
                 <div className="form-field" key={campo}>
                   <label>{campo.charAt(0).toUpperCase() + campo.slice(1)}:</label>
                   <input
-                    type="text"
-                    name={campo}
-                    value={novoEndereco[campo]}
-                    onChange={handleChange}
-                    onBlur={() => {
-                      if (novoEndereco[campo].trim() === "") {
-                        setErros((prevErros) => ({
-                          ...prevErros,
-                          [campo]: `O campo ${campo} é obrigatório.`,
-                        }));
-                      } else {
-                        setErros((prevErros) => {
-                          const { [campo]: _, ...restoErros } = prevErros;
-                          return restoErros;
-                        });
-                      }
-                    }}
-                    className={erros[campo] ? "input-error" : ""}
-                  />
+              type="text"
+              name={campo}
+              value={novoEndereco[campo]}
+              onChange={handleChange}
+              onBlur={() => {
+                if (campo === "complemento") return;
+
+                if (novoEndereco[campo].trim() === "") {
+                  setErros((prevErros) => ({
+                    ...prevErros,
+                    [campo]: `O campo ${campo} é obrigatório.`,
+                  }));
+                } else {
+                  setErros((prevErros) => {
+                    const { [campo]: _, ...restoErros } = prevErros;
+                    return restoErros;
+                  });
+                }
+              }}
+              className={erros[campo] ? "input-error" : ""}
+            />
                   {erros[campo] && <span className="error-message">{erros[campo]}</span>}
                 </div>
               ))}
@@ -212,7 +224,9 @@ function TelaPagamento() {
                 frete={frete}
                 endereco={enderecoSelecionado}
               />
-              <button onClick={handleConclusao} className="botaoo" >Concluir</button>
+              <button type="button" className="botaoo" onClick={handleSalvarEndereco}>
+              Próximo
+              </button>
             </div>
           </div>
         )}
