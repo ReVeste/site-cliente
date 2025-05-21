@@ -3,6 +3,7 @@ import "./TelaPagamento.css";
 import api from "../../Api";
 import Pagamento from "../Pagamento/Pagamento";
 import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function TelaPagamento() {
   const navigate = useNavigate();
@@ -49,10 +50,44 @@ function TelaPagamento() {
 
   
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setNovoEndereco({ ...novoEndereco, [name]: value });
-  };
+const handleChange = async (e) => {
+  const { name, value } = e.target;
+
+  
+  setNovoEndereco((prev) => ({
+    ...prev,
+    [name]: value,
+  }));
+
+  
+  if (name === "cep") {
+    const cepSemMascara = value.replace(/\D/g, "");
+
+    if (cepSemMascara.length === 8) {
+      
+      try {
+        const response = await axios.get(`https://viacep.com.br/ws/${cepSemMascara}/json/`);
+        if (response.status === 200 && !response.data.erro) {
+          const data = response.data;
+          setNovoEndereco((prev) => ({
+            ...prev,
+            cep: cepSemMascara,
+            rua: data.logradouro || "",
+            bairro: data.bairro || "",
+            cidade: data.localidade || "",
+            uf: data.uf || "",
+          }));
+        } else {
+          alert("CEP não encontrado.");
+        }
+      } catch (error) {
+        alert("Não foi possível buscar esse CEP.");
+      }
+    }
+  }
+};
+
+
 
   const fetchEnderecos = async () => {
     try {
@@ -114,6 +149,7 @@ function TelaPagamento() {
         idUsuario,
       };
 
+     
       const response = await api.post("/enderecos", enderecoComUsuario);
       if (response.status === 201) {
         console.log("Endereço salvo com sucesso:", response.data);
