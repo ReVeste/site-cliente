@@ -115,7 +115,6 @@ const handleChange = async (e) => {
   };
 
   const handleSalvarEndereco = async () => {
-    console.log("Tentando salvar o endereço...");
     const camposObrigatorios = Object.keys(camposEndereco).filter((campo) => campo !== "complemento");
     const novosErros = {};
 
@@ -232,7 +231,7 @@ const handleChange = async (e) => {
                   {erros[campo] && <span className="error-message">{erros[campo]}</span>}
                 </div>
               ))}
-              <button className="botaoo" onClick={handleSalvarEndereco}>
+              <button type="button" className="botaoo" onClick={handleSalvarEndereco}>
                 Próximo
               </button>
             </form>
