@@ -87,7 +87,23 @@ const handleChange = async (e) => {
   }
 };
 
-
+const criarEntrega = async () => {
+  if (novoEndereco.cep.trim() === "") {
+    alert("Por favor, preencha o CEP.");
+    return;
+  }
+  
+  await api.post(`/entregas?cep=${novoEndereco.cep}`)
+    .then(response => {
+      console.log('Resultado: ' + response.status);
+      console.log(response.data);
+      handleSalvarEndereco();
+    })
+    .catch(() => {
+      console.log("Erro ao criar entrega. Verifique o CEP.");
+      alert("Erro ao criar entrega. Verifique o CEP.");
+    })
+};
 
   const fetchEnderecos = async () => {
     try {
@@ -113,6 +129,7 @@ const handleChange = async (e) => {
       console.error("Erro ao buscar usuário:", error.response?.data);
     }
   };
+
 
   const handleSalvarEndereco = async () => {
     const camposObrigatorios = Object.keys(camposEndereco).filter((campo) => campo !== "complemento");
@@ -231,7 +248,7 @@ const handleChange = async (e) => {
                   {erros[campo] && <span className="error-message">{erros[campo]}</span>}
                 </div>
               ))}
-              <button type="button" className="botaoo" onClick={handleSalvarEndereco}>
+              <button type="button" className="botaoo" onClick={criarEntrega}>
                 Próximo
               </button>
             </form>
