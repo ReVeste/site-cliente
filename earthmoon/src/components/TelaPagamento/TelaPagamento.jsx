@@ -12,7 +12,8 @@ function TelaPagamento() {
   const [phone, setPhone] = useState("");
   const [enderecos, setEnderecos] = useState([]);
   const [enderecoSelecionado, setEnderecoSelecionado] = useState("");
-  const [frete, setFrete] = useState(10.5);
+  const [frete, setFrete] = useState(0.0);
+  const [transPortadora, setTransPortadora] = useState("");
   const [usuario, setUsuario] = useState([]);
   const [erros, setErros] = useState({});
 
@@ -29,81 +30,94 @@ function TelaPagamento() {
   const [novoEndereco, setNovoEndereco] = useState(camposEndereco);
 
   const location = useLocation();
-  const { items, subTotal, idPedido } = location.state || { items: [], subTotal: 0.0 };
+  const { items, subTotal, idPedido } = location.state || {
+    items: [],
+    subTotal: 0.0,
+  };
   const idUsuario = sessionStorage.getItem("userId");
 
+  const handleConclusao = async () => {
+    try {
+      const response = await api.put(`/pedidos/${idPedido}`);
+      console.log("Pedido recebido:", response.data);
+    } catch (error) {
+      console.error("Erro ao buscar o pedido:", error);
+    }
 
- const handleConclusao = async () => {
-  try {
-    const response = await api.put(`/pedidos/${idPedido}`);
-    console.log('Pedido recebido:', response.data);
-  } catch (error) {
-    console.error('Erro ao buscar o pedido:', error);
-  }
+    setCurrentStep("Conclusão");
 
-  setCurrentStep("Conclusão");
+    setTimeout(() => {
+      navigate("/");
+    }, 5000);
+  };
 
-  setTimeout(() => {
-    navigate("/");
-  }, 5000);
-};
+  const handleChange = async (e) => {
+    const { name, value } = e.target;
 
-  
+    setNovoEndereco((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
 
-const handleChange = async (e) => {
-  const { name, value } = e.target;
+    if (name === "cep") {
+      const cepSemMascara = value.replace(/\D/g, "");
 
-  
-  setNovoEndereco((prev) => ({
-    ...prev,
-    [name]: value,
-  }));
-
-  
-  if (name === "cep") {
-    const cepSemMascara = value.replace(/\D/g, "");
-
-    if (cepSemMascara.length === 8) {
-      
-      try {
-        const response = await axios.get(`https://viacep.com.br/ws/${cepSemMascara}/json/`);
-        if (response.status === 200 && !response.data.erro) {
-          const data = response.data;
-          setNovoEndereco((prev) => ({
-            ...prev,
-            cep: cepSemMascara,
-            rua: data.logradouro || "",
-            bairro: data.bairro || "",
-            cidade: data.localidade || "",
-            uf: data.uf || "",
-          }));
-        } else {
-          alert("CEP não encontrado.");
+      if (cepSemMascara.length === 8) {
+        try {
+          const response = await axios.get(
+            `https://viacep.com.br/ws/${cepSemMascara}/json/`
+          );
+          if (response.status === 200 && !response.data.erro) {
+            const data = response.data;
+            setNovoEndereco((prev) => ({
+              ...prev,
+              cep: cepSemMascara,
+              rua: data.logradouro || "",
+              bairro: data.bairro || "",
+              cidade: data.localidade || "",
+              uf: data.uf || "",
+            }));
+          } else {
+            alert("CEP não encontrado.");
+          }
+        } catch (error) {
+          alert("Não foi possível buscar esse CEP.");
         }
-      } catch (error) {
-        alert("Não foi possível buscar esse CEP.");
       }
     }
-  }
-};
+  };
 
-const criarEntrega = async () => {
-  if (novoEndereco.cep.trim() === "") {
-    alert("Por favor, preencha o CEP.");
-    return;
-  }
-  
-  await api.post(`/entregas?cep=${novoEndereco.cep}`)
-    .then(response => {
-      console.log('Resultado: ' + response.status);
-      console.log(response.data);
-      handleSalvarEndereco();
-    })
-    .catch(() => {
-      console.log("Erro ao criar entrega. Verifique o CEP.");
-      alert("Erro ao criar entrega. Verifique o CEP.");
-    })
-};
+  const criarEntrega = async () => {
+    if (novoEndereco.cep.trim() === "") {
+      alert("Por favor, preencha o CEP.");
+      return;
+    }
+
+    await api
+      .post(`/entregas?cep=${novoEndereco.cep}`)
+      .then((response) => {
+        console.log("Resultado: " + response.status);
+        console.log(response.data);
+        const lista = response.data;
+       
+        let menorPreco = lista[0].price ?? Number.MAX_VALUE;
+        let nome = "";
+        for (let i = 0; i < lista.length; i++) {
+          if (lista[i].price !== undefined && Number(lista[i].price) < Number(menorPreco)) {
+
+            menorPreco = lista[i].price;
+            nome = lista[i].name;
+          }
+        }
+        setFrete(menorPreco)
+        setTransPortadora(nome)
+        handleSalvarEndereco();
+      })
+      .catch(() => {
+        console.log("Erro ao criar entrega. Verifique o CEP.");
+        alert("Erro ao criar entrega. Verifique o CEP.");
+      });
+  };
 
   const fetchEnderecos = async () => {
     try {
@@ -130,9 +144,10 @@ const criarEntrega = async () => {
     }
   };
 
-
   const handleSalvarEndereco = async () => {
-    const camposObrigatorios = Object.keys(camposEndereco).filter((campo) => campo !== "complemento");
+    const camposObrigatorios = Object.keys(camposEndereco).filter(
+      (campo) => campo !== "complemento"
+    );
     const novosErros = {};
 
     camposObrigatorios.forEach((campo) => {
@@ -165,7 +180,6 @@ const criarEntrega = async () => {
         idUsuario,
       };
 
-     
       const response = await api.post("/enderecos", enderecoComUsuario);
       if (response.status === 201) {
         console.log("Endereço salvo com sucesso:", response.data);
@@ -186,7 +200,8 @@ const criarEntrega = async () => {
   const handleStepChange = (step) => {
     if (
       (currentStep === "Pagamento" && step === "Entrega") ||
-      (currentStep === "Conclusão" && (step === "Entrega" || step === "Pagamento"))
+      (currentStep === "Conclusão" &&
+        (step === "Entrega" || step === "Pagamento"))
     ) {
       console.log("Navegação não permitida.");
       return;
@@ -200,18 +215,28 @@ const criarEntrega = async () => {
         <div className="progress-bar">
           <span className="step completed">Carrinho</span>
           <span
-            className={`step ${currentStep === "Entrega" ? "active" : "completed"}`}
+            className={`step ${
+              currentStep === "Entrega" ? "active" : "completed"
+            }`}
             onClick={() => handleStepChange("Entrega")}
           >
             Entrega
           </span>
           <span
-            className={`step ${currentStep === "Pagamento" ? "active" : currentStep === "Conclusão" ? "completed" : ""}`}
+            className={`step ${
+              currentStep === "Pagamento"
+                ? "active"
+                : currentStep === "Conclusão"
+                ? "completed"
+                : ""
+            }`}
             onClick={() => handleStepChange("Pagamento")}
           >
             Pagamento
           </span>
-          <span className={`step ${currentStep === "Conclusão" ? "active" : ""}`}>
+          <span
+            className={`step ${currentStep === "Conclusão" ? "active" : ""}`}
+          >
             Conclusão
           </span>
         </div>
@@ -222,7 +247,9 @@ const criarEntrega = async () => {
             <form className="form-grid">
               {Object.keys(camposEndereco).map((campo) => (
                 <div className="form-field" key={campo}>
-                  <label>{campo.charAt(0).toUpperCase() + campo.slice(1)}:</label>
+                  <label>
+                    {campo.charAt(0).toUpperCase() + campo.slice(1)}:
+                  </label>
                   <input
                     type="text"
                     name={campo}
@@ -245,7 +272,9 @@ const criarEntrega = async () => {
                     }}
                     className={erros[campo] ? "input-error" : ""}
                   />
-                  {erros[campo] && <span className="error-message">{erros[campo]}</span>}
+                  {erros[campo] && (
+                    <span className="error-message">{erros[campo]}</span>
+                  )}
                 </div>
               ))}
               <button type="button" className="botaoo" onClick={criarEntrega}>
@@ -268,9 +297,11 @@ const criarEntrega = async () => {
             ))}
             <div className="summary">
               <p>Subtotal: R$ {parseFloat(subTotal).toFixed(2)} </p>
+              <p>Transportadora:<b>{transPortadora} </b></p>
               <p>Frete: R$ {parseFloat(frete).toFixed(2)} </p>
               <h3>
-                Total: R$ {(parseFloat(subTotal) + parseFloat(frete)).toFixed(2)}
+                Total: R${" "}
+                {(parseFloat(subTotal) + parseFloat(frete)).toFixed(2)}
               </h3>
               <Pagamento
                 items={items}
@@ -278,7 +309,11 @@ const criarEntrega = async () => {
                 frete={frete}
                 endereco={enderecoSelecionado}
               />
-              <button type="button" className="botaoo" onClick={handleConclusao}>
+              <button
+                type="button"
+                className="botaoo"
+                onClick={handleConclusao}
+              >
                 Próximo
               </button>
             </div>
@@ -288,7 +323,10 @@ const criarEntrega = async () => {
         {currentStep === "Conclusão" && (
           <div className="container-conclusao">
             <h2>Pedido efetuado!</h2>
-            <p>Baixe o aplicativo dos Correios para ser notificado sobre o envio do pedido!</p>
+            <p>
+              Baixe o aplicativo dos Correios para ser notificado sobre o envio
+              do pedido!
+            </p>
             <p>Obrigada por confiar no Earth Moon!</p>
           </div>
         )}
