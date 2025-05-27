@@ -1,5 +1,3 @@
-
-
 .product-register-container {
     display: flex;
     justify-content: center;
@@ -32,6 +30,29 @@
     margin-bottom: 20px;
     position: relative;
     overflow: hidden;
+}
+
+.success-popup, .error-popup {
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    padding: 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.success-popup {
+    background-color: #dff0d8;
+    color: #3c763d;
+}
+
+.error-popup {
+    background-color: #f2dede;
+    color: #a94442;
 }
 
 .main-image {
