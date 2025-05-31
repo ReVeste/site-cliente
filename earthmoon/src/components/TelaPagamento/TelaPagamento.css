@@ -1,5 +1,5 @@
 .progress-bar {
-  margin-bottom: 20px;
+  margin-top: 20px;
   display: flex;
   justify-content: space-between;
   padding: 0 5px;
@@ -143,6 +143,14 @@
   box-sizing: border-box;
 }
 
+.new-address-form {
+  width: 100%;
+  max-width: 550px;
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
 .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -232,4 +240,22 @@
 .container-conclusao p {
   font-size: 1rem;
   margin: 5px 0;
+}
+
+.endereco-item {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.endereco-item:hover {
+  background-color: #ddd;
 }

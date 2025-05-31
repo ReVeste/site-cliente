@@ -11,13 +11,13 @@ function TelaPagamento() {
   const [email, setEmail] = useState(sessionStorage.getItem("userEmail"));
   const [phone, setPhone] = useState("");
   const [enderecos, setEnderecos] = useState([]);
-  const [enderecoSelecionado, setEnderecoSelecionado] = useState("");
   const [frete, setFrete] = useState(0.0);
   const [transPortadora, setTransPortadora] = useState("");
   const [usuario, setUsuario] = useState([]);
   const [erros, setErros] = useState({});
 
   const camposEndereco = {
+    apelido: "", // Adicionado campo de apelido
     cep: "",
     uf: "",
     cidade: "",
@@ -93,40 +93,45 @@ function TelaPagamento() {
       return;
     }
 
-    await api
-      .post(`/entregas?cep=${novoEndereco.cep}`)
-      .then((response) => {
-        console.log("Resultado: " + response.status);
-        console.log(response.data);
-        const lista = response.data;
-       
-        let menorPreco = lista[0].price ?? Number.MAX_VALUE;
-        let nome = "";
-        for (let i = 0; i < lista.length; i++) {
-          if (lista[i].price !== undefined && Number(lista[i].price) < Number(menorPreco)) {
+    try {
+      const response = await api.post(`/entregas?cep=${novoEndereco.cep}`);
+      console.log("Resultado: " + response.status);
+      console.log(response.data);
+      const lista = response.data;
 
-            menorPreco = lista[i].price;
-            nome = lista[i].name;
-          }
+      let menorPreco = lista[0].price ?? Number.MAX_VALUE;
+      let nome = "";
+      for (let i = 0; i < lista.length; i++) {
+        if (lista[i].price !== undefined && Number(lista[i].price) < Number(menorPreco)) {
+          menorPreco = lista[i].price;
+          nome = lista[i].name;
         }
-        setFrete(menorPreco)
-        setTransPortadora(nome)
-        handleSalvarEndereco();
-      })
-      .catch(() => {
-        console.log("Erro ao criar entrega. Verifique o CEP.");
-        alert("Erro ao criar entrega. Verifique o CEP.");
-      });
+      }
+      setFrete(menorPreco);
+      setTransPortadora(nome);
+      handleSalvarEndereco();
+    } catch (error) {
+      console.log("Erro ao criar entrega. Verifique o CEP.");
+      alert("Erro ao criar entrega. Verifique o CEP.");
+    }
   };
 
   const fetchEnderecos = async () => {
     try {
       const response = await api.get(`/enderecos/usuario/${idUsuario}`);
       console.log("Endereços carregados:", response.data);
-      setEnderecos(response.data.map((endereco) => endereco.apelido));
+      setEnderecos(response.data); // Armazene os endereços do usuário
     } catch (error) {
       console.error("Erro ao buscar endereço:", error.response?.data);
     }
+  };
+
+  const handleSelecionarEndereco = (endereco) => {
+    // Completa os campos com os dados do endereço selecionado
+    setNovoEndereco(prev => ({
+      ...prev,
+      ...endereco
+    }));
   };
 
   useEffect(() => {
@@ -151,7 +156,7 @@ function TelaPagamento() {
     const novosErros = {};
 
     camposObrigatorios.forEach((campo) => {
-      if (novoEndereco[campo].trim() === "") {
+      if ((novoEndereco[campo] || "").trim() === "") {
         novosErros[campo] = `O campo ${campo} é obrigatório.`;
       }
     });
@@ -166,24 +171,15 @@ function TelaPagamento() {
     console.log("Endereço válido. Enviando para o servidor...");
 
     try {
-      const idUsuario = sessionStorage.getItem("userId");
-
       const enderecoComUsuario = {
-        apelido: novoEndereco.apelido,
-        cep: novoEndereco.cep,
-        rua: novoEndereco.rua,
-        numero: novoEndereco.numero,
-        complemento: novoEndereco.complemento,
-        bairro: novoEndereco.bairro,
-        cidade: novoEndereco.cidade,
-        uf: novoEndereco.uf,
+        ...novoEndereco,
         idUsuario,
       };
 
       const response = await api.post("/enderecos", enderecoComUsuario);
-      if (response.status === 201) {
+      if (response.status === 201 || response.status === 200) {
         console.log("Endereço salvo com sucesso:", response.data);
-        setEnderecos([...enderecos, novoEndereco.apelido]);
+        setEnderecos([...enderecos, { ...novoEndereco }]);
         alert("Endereço salvo com sucesso!");
         setNovoEndereco(camposEndereco);
         setCurrentStep("Pagamento");
@@ -230,7 +226,6 @@ function TelaPagamento() {
                 ? "completed"
                 : ""
             }`}
-            onClick={() => handleStepChange("Pagamento")}
           >
             Pagamento
           </span>
@@ -244,6 +239,19 @@ function TelaPagamento() {
         {currentStep === "Entrega" && (
           <div className="new-address-form">
             <h2>Endereço de entrega</h2>
+            {enderecos.length > 0 && (
+              <div className="endereco-list">
+                {enderecos.map((endereco, index) => (
+                  <button 
+                    key={index} 
+                    className="endereco-item botaoEndereco" 
+                    onClick={() => handleSelecionarEndereco(endereco)}
+                  >
+                    {endereco.apelido}
+                  </button>
+                ))}
+              </div>
+            )}
             <form className="form-grid">
               {Object.keys(camposEndereco).map((campo) => (
                 <div className="form-field" key={campo}>
@@ -253,12 +261,12 @@ function TelaPagamento() {
                   <input
                     type="text"
                     name={campo}
-                    value={novoEndereco[campo]}
+                    value={novoEndereco[campo] || ""}  // Garante que a string não seja undefined
                     onChange={handleChange}
                     onBlur={() => {
                       if (campo === "complemento") return;
 
-                      if (novoEndereco[campo].trim() === "") {
+                      if ((novoEndereco[campo] || "").trim() === "") {
                         setErros((prevErros) => ({
                           ...prevErros,
                           [campo]: `O campo ${campo} é obrigatório.`,
@@ -307,7 +315,7 @@ function TelaPagamento() {
                 items={items}
                 usuario={usuario}
                 frete={frete}
-                endereco={enderecoSelecionado}
+                endereco={enderecos[0]}
               />
               <button
                 type="button"
