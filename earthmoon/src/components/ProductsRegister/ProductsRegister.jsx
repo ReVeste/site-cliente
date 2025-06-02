@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import './ProductsRegister.css';
 import api from '../../Api';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 
 const ProductsRegister = () => {
   const [imageUrls, setImageUrls] = useState([]);
-  const navigate = useNavigate(); 
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
 
-  
   const [formData, setFormData] = useState({
     title: '',
     brand: '',
@@ -25,7 +26,7 @@ const ProductsRegister = () => {
       const formCloud = new FormData();
       formCloud.append("file", image);
       formCloud.append("upload_preset", "produtos");
-      
+
       return axios.post(process.env.REACT_APP_CLOUDINARY_URL, formCloud)
         .then((response) => response.data.secure_url)
         .catch((error) => {
@@ -35,41 +36,54 @@ const ProductsRegister = () => {
     });
 
     const urls = await Promise.all(uploadPromises);
-    console.log('URLs:', urls);
-    console.log('URLs válidas:', urls.filter(url => url !== null));
     return urls.filter(url => url !== null);
-  };  
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!formData.title || !formData.category || !formData.description || !formData.price || formData.images.length === 0) {
-      console.error("Preencha todos os campos corretamente.");
+      setErrorMessage("Preencha todos os campos corretamente.");
       return;
     }
 
     const urls = await uploadImages(formData.images);
-    console.log('urls:', urls);
     await setImageUrls(urls);
 
-    console.log('urls:', urls);
     if (urls.length !== formData.images.length) {
-      console.error("Erro no upload de algumas imagens.");
+      setErrorMessage("Erro no upload de algumas imagens.");
       return;
     }
 
-    api.post('/produtos', {
-      nome: formData.title,
-      categoria: formData.category,
-      descricao: formData.description,
-      marca: formData.brand,
-      preco: parsePrice(formData.price),
-      images: urls,
-      qtdEstoque: formData.stock || 1,
-      status: 'DISPONIVEL'
-    })
-    .then(response => console.log('Cadastro bem-sucedido:', response.data))
-    .catch(error => console.error('Erro no cadastro:', error.response?.data));
+    try {
+      if (formData.noBrand) {
+        formData.brand = 'Sem marca';
+      }
+
+      const response = await api.post('/produtos', {
+        nome: formData.title,
+        categoria: formData.category,
+        descricao: formData.description,
+        marca: formData.brand,
+        preco: parsePrice(formData.price),
+        images: urls,
+        qtdEstoque: formData.stock || 1,
+        status: 'DISPONIVEL'
+      });
+
+      if (response.status === 201) {
+        setSuccessMessage("Produto cadastrado com sucesso!");
+        setErrorMessage("");
+
+        // Redireciona para a tela geral após 5 segundos
+        setTimeout(() => {
+          navigate('/configuracao-eduarda');
+        }, 5000);
+      }
+    } catch (error) {
+      setErrorMessage(`Erro no cadastro: ${error.response?.data || error.message}`);
+      setSuccessMessage("");
+    }
   };
 
   const handleChange = (e) => {
@@ -142,7 +156,11 @@ const ProductsRegister = () => {
 
   return (
     <div className="product-register-container">
-       <button 
+      {/* Mensagens de sucesso e erro */}
+      {successMessage && <div className="success-popup">{successMessage}</div>}
+      {errorMessage && <div className="error-popup">{errorMessage}</div>}
+
+      <button 
         type="button" 
         onClick={() => navigate('/configuracao-eduarda')} 
         className="back-button"
@@ -304,7 +322,7 @@ const ProductsRegister = () => {
           <option value="ACESSORIO">Acessórios</option>
         </select>
 
-        {formData.category === 'acessorios' && (
+        {formData.category === 'ACESSORIO' && (
           <>
             <label htmlFor="stock">ESTOQUE</label>
             <input
