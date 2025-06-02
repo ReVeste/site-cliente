@@ -31,8 +31,8 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
-    margin-left: 170px;
+    width: auto; /* ou ajuste conforme necessário */
+    margin-left: 0; /* Remova o espaçamento extra */
 }
 
 .nav-links {

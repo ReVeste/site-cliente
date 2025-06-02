@@ -56,6 +56,10 @@ const ProductsRegister = () => {
     }
 
     try {
+      if (formData.noBrand) {
+        formData.brand = 'Sem marca';
+      }
+
       const response = await api.post('/produtos', {
         nome: formData.title,
         categoria: formData.category,

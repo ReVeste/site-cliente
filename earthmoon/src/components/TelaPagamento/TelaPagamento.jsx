@@ -8,8 +8,6 @@ import axios from "axios";
 function TelaPagamento() {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState("Entrega");
-  const [email, setEmail] = useState(sessionStorage.getItem("userEmail"));
-  const [phone, setPhone] = useState("");
   const [enderecos, setEnderecos] = useState([]);
   const [frete, setFrete] = useState(0.0);
   const [transPortadora, setTransPortadora] = useState("");
@@ -17,6 +15,7 @@ function TelaPagamento() {
   const [erros, setErros] = useState({});
 
   const camposEndereco = {
+    id: null,
     apelido: "", // Adicionado campo de apelido
     cep: "",
     uf: "",
@@ -127,12 +126,8 @@ function TelaPagamento() {
   };
 
   const handleSelecionarEndereco = (endereco) => {
-    // Completa os campos com os dados do endereço selecionado
-    setNovoEndereco(prev => ({
-      ...prev,
-      ...endereco
-    }));
-  };
+  setNovoEndereco({ ...endereco });
+};
 
   useEffect(() => {
     fetchEnderecos();
@@ -150,48 +145,52 @@ function TelaPagamento() {
   };
 
   const handleSalvarEndereco = async () => {
-    const camposObrigatorios = Object.keys(camposEndereco).filter(
-      (campo) => campo !== "complemento"
-    );
-    const novosErros = {};
+  const camposObrigatorios = Object.keys(camposEndereco).filter(
+    (campo) => campo !== "complemento" && campo !== "id"
+  );
 
-    camposObrigatorios.forEach((campo) => {
-      if ((novoEndereco[campo] || "").trim() === "") {
-        novosErros[campo] = `O campo ${campo} é obrigatório.`;
-      }
-    });
+  const novosErros = {};
+  camposObrigatorios.forEach((campo) => {
+    if (String(novoEndereco[campo] || "").trim() === "") {
+  novosErros[campo] = `O campo ${campo} é obrigatório.`;
+}
+  });
 
-    if (Object.keys(novosErros).length > 0) {
-      console.log("Erros encontrados nos campos:", novosErros);
-      setErros(novosErros);
-      return;
+  if (Object.keys(novosErros).length > 0) {
+    console.log("Erros encontrados nos campos:", novosErros);
+    setErros(novosErros);
+    return;
+  }
+
+  setErros({});
+  console.log("Endereço válido. Enviando para o servidor...");
+
+  // ✅ Verifica se está editando
+  if (novoEndereco.id) {
+    console.log("Endereço já existente, não será salvo novamente.");
+    setCurrentStep("Pagamento");
+    return;
+  }
+
+  try {
+    const enderecoComUsuario = { ...novoEndereco, idUsuario };
+
+    const response = await api.post("/enderecos", enderecoComUsuario);
+    if (response.status === 201 || response.status === 200) {
+      console.log("Endereço salvo com sucesso:", response.data);
+      setEnderecos([...enderecos, response.data]);  // Ideal usar o retorno da API
+      alert("Endereço salvo com sucesso!");
+      setNovoEndereco(camposEndereco);
+      setCurrentStep("Pagamento");
+      console.log("Mudando para etapa Pagamento.");
+    } else {
+      alert("Erro ao salvar endereço. Tente novamente.");
     }
-
-    setErros({});
-    console.log("Endereço válido. Enviando para o servidor...");
-
-    try {
-      const enderecoComUsuario = {
-        ...novoEndereco,
-        idUsuario,
-      };
-
-      const response = await api.post("/enderecos", enderecoComUsuario);
-      if (response.status === 201 || response.status === 200) {
-        console.log("Endereço salvo com sucesso:", response.data);
-        setEnderecos([...enderecos, { ...novoEndereco }]);
-        alert("Endereço salvo com sucesso!");
-        setNovoEndereco(camposEndereco);
-        setCurrentStep("Pagamento");
-        console.log("Mudando para etapa Pagamento.");
-      } else {
-        alert("Erro ao salvar endereço. Tente novamente.");
-      }
-    } catch (error) {
-      console.error("Erro ao salvar endereço:", error.message);
-      alert("Erro ao salvar endereço: " + error.message);
-    }
-  };
+  } catch (error) {
+    console.error("Erro ao salvar endereço:", error.message);
+    alert("Erro ao salvar endereço: " + error.message);
+  }
+};
 
   const handleStepChange = (step) => {
     if (
@@ -253,42 +252,44 @@ function TelaPagamento() {
               </div>
             )}
             <form className="form-grid">
-              {Object.keys(camposEndereco).map((campo) => (
-                <div className="form-field" key={campo}>
-                  <label>
-                    {campo.charAt(0).toUpperCase() + campo.slice(1)}:
-                  </label>
-                  <input
-                    type="text"
-                    name={campo}
-                    value={novoEndereco[campo] || ""}  // Garante que a string não seja undefined
-                    onChange={handleChange}
-                    onBlur={() => {
-                      if (campo === "complemento") return;
+  {Object.keys(camposEndereco)
+    .filter((campo) => campo !== "id")  // ✅ Ignora o campo id
+    .map((campo) => (
+      <div className="form-field" key={campo}>
+        <label>
+          {campo.charAt(0).toUpperCase() + campo.slice(1)}:
+        </label>
+        <input
+          type="text"
+          name={campo}
+          value={novoEndereco[campo] || ""}
+          onChange={handleChange}
+          onBlur={() => {
+            if (campo === "complemento") return;
 
-                      if ((novoEndereco[campo] || "").trim() === "") {
-                        setErros((prevErros) => ({
-                          ...prevErros,
-                          [campo]: `O campo ${campo} é obrigatório.`,
-                        }));
-                      } else {
-                        setErros((prevErros) => {
-                          const { [campo]: _, ...restoErros } = prevErros;
-                          return restoErros;
-                        });
-                      }
-                    }}
-                    className={erros[campo] ? "input-error" : ""}
-                  />
-                  {erros[campo] && (
-                    <span className="error-message">{erros[campo]}</span>
-                  )}
-                </div>
-              ))}
-              <button type="button" className="botaoo" onClick={criarEntrega}>
-                Próximo
-              </button>
-            </form>
+            if ((novoEndereco[campo] || "").trim() === "") {
+              setErros((prevErros) => ({
+                ...prevErros,
+                [campo]: `O campo ${campo} é obrigatório.`,
+              }));
+            } else {
+              setErros((prevErros) => {
+                const { [campo]: _, ...restoErros } = prevErros;
+                return restoErros;
+              });
+            }
+          }}
+          className={erros[campo] ? "input-error" : ""}
+        />
+        {erros[campo] && (
+          <span className="error-message">{erros[campo]}</span>
+        )}
+      </div>
+    ))}
+  <button type="button" className="botaoo" onClick={criarEntrega}>
+    Próximo
+  </button>
+</form>
           </div>
         )}
 

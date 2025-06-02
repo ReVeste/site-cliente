@@ -126,7 +126,7 @@ const Navbar = () => {
         </div>
 
         <div className="nav-icons">
-          <form className="search-form" onSubmit={handleSearchSubmit} role="search" aria-label="Buscar produtos">
+          {/* <form className="search-form" onSubmit={handleSearchSubmit} role="search" aria-label="Buscar produtos">
             <div className="search-input-wrapper">
               <img src={searchIcon} alt="Ícone de pesquisa" className="search-icon" />
               <input
@@ -138,7 +138,7 @@ const Navbar = () => {
                 aria-label="Digite o nome do produto para pesquisar"
               />
             </div>
-          </form>
+          </form> */}
 
           <img
             src={userIcon}
