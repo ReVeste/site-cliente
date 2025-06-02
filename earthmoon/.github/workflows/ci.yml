@@ -1,4 +1,5 @@
 name: CI React App
+
 on:
   push:
     branches: [homologacao]
