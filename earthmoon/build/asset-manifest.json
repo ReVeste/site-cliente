@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/static/css/main.249f3963.css",
+    "main.js": "/static/js/main.c6c95bf8.js",
+    "static/media/tabelaMedida.png": "/static/media/tabelaMedida.4890b8d5a128376a097c.png",
+    "static/media/visa.png": "/static/media/visa.0222b978b1e5e51da672.png",
+    "static/media/elo.png": "/static/media/elo.493d06182bf97b459210.png",
+    "static/media/icon.png": "/static/media/icon.4b771ebdbaf4423c3790.png",
+    "static/media/mastercard.png": "/static/media/mastercard.1045761e96e4fd5bf487.png",
+    "static/media/pix.png": "/static/media/pix.3c364a43327848c5c204.png",
+    "static/media/iconeLUA.png": "/static/media/iconeLUA.07001971f72a66f8d1fd.png",
+    "static/media/express.jpg": "/static/media/express.c44fc5ec1f223c197955.jpg",
+    "static/media/mercadopago.png": "/static/media/mercadopago.3d69ce7a807718cafa26.png",
+    "static/media/export.jpg": "/static/media/export.e338bf07e01aca80ab81.jpg",
+    "index.html": "/index.html",
+    "main.249f3963.css.map": "/static/css/main.249f3963.css.map",
+    "main.c6c95bf8.js.map": "/static/js/main.c6c95bf8.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.249f3963.css",
+    "static/js/main.c6c95bf8.js"
+  ]
+}
