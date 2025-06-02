@@ -1,10 +1,10 @@
-name: CI - React App
+name: CI React App
 
 on:
   push:
-    branches: [ homologacao ]
+    branches: [homologacao]
   pull_request:
-    branches: [ homologacao ]
+    branches: [homologacao]
 
 jobs:
   build:
