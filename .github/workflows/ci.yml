@@ -4,7 +4,7 @@ on:
   push:
     branches: [homologacao]
   pull_request:
-    branches: [teste-ci]
+    branches: [homologacao]
 
 jobs:
   build:
