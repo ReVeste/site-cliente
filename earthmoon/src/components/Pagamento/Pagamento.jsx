@@ -63,6 +63,7 @@ const Pagamento = ({ items, usuario, frete, endereco, ddd, telefone }) => {
   // Executar o checkout ao carregar o componente
   useEffect(() => {
     handleCheckout();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items]);
 
   return (

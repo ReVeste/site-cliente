@@ -8,12 +8,12 @@ import api from '../../Api';
 const ConfiguracaoCliente = () => {
     const navigate = useNavigate();
     const [itemSelecionado, setItemSelecionado] = useState('Geral');
-    const [isPopupOpen, setIsPopupOpen] = useState(false);
-    const [enderecos, setEnderecos] = useState([]);
-    const [mostrarFormulario, setMostrarFormulario] = useState(false);
+    // const [isPopupOpen, setIsPopupOpen] = useState(false);
+    // const [enderecos, setEnderecos] = useState([]);
+    // const [mostrarFormulario, setMostrarFormulario] = useState(false);
     const [pedidos, setPedidos] = useState([]);
-    const [rating, setRating] = useState(0);
-    const [feedbackText, setFeedbackText] = useState('');
+    // const [rating, setRating] = useState(0);
+    // const [feedbackText, setFeedbackText] = useState('');
     const idUsuario = sessionStorage.getItem('userId');
 
     const itemClicado = (item) => {
@@ -30,10 +30,10 @@ const ConfiguracaoCliente = () => {
         }
     };
     
-    const handleRatingChange = (star) => {
-        console.log(star);
-        setRating(star);
-    };
+    // const handleRatingChange = (star) => {
+    //     console.log(star);
+    //     setRating(star);
+    // };
 
     useEffect(() => {
         const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
