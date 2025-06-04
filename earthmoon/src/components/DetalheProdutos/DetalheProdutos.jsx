@@ -125,7 +125,6 @@ const idUsuario = sessionStorage.getItem("userId");
           <h2 className="titulo-produto" id="detalhe-produto">{produto.nome}</h2>
           <div className="preco-parcelamento">
             <p className="preco">R$ {produto.preco.toFixed(2)}</p>
-            <p className="parcelamento">3x de R$ {(produto.preco / 3).toFixed(2)} sem juros</p>
           </div>
           <p className="detalhe-tamanho-cor">Tamanho {produto.tamanho}</p>
           <button className="botao-comprar" onClick={handleAddToCart}>Adicionar ao Carrinho</button>
@@ -141,12 +140,10 @@ const idUsuario = sessionStorage.getItem("userId");
             {showPaymentCard && (
               <div className="payment-card" role="dialog" aria-labelledby="detalhe-pagamento">
                 <p id="detalhe-pagamento">
-                  <strong>Cartão de crédito e débito:</strong> Aceitamos as principais bandeiras como Visa, MasterCard, Elo, American Express, entre outras.
+                  <p><strong>Carteira do Mercado Pago:</strong> Use seu saldo na conta do Mercado Pago para pagar.</p>
+                 <p><strong>Pix:</strong> Pagamento instantâneo para maior agilidade.</p>
+                  <strong>Cartão de crédito e débito:</strong> Aceitamos as principais bandeiras como Visa, MasterCard, Elo, American Express e Hipercard, além do virtual CAIXA.
                 </p>
-                <p><strong>Pix:</strong> Pagamento instantâneo para maior agilidade.</p>
-                <p><strong>Boleto bancário:</strong> Disponível para quem prefere pagamentos tradicionais.</p>
-                <p><strong>Carteira do Mercado Pago:</strong> Use seu saldo na conta do Mercado Pago para pagar.</p>
-                <p><strong>Parcelamento:</strong> Oferecemos a possibilidade de parcelamento (se aplicável), com ou sem juros, dependendo do valor e da oferta.</p>
               </div>
             )}
           </div>

@@ -28,7 +28,6 @@ const ProductCard = ({ produto }) => {
       <div className="product-info">
         <h3 id={`produto-${produto.id}`}>{produto.nome}</h3>
         <p id={`descricao-${produto.id}`}>{`R$${produto.preco.toFixed(2)}`}</p>
-        <p>{`3x de R$${(produto.preco / 3).toFixed(2)} sem juros`}</p>
       </div>
     </div>
   );
