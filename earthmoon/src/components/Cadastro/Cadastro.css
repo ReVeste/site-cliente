@@ -39,9 +39,9 @@ html, body {
     text-align: center; 
 }
 
-.toggle-option.active {
+.toggle-opcao.active {
     color: #000000;
-    border-bottom: 2px solid #2f2f2f;
+    /* border-bottom: 2px solid #2f2f2f; */
     transition: all 0.3s ease;
 }
 
@@ -183,7 +183,7 @@ html, body {
     z-index: 1001; 
 }
 
-.error-message {
+.error-mensagem {
     color: rgb(116, 0, 0);
     padding: 10px;
     border-radius: 5px;
