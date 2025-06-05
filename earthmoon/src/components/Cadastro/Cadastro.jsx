@@ -230,7 +230,7 @@ const RegisterPage = () => {
       <div className="form-wrapper">
         <div className="form-toggle" role="tablist" aria-label="Alternar entre Login e Cadastro">
           <h2
-            className={`toggle-option ${isLogin ? 'active' : ''}`}
+            className={`toggle-opcao ${isLogin ? 'active' : ''}`}
             onClick={() => toggleForm('login')}
             role="tab"
             aria-selected={isLogin}
@@ -239,7 +239,7 @@ const RegisterPage = () => {
             Login
           </h2>
           <h2
-            className={`toggle-option ${!isLogin ? 'active' : ''}`}
+            className={`toggle-opcao ${!isLogin ? 'active' : ''}`}
             onClick={() => toggleForm('cadastro')}
             role="tab"
             aria-selected={!isLogin}
@@ -260,7 +260,7 @@ const RegisterPage = () => {
         )}
   
         {errorMessage && (
-          <div className="error-message" role="alert" aria-live="assertive">
+          <div className="error-mensagem" role="alert" aria-live="assertive">
             {errorMessage}
           </div>
         )}
