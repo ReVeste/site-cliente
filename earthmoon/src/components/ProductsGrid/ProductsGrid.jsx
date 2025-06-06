@@ -55,6 +55,7 @@ const ProductsGrid = () => {
   return (
     <div className="products-grid" role="region" aria-labelledby="products-heading">
       <h2 id="products-heading">Produtos Disponíveis</h2>
+      {/* {showAll} */}
       {!showAll && (
         <button 
           onClick={() => setShowAll(true)} 

@@ -37,7 +37,7 @@ const SidePanelLogin = ({ isOpen, onClose, onLogin }) => {
 
       console.log('Tipo usuário ====> ' + response.data.tipo);
 
-      if (response.data.tipo == 'admin') {
+      if (response.data.tipo === 'admin') {
         console.log("entrou?");
         navigate('/configuracao-eduarda');
       } else {
@@ -46,7 +46,7 @@ const SidePanelLogin = ({ isOpen, onClose, onLogin }) => {
           onLogin();
           onClose();
           window.location.reload();
-        }, 2000);
+        }, 5000);
       }
       
     } catch (error) {
@@ -75,12 +75,12 @@ const SidePanelLogin = ({ isOpen, onClose, onLogin }) => {
   return (
     <div className="side-panel">
       <button className="close-button" onClick={onClose}>✖</button>
-      <h2 className="title">Fazer login</h2>
+      <h2 className="titleLogin">Fazer login</h2>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
       {successMessage && popupVisible && (
         <div className="popup-message">{successMessage}</div>
       )}
-      <form onSubmit={handleLogin}>
+      <form onSubmit={handleLogin} className="box-input-login">
         <input 
           type="email" 
           name='email' 
