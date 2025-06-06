@@ -1,7 +1,5 @@
 {
   "files": {
-    "main.css": "/static/css/main.e1c20eae.css",
-    "main.js": "/static/js/main.0807ae81.js",
     "main.css": "/static/css/main.90eeacd4.css",
     "main.js": "/static/js/main.90f50b44.js",
     "static/media/tabelaMedida.png": "/static/media/tabelaMedida.4890b8d5a128376a097c.png",
@@ -15,11 +13,11 @@
     "static/media/mercadopago.png": "/static/media/mercadopago.3d69ce7a807718cafa26.png",
     "static/media/export.jpg": "/static/media/export.e338bf07e01aca80ab81.jpg",
     "index.html": "/index.html",
-    "main.249f3963.css.map": "/static/css/main.249f3963.css.map",
-    "main.c6c95bf8.js.map": "/static/js/main.c6c95bf8.js.map"
+    "main.90eeacd4.css.map": "/static/css/main.90eeacd4.css.map",
+    "main.90f50b44.js.map": "/static/js/main.90f50b44.js.map"
   },
   "entrypoints": [
-    "static/css/main.e1c20eae.css",
-    "static/js/main.0807ae81.js"
+    "static/css/main.90eeacd4.css",
+    "static/js/main.90f50b44.js"
   ]
 }
