@@ -2,7 +2,7 @@ name: CI React App
 
 on:
   push:
-    branches: [homologacao]
+    branches: [homologacao, main, docker-ketelyn]
   pull_request:
     branches: [main, teste-ci]
 
