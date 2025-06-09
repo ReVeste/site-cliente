@@ -2,9 +2,9 @@ name: CI React App
 
 on:
   push:
-    branches: [homologacao]
+    branches: [homologacao, docker-ryan]
   pull_request:
-    branches: [main, teste-ci]
+    branches: [main, teste-ci, docker-ryan, homologacao]
 
 jobs:
   build:
