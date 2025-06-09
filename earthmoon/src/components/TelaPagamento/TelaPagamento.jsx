@@ -132,6 +132,7 @@ function TelaPagamento() {
   useEffect(() => {
     fetchEnderecos();
     fetchUsuario();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchUsuario = async () => {

@@ -3,7 +3,7 @@ import Navbar from '../Navbar/Navbar';
 import './ConfiguracaoEduarda.css';
 import ListaEduarda from '../ListaEduarda/ListaEduarda';
 import { useNavigate } from "react-router-dom";
-import ProductsRegister from '../ProductsRegister/ProductsRegister';
+// import ProductsRegister from '../ProductsRegister/ProductsRegister';
 import { Bar, Line } from 'react-chartjs-2';
 import minhaImagem from '../../assets/export.jpg';
 import api from '../../Api';
@@ -191,7 +191,7 @@ const ConfiguracaoEduarda = () => {
     const interval = setInterval(fetchData, 1 * 60 * 1000);
     return () => clearInterval(interval);
 
-  }, []);
+  }, [kpis]);
 
   const dataCadastrosUsuarios = {
     labels: mesesAnteriores,
@@ -461,7 +461,7 @@ const ConfiguracaoEduarda = () => {
           window.location.href = '/'; 
         }}
       >
-        Sair da minha conta
+        Sair da Conta
       </a>
         </aside>
         <main className="mainContent" role="region" aria-labelledby="main-content">

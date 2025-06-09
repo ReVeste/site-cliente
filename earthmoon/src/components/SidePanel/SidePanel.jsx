@@ -40,18 +40,20 @@ const SidePanelLogin = ({ isOpen, onClose, onLogin }) => {
       if (response.data.tipo === 'admin') {
         console.log("entrou?");
         navigate('/configuracao-eduarda');
+        setPopupVisible(false);
       } else {
         setTimeout(() => {
           setPopupVisible(false);
           onLogin();
           onClose();
-          window.location.reload();
-        }, 5000);
+          navigate('/configuracao-cliente');
+          // window.location.reload();
+        }, 1000);
       }
       
     } catch (error) {
       console.error('Erro no login:', error.response);
-      if (error.response === 409) {
+      if (error.response && error.response.status === 409) {
         setErrorMessage('Erro no cadastro. CPF ou E-mail já cadastrado!');
       } else {
         setErrorMessage('Erro no cadastro. Verifique os dados e tente novamente.');
@@ -107,7 +109,7 @@ const SidePanelLogin = ({ isOpen, onClose, onLogin }) => {
           Criar conta
         </Link>
       </div>
-      <p className="terms">Ao cadastrar-se, você concorda com a Política de Privacidade e os Termos e Condições.</p>
+      <p className="termsLogin">Ao cadastrar-se, você concorda com a Política de Privacidade e os Termos e Condições.</p>
     </div>
   );
 };

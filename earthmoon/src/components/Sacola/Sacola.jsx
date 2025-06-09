@@ -5,7 +5,8 @@ import SidePanelLogin from '../SidePanel/SidePanel';
 
 const Sacola = () => {
   const [isBagOpen, setIsBagOpen] = useState(false);
-  const [cartItems, setCartItems] = useState([]);
+  // const [cartItems, setCartItems] = useState([]);
+  const [setCartItems] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(sessionStorage.getItem('isLoggedIn') === 'true'); 
   const [isLoginOpen, setIsLoginOpen] = useState(false);
 

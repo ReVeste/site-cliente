@@ -5,7 +5,9 @@ const CartItem = ({ item, onRemove }) => {
   return (
     <div className="bag-item">
   <div className="item-image" style={{ backgroundColor: item.color }}>
+     {/* eslint-disable-next-line jsx-a11y/alt-text */}
     <img src={item.imagens[0]} className="image" />
+    alt
   </div>
   <div className="item-details">
     <p className="item-name">{item.nome}</p>
