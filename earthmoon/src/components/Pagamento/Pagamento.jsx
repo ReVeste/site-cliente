@@ -5,12 +5,10 @@ import api from '../../Api';
 const Pagamento = ({ items, usuario, frete, endereco, ddd, telefone }) => {
   const [preferenciaId, setPreferenciaId] = useState(null);
 
-  // Inicializar Mercado Pago
   useEffect(() => {
     initMercadoPago('APP_USR-1dfce30a-2ce2-4bc7-ab7e-940f3cb99123', { locale: 'pt-BR' });
   }, []);
 
-  // Função para criar a preferência
   const handleCheckout = async () => {
     if (!items || items.length === 0) {
       console.error('A lista de itens está vazia.');
@@ -27,11 +25,11 @@ const Pagamento = ({ items, usuario, frete, endereco, ddd, telefone }) => {
 
     if (frete && parseFloat(frete) > 0) {
       itens.push({
-        produtoId: 'frete', // ID único para identificar o frete
+        produtoId: 'frete', 
         produtoNome: 'Frete',
         produtoDescricao: 'Custo de entrega',
         produtoQuantidade: 1,
-        produtoPreco: parseFloat(frete), // Certifique-se de que o frete é um número válido
+        produtoPreco: parseFloat(frete), 
       });
     }
     
@@ -53,16 +51,16 @@ const Pagamento = ({ items, usuario, frete, endereco, ddd, telefone }) => {
 
     try {
       const response = await api.post('/pagamentos', payload);
-      setPreferenciaId(response.data.id); // Armazena o ID da preferência
+      setPreferenciaId(response.data.id);
       console.log('Checkout successful:', response.data.id);
     } catch (error) {
       console.error('Erro ao realizar checkout:', error.response?.data || error.message);
     }
   };
 
-  // Executar o checkout ao carregar o componente
   useEffect(() => {
     handleCheckout();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items]);
 
   return (
@@ -71,9 +69,10 @@ const Pagamento = ({ items, usuario, frete, endereco, ddd, telefone }) => {
         <Wallet
           initialization={{
             preferenceId: preferenciaId,
-            redirectMode: 'blank',
+            redirectMode: 'modal',
           }}
           customization={{
+            theme: 'dark',
             texts: { valueProp: 'smart_option' },
           }}
         />

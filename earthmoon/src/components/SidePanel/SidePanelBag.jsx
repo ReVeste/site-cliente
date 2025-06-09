@@ -13,18 +13,18 @@ const SidePanelBag = ({ isOpen, onClose }) => {
 
   const navigate = useNavigate();
 
-  const addItemToBag = (produto) => {
-    setItems((prevItems) => [
-      ...prevItems,
-      {
-        id: produto.id,
-        nome: produto.nome,
-        preco: produto.preco,
-        imagens: produto.imagens,
-        descricao: produto.descricao,
-      },
-    ]);
-  };
+  // const addItemToBag = (produto) => {
+  //   setItems((prevItems) => [
+  //     ...prevItems,
+  //     {
+  //       id: produto.id,
+  //       nome: produto.nome,
+  //       preco: produto.preco,
+  //       imagens: produto.imagens,
+  //       descricao: produto.descricao,
+  //     },
+  //   ]);
+  // };
 
   const fetchItems = async () => {
     try {
@@ -83,7 +83,7 @@ const SidePanelBag = ({ isOpen, onClose }) => {
   return (
     <div className="side-panel-bag">
       <button className="close-button" onClick={onClose}>✖</button>
-      <h2 className="title">Sacolinha</h2>
+      <h2 className="titleSacola">Sacolinha</h2>
       <div className="bag-content">
         {items.length > 0 ? (
           items.map((item) => (

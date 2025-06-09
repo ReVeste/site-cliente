@@ -10,10 +10,10 @@ body{
 .configContainer {
     padding-top: 30px;
     margin-left: 15%;
-    width: 100%;
+    width: 85%;
     display: flex;
     justify-content: space-around;
-    height: 100vh;
+    height: 93vh;
     overflow: hidden;
     position: relative;
     align-items: center;
@@ -85,7 +85,7 @@ h2 {
     text-decoration: none;
     color: #000000;
     cursor: pointer;
-    font-size: 12px;
+    font-size: 13px;
 }
 
 .active {

@@ -1,0 +1,73 @@
+name: Docker Push
+
+on:
+  push:
+    branches: [ main ] 
+  pull_request:
+    branches: [ main, homologacao, docker-ketelyn]
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: SHA dinamico tag part
+        id: set_sha_tag 
+        run: |
+          SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
+          echo "sha_part=${SHORT_SHA}" >> "$GITHUB_OUTPUT"
+          echo "Generated SHA Part: ${SHORT_SHA}"
+
+      - name: Get and Increment Version from Docker Hub
+        id: set_version_tag
+        run: |
+          # Define o nome completo do seu repositório Docker Hub
+          REPO_NAME="ketelynmedina/earth-moon-frontend"
+          
+          # Consulta a API do Docker Hub para listar tags.
+          # Filtra por tags que começam com 'v' seguido de números separados por pontos (e.g., v1.0, v1.4, v1.4.2).
+          # Ordena as tags em ordem de versão e pega a mais recente.
+          LATEST_TAG=$(curl -s "https://registry.hub.docker.com/v2/repositories/${REPO_NAME}/tags/?page_size=100" | \
+                       jq -r '.results[].name' | \
+                       grep -E '^v[0-9]+\.[0-9]+(\.[0-9]+)?$' | \
+                       sort -V | tail -n 1)
+
+          CURRENT_VERSION="v1.0" # Valor padrão caso nenhuma tag numérica seja encontrada
+
+          if [ -n "$LATEST_TAG" ]; then
+            CURRENT_VERSION="$LATEST_TAG"
+          fi
+
+          # Extrai a parte numérica da tag (e.g., "1.4" de "v1.4")
+          NUMERIC_PART=$(echo "$CURRENT_VERSION" | sed 's/^v//')
+          
+          # Divide a parte numérica em MAJOR e MINOR/PATCH
+          # Ex: Se NUMERIC_PART é "1.4", MAJOR será "1" e MINOR_PATCH será "4"
+          IFS='.' read -r MAJOR MINOR_PATCH <<< "$NUMERIC_PART"
+
+          # Incrementa a parte MINOR/PATCH (o último número)
+          NEW_MINOR_PATCH=$((MINOR_PATCH + 1))
+          NEW_VERSION="v${MAJOR}.${NEW_MINOR_PATCH}"
+
+          echo "next_version=${NEW_VERSION}" >> "$GITHUB_OUTPUT"
+          echo "Last numeric tag found: $LATEST_TAG (using as base: $CURRENT_VERSION)"
+          echo "Generated next version: $NEW_VERSION"
+
+      - name: Log in to Docker Hub (only on push)
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/homologacao')
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6.18.0
+        with:
+          context: earthmoon/
+          load: ${{ github.event_name == 'pull_request' }}
+          push: ${{ github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/homologacao') }}
+          tags: |
+            ketelynmedina/earth-moon-frontend:latest
+            ketelynmedina/earth-moon-frontend:${{ steps.set_version_tag.outputs.next_version }}

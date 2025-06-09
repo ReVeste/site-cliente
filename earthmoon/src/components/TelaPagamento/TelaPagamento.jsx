@@ -132,6 +132,7 @@ function TelaPagamento() {
   useEffect(() => {
     fetchEnderecos();
     fetchUsuario();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchUsuario = async () => {
@@ -253,7 +254,7 @@ function TelaPagamento() {
             )}
             <form className="form-grid">
   {Object.keys(camposEndereco)
-    .filter((campo) => campo !== "id")  // ✅ Ignora o campo id
+    .filter((campo) => campo !== "id")
     .map((campo) => (
       <div className="form-field" key={campo}>
         <label>

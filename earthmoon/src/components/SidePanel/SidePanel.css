@@ -87,7 +87,12 @@
   text-decoration: none;
 }
 
-.terms {
+.create-account-link:hover{
+  color: #4a1e1e;
+  font-weight: bolder;
+}
+
+.termsLogin {
   margin-top: 0px;
   font-size: 12px;
   color: #1a1a1a;
@@ -99,7 +104,7 @@
 }
 
 .popup-message {
-  background-color: #4caf50;
+  background-color: #1b501c;
   color: #fafafa;
   padding: 10px;
   border-radius: 5px;

@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+// import React, { useEffect, useState } from "react";
+import React from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import Products from "./pages/Products/Products";
 import Home from "./pages/Home/Home";
 import Cadastro from "./pages/Cadastro/Cadastro";
-import SidePanelLogin from "./components/SidePanel/SidePanel";
+// import SidePanelLogin from "./components/SidePanel/SidePanel";
 import CadastroProduto from "./pages/CadastroProduto/CadastroProduto";
 import DetalheProdutoPage from "./pages/DetalheProdutos/DetalheProdutos";
 import ConfiguracaoCliente from "./pages/ConfiguracaoCliente/ConfiguracaoCliente";
@@ -12,9 +13,9 @@ import ListaPage from "./pages/Lista/Lista";
 import ConfiguracaoEduarda from "./pages/ConfiguracaoEduarda/ConfiguracaoEduarda";
 import TelaPagamento from "./pages/TelaPagamento/TelaPagamento.jsx"; // Importação da nova tela
 
-const PrivateRoute = ({ isLoggedIn, children }) => {
-  return isLoggedIn ? children : <Navigate to="/cadastro" />;
-};
+// const PrivateRoute = ({ isLoggedIn, children }) => {
+//   return isLoggedIn ? children : <Navigate to="/cadastro" />;
+// };
 
 const RoutesComponent = () => {
   return (
