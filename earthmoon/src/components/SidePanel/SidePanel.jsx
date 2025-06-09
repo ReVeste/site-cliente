@@ -40,7 +40,7 @@ const SidePanelLogin = ({ isOpen, onClose, onLogin }) => {
       if (response.data.tipo === 'admin') {
         console.log("entrou?");
         navigate('/configuracao-eduarda');
-        setPopupVisible(false);
+      
       } else {
         setTimeout(() => {
           setPopupVisible(false);
@@ -53,7 +53,7 @@ const SidePanelLogin = ({ isOpen, onClose, onLogin }) => {
       
     } catch (error) {
       console.error('Erro no login:', error.response);
-      if (error.response && error.response.status === 409) {
+      if (error.response == 409) {
         setErrorMessage('Erro no cadastro. CPF ou E-mail já cadastrado!');
       } else {
         setErrorMessage('Erro no cadastro. Verifique os dados e tente novamente.');
