@@ -5,7 +5,8 @@ import api from "../../Api";
 
 const ListaEduarda = () => {
   const [pedidos, setPedidos] = useState([]);
-  const [busca, setBusca] = useState("");
+  // const [busca, setBusca] = useState("");
+  const [busca] = useState("");
   const [hoveredPedidoId, setHoveredPedidoId] = useState(null);
 
   useEffect(() => {
@@ -46,8 +47,8 @@ const ListaEduarda = () => {
 
   const concluirPedido = async () => {
     try {
-      const response = await api.put('pedidos/finalizar');
-      fetchPedidos();
+      // const response = await api.put('pedidos/finalizar');
+      // fetchPedidos();
     } catch (error) {
       console.error('Erro ao concluir um Pedido:', error.response?.data || error.message);
     }

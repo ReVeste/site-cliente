@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main ] 
   pull_request:
-    branches: [ main, homologacao]
+    branches: [ main, homologacao, docker-ketelyn]
 
 jobs:
   build_and_push:
@@ -71,4 +71,3 @@ jobs:
           tags: |
             ketelynmedina/earth-moon-frontend:latest
             ketelynmedina/earth-moon-frontend:${{ steps.set_version_tag.outputs.next_version }}
-            ketelynmedina/earth-moon-frontend:${{ steps.set_sha_tag.outputs.sha_part }}
