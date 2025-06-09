@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main ] 
   pull_request:
-    branches: [ main, homologacao]
+    branches: [ main, homologacao, docker-ketelyn]
 
 jobs:
   build_and_push:
