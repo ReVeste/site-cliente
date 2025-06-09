@@ -10,7 +10,7 @@ const Home = () => {
     <div>
       <Navbar />
       <ProductsGrid />
-      <Carrossel />
+      {/* <Carrossel /> */}
       <Footer />
     </div>
   );
