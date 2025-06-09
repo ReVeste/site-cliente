@@ -1,0 +1,31 @@
+name: "CD Front End - Deploy to EC2"
+
+on:
+  push: 
+    branches:
+      - docker-ryan
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Pull Docker image
+        run: docker pull mirandark/earth-moon-front-end:latest
+
+      - name: Stop Docker container front_1
+        run: docker stop front_1 || true
+
+      - name: Remove Docker container front_1
+        run: docker rm front_1 || true
+
+      - name: Run Docker container front_1
+        run: docker run --name front_1 -d -p 3000:80 mirandark/earth-moon-front-end:latest
+
+      - name: Stop Docker container front_2
+        run: docker stop front_2 || true
+
+      - name: Remove Docker container front_2
+        run: docker rm front_2 || true
+
+      - name: Run Docker container front_2
+        run: docker run --name front_2 -d -p 3001:80 mirandark/earth-moon-front-end:latest
