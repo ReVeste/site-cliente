@@ -47,7 +47,7 @@ const SidePanelLogin = ({ isOpen, onClose, onLogin }) => {
           onLogin();
           onClose();
           navigate('/configuracao-cliente');
-          // window.location.reload();
+          window.location.reload();
         }, 1000);
       }
       
