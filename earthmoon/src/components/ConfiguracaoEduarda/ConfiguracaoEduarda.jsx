@@ -461,7 +461,7 @@ const ConfiguracaoEduarda = () => {
           window.location.href = '/'; 
         }}
       >
-        Sair da minha conta
+        Sair da Conta
       </a>
         </aside>
         <main className="mainContent" role="region" aria-labelledby="main-content">

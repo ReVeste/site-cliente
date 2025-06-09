@@ -83,7 +83,7 @@ const SidePanelBag = ({ isOpen, onClose }) => {
   return (
     <div className="side-panel-bag">
       <button className="close-button" onClick={onClose}>✖</button>
-      <h2 className="title">Sacolinha</h2>
+      <h2 className="titleSacola">Sacolinha</h2>
       <div className="bag-content">
         {items.length > 0 ? (
           items.map((item) => (

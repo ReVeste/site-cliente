@@ -117,7 +117,7 @@
 }
 
 .product-container {
-  min-height: 400px;
+  min-height: 370px;
   overflow-y: auto;
   border-top: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
