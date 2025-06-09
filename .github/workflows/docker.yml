@@ -2,7 +2,7 @@ name: Docker Push
 
 on:
   push:
-    branches: [ main ] 
+    branches: [ main, docker-ketelyn ] 
   pull_request:
     branches: [ main, homologacao, docker-ketelyn]
 
