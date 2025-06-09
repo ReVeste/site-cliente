@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Navbar from '../../components/Navbar/Navbar';
 import styles from './ConfiguracaoCliente.module.css';
 import home from '../../assets/Home.png';
@@ -8,12 +8,7 @@ import api from '../../Api';
 const ConfiguracaoCliente = () => {
     const navigate = useNavigate();
     const [itemSelecionado, setItemSelecionado] = useState('Geral');
-    const [isPopupOpen, setIsPopupOpen] = useState(false);
-    const [enderecos, setEnderecos] = useState([]);
-    const [mostrarFormulario, setMostrarFormulario] = useState(false);
     const [pedidos, setPedidos] = useState([]);
-    const [rating, setRating] = useState(0);
-    const [feedbackText, setFeedbackText] = useState('');
     const idUsuario = sessionStorage.getItem('userId');
 
     const itemClicado = (item) => {
@@ -30,11 +25,6 @@ const ConfiguracaoCliente = () => {
         }
     };
     
-    const handleRatingChange = (star) => {
-        console.log(star);
-        setRating(star);
-    };
-
     useEffect(() => {
         const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
         if (!isLoggedIn) {

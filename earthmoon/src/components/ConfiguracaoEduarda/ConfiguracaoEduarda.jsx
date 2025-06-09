@@ -316,11 +316,12 @@ const ConfiguracaoEduarda = () => {
         <div className="dashboardLucros">
           <div className="totalBox" role="group" aria-label="Lucro total do mês e ano">
             <h4>Lucro total do mês</h4>
-            <h3>R$ {kpis?.lucroTotalMes}</h3>
+            <h3>R$ {kpis?.lucroTotalMes?.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h3>
           </div>
           <div className="totalBox">
             <h4>Lucro total do ano</h4>
-            <h3>R$ {kpis?.lucroTotalAno}</h3>
+            <h3>R$ {kpis?.lucroTotalAno?.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h3>
+
           </div>
         </div>
       </div>
