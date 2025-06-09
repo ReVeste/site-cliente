@@ -13,18 +13,18 @@ const SidePanelBag = ({ isOpen, onClose }) => {
 
   const navigate = useNavigate();
 
-  const addItemToBag = (produto) => {
-    setItems((prevItems) => [
-      ...prevItems,
-      {
-        id: produto.id,
-        nome: produto.nome,
-        preco: produto.preco,
-        imagens: produto.imagens,
-        descricao: produto.descricao,
-      },
-    ]);
-  };
+  // const addItemToBag = (produto) => {
+  //   setItems((prevItems) => [
+  //     ...prevItems,
+  //     {
+  //       id: produto.id,
+  //       nome: produto.nome,
+  //       preco: produto.preco,
+  //       imagens: produto.imagens,
+  //       descricao: produto.descricao,
+  //     },
+  //   ]);
+  // };
 
   const fetchItems = async () => {
     try {
