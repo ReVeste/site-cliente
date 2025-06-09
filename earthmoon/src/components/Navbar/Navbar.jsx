@@ -5,7 +5,7 @@ import SidePanelLogin from '../SidePanel/SidePanel';
 import SidePanelBag from '../SidePanel/SidePanelBag';
 import userIcon from '../../assets/userIcon.png';
 import cartIcon from '../../assets/sacolaIcon.png';
-import searchIcon from '../../assets/lupaIcon.png';
+// import searchIcon from '../../assets/lupaIcon.png';
 import logo from '../../assets/icon.png';
 import api from '../../Api';
 
@@ -14,7 +14,7 @@ const Navbar = () => {
   const [isBagPanelOpen, setIsBagPanelOpen] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(() => sessionStorage.getItem('isLoggedIn') === 'true');
-  const [searchQuery, setSearchQuery] = useState('');
+  // const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 
   const toggleLoginPanel = () => {
@@ -69,14 +69,14 @@ const Navbar = () => {
     }
   };
 
-  const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
-  };
+  // const handleSearchChange = (e) => {
+  //   setSearchQuery(e.target.value);
+  // };
 
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    navigate(`/search?query=${searchQuery}`);
-  };
+  // const handleSearchSubmit = (e) => {
+  //   e.preventDefault();
+  //   navigate(`/search?query=${searchQuery}`);
+  // };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
