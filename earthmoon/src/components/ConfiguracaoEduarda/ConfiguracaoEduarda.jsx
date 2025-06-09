@@ -191,7 +191,7 @@ const ConfiguracaoEduarda = () => {
     const interval = setInterval(fetchData, 1 * 60 * 1000);
     return () => clearInterval(interval);
 
-  }, [kpis]);
+  }, []);
 
   const dataCadastrosUsuarios = {
     labels: mesesAnteriores,
